@@ -14,6 +14,12 @@
     <canvas id="canvasOne"></canvas>
 
     <script type="text/javascript">
+        
+        //2 canvas variables used in drawing the canvas, theses are integral to the program
+        var ctx;
+        var canvas;
+        
+        //create the map array that will be processed to draw the map on screen
         var mapArray = [
           [4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5],
          [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10],
@@ -41,23 +47,36 @@
           [7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 8, 6, 6, 6, 6, 6, 6, 8, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 8]
       ];
 
+        //boundYSortArr will hold the processed objects that are formed from the 2-dim map array
         var boundYSortArr = [];
 
+        //last press holds the last key pressed by the user, it needs to be global to keep it in scope
         var lastPress;
+        //"not pressed" controls whether or not to use the last press or the current press
         var notPressed = false;
+        //global score variable, is incremented when a user eats food
         var score = 0;
-        var canvas = document.getElementById("canvasOne");
-        canvas.height = 550;
-        canvas.width = 1000;
-        var ctx = canvas.getContext("2d");
 
-        var opClBool = 0;
+        /*
+        
+        
+        PLACEHOLDER, FIND ACTUAL USE OF OPCLBOOL
+        */
+        var opnClsBool = 0;
 
+        
+        //this is an object definition that takes in 2 values and stores them in an object
+        //the values passed will be the x/y co-ordinates of another object
         function coOrds(x, y) {
             this.x = x;
             this.y = y;
         }
 
+        
+        //this is a character definition that stores position, speed and the type of character
+        //position and speed are co-ords that store an x and y value
+        //type should be just a string
+        //currPos will be updated whenever the the algorithm finds the user's position
         function character(position, speed, type) {
             this.position = new coOrds(position.x, position.y);
             this.speed = new coOrds(speed.x, speed.y);
@@ -65,6 +84,9 @@
             this.currPos = 0;
         }
 
+        
+        //creating 3 character objects
+        //the first 2 are enemies while the third is our hero pac
         var en1 = new character({
             x: 530,
             y: 250
@@ -87,159 +109,215 @@
             y: 0
         }, "pac");
 
+        init();
+        
+        //the init function initialises the canvas as well as calling the functions to popAccBoundArr and the draw function
+        function init()
+        {
+            //init canvas
+            canvas = document.getElementById("canvasOne");
+            canvas.height = 550;
+            canvas.width = 1000;
+            ctx = canvas.getContext("2d");
+            popAccBoundArr();
+            draw();
+        }
 
-        popAccBoundArr();
-
-        draw();
-
+        //the draw function draws the canvas
         function draw() {
-            var canvas = document.getElementById("canvasOne");
-            canvas.height = canvas.height;
+            //resetting the canvas width clears the canvas for the next animation frame
             canvas.width = canvas.width;
-            ctx.lineWidth = 20;
-            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+            
+            //this draws the canvas rectangle
+            //and fills it with a dark blue colour
+            ctx.beginPath()
             ctx.lineWidth = 2;
             ctx.rect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "rgb(7,2,42)";
             ctx.fill();
+            ctx.closePath();
+            
+            //score is drawn on the screen here
+            ctx.beginPath();
             ctx.fillStyle = 'white';
             ctx.font = "30px Arial";
             ctx.fillText("Score: " + score, 30, 520);
-            window.requestAnimationFrame(chkCollisions);
-            var side = '';
-            update();
+            //ctx.closePath();
+            //window.requestAnimationFrame(chkCollisions);
 
-            pcDirctnSwtch();
-            document.addEventListener('keydown', function (event) {
-                side = chkCollisions();
-                lastPress = event.keyCode;
-                //left
-                if (event.keyCode == 37) {
-                    if (side.x != 'r' && (boundYSortArr[pac.currPos - 1].type == 3 || boundYSortArr[pac.currPos - 1].type == 0)) {
-                        pac.speed.x = -20;
-                        pac.speed.y = 0;
-                        notPressed = false
-                    } else {
-                        notPressed = true;
-                    }
-                }
-                //right
-                else if (event.keyCode == 39) {
-                    if (side.x != 'l' && (boundYSortArr[pac.currPos + 1].type == 3 || boundYSortArr[pac.currPos + 1].type == 0)) {
-                        pac.speed.x = 20;
-                        pac.speed.y = 0;
-                        notPressed = false;
-                    } else {
-                        notPressed = true;
-                    }
-                }
-                //down
-                else if (event.keyCode == 40) {
-                    if (side.y != 'd' && (boundYSortArr[pac.currPos + 48].type == 3 || boundYSortArr[pac.currPos + 48].type == 0)) {
-                        pac.speed.x = 0;
-                        pac.speed.y = 20;
-                        notPressed = false;
-                    } else {
-                        notPressed = true;
-                    }
-                }
-                //up
-                else if (event.keyCode == 38) {
-                    if (side.y != 'u' && (boundYSortArr[pac.currPos - 48].type == 3 || boundYSortArr[pac.currPos - 48].type == 0)) {
-                        pac.speed.x = 0;
-                        pac.speed.y = -20;
-                        notPressed = false;
-                    } else {
-                        notPressed = true;
-                    }
-                }
-            });
-            if(notPressed == true)
-            {
-                savedMove();   
+            //keypress events are handled here
+            //the if statement checks the state of the notpressed boolean var
+            //essentially it takes the current key pressed or the last key pressed
+            //and passes that number to a move function that handles either presses
+            if (notPressed == false) {
+                document.addEventListener('keydown', function (event) {
+                    move(event.keyCode);
+                });
+            } else if (notPressed == true) {
+                move(lastPress);
             }
+            
+            //call 2 functions
+            update();
+            pcDirctnSwtch();
         }
-        
-        function savedMove() {
-            side = chkCollisions();
 
-            //left
-            if (lastPress == 37) {
+        
+        //this fucntion takes in a number "press"
+        //it checks for collisions and then alters the user speeds accordingly
+        function move(press) {
+            
+            /*
+            
+            
+            
+            REMOVE SIDE FROM THIS, IT'S NO GOOD
+            
+            
+            */
+            side ='';// chkCollisions();
+
+            //key press handled here
+            //checks collisions to the direction of pacman, 
+            //if it's a valid place to move, speeds are altered
+            //if it would cause a collision, the key will be saved for later and processed at the next available opportunity 
+            //each press is effectively the same, only changing the needed speeds and checking the correct collisions
+            
+            //left key press
+            if (press == 37) {
                 if (side.x != 'r' && (boundYSortArr[pac.currPos - 1].type == 3 || boundYSortArr[pac.currPos - 1].type == 0)) {
                     pac.speed.x = -20;
                     pac.speed.y = 0;
+                    notPressed = false
+                } else {
+                    lastPress = press;
+                    notPressed = true;
                 }
             }
-            //right
-            else if (lastPress == 39) {
+            //right key press
+            else if (press == 39) {
                 if (side.x != 'l' && (boundYSortArr[pac.currPos + 1].type == 3 || boundYSortArr[pac.currPos + 1].type == 0)) {
                     pac.speed.x = 20;
                     pac.speed.y = 0;
+                    notPressed = false
+                } else {
+                    lastPress = press;
+                    notPressed = true;
                 }
             }
-            //down
-            else if (lastPress == 40 && (boundYSortArr[pac.currPos + 48].type == 3 || boundYSortArr[pac.currPos + 48].type == 0)) {
-                if (side.y != 'd') {
+            //down key press
+            else if (press == 40) {
+                if (side.y != 'd' && (boundYSortArr[pac.currPos + 48].type == 3 || boundYSortArr[pac.currPos + 48].type == 0)) {
                     pac.speed.x = 0;
                     pac.speed.y = 20;
+                    notPressed = false
+                } else {
+                    lastPress = press;
+                    notPressed = true;
                 }
             }
-            //up
-            else if (lastPress == 38 && (boundYSortArr[pac.currPos - 48].type == 3 || boundYSortArr[pac.currPos - 48].type == 0)) {
-                if (side.y != 'u') {
+            //up key press
+            else if (press == 38) {
+                if (side.y != 'u' && (boundYSortArr[pac.currPos - 48].type == 3 || boundYSortArr[pac.currPos - 48].type == 0)) {
                     pac.speed.x = 0;
                     pac.speed.y = -20;
+                    notPressed = false
+                } else {
+                    lastPress = press;
+                    notPressed = true;
                 }
             }
         }
 
+        //this function checks the speed of pacman
+        //based on which speed is not 0, pacman will be drawn in a different direction
+        //it calls pacDraw which takes in variables needed to draw the 3/4 circle that is pacman
         function pcDirctnSwtch() {
+            //for pacman to face right
             if (pac.speed.x > 0) {
-                pacMov(1.8, 0.2);
+                pacDraw(1.8, 0.2);
+                //for pacman to face to the left
             } else if (pac.speed.x < 0) {
-                pacMov(0.8, 1.2);
+                pacDraw(0.8, 1.2);
+                //for pacman to face down
             } else if (pac.speed.y > 0) {
-                pacMov(0.2, 0.8);
+                pacDraw(0.2, 0.8)
+                //for pacman to face up
             } else if (pac.speed.y < 0) {
-                pacMov(1.2, 1.8);
+                pacDraw(1.2, 1.8);
             }
         }
 
-        function pacMov(pi1, pi2) {
+        //this function is used to draw the main man
+        //it takes in two variables that are multiplied by pi
+        //essentially these variables control the direction pacman will face
+        function pacDraw(pi1, pi2) {
+            
+            //this is a simple sound file that plays on a loop as pacman is drawn
+            //it is taken straight from the original pacman game
+            //I find it adds authenticity to my unauthorized clone of pacman
             var snd = new Audio("waka waka.mp3"); // buffers automatically when created
             snd.play();
+            
+            //draw all is called to draw the enemies and the map
             drawAll();
 
+            //pacman is drawn
             ctx.beginPath();
+            //pacman-yellow is set as the current fill style
             ctx.fillStyle = "rgb(255,238,0)";
-            if (opClBool == 0) {
+            //opnClsBool controls the open close nature of pacmans mouth
+            //when "on" it draws him open mouthed
+            //when off it draws him closed mouth
+            if (opnClsBool == 0) {
+                //open mouth drawn
                 ctx.arc(pac.position.x, pac.position.y, 15, pi1 * Math.PI, pi2 * Math.PI, true);
                 ctx.lineTo(pac.position.x, pac.position.y);
-                opClBool = 1;
+                //sets the variable to 1 so that on next draw it will draw a full circle
+                opnClsBool = 1;
             } else {
+                //draw a full circle
                 ctx.arc(pac.position.x, pac.position.y, 15, 2 * Math.PI, 0 * Math.PI, true);
-                opClBool = 0;
+                //set the variable to 0, effectively resetting pacman for the next draw to be open mouthed
+                opnClsBool = 0;
             }
-
+            
+            //fills in the pacman object drawn to the canvas
             ctx.stroke();
             ctx.fill();
             ctx.closePath();
             ctx.fillStyle = "rgb(0,0,0)";
-            window.requestAnimationFrame(chkCollisions);
-            if (opClBool == 1) {
+            /*
+                REMOVE AT LATER DATE
+            
+            */
+            //window.requestAnimationFrame(chkCollisions);
+            
+            //checks stae of opnClsBool
+            //if only half way through the animation, redraw the pacman
+            //or else redraw the canvas
+            if (opnClsBool == 1) {
                 setTimeout(function () {
-                    pacMov(pi1, pi2);
-                }, 200)
+                    pacDraw(pi1, pi2);
+                }, 100)
             } else {
-                setTimeout(draw, 200);
+                setTimeout(draw, 300);
             }
         }
-
+        
+        //draw all simply calls draw functions to draw the rest of the objects
         function drawAll() {
             drawItems();
             enemyDraw(en1);
             enemyDraw(en2);
         }
+        
+        /*
+        
+            PROBLY WILL BE REMOVED
+            NOT SURE ON IT'S USE ANY MORE
+            NEEDS FURTHER TESTING
+        */
 
         function chkCollisions() {
             var side = {
@@ -305,10 +383,12 @@
                 pac.position.x += pac.speed.x;
                 pac.position.y += pac.speed.y;
             }
+            else{
+                pac.position-=pac.speed.x;   
+            }
         }
 
-        function chkVertMapColl(curPos, possPos) {
-            var i = 0;
+        function getMapPos(curPos, possPos) {
             for (i = 0; i < boundYSortArr.length; ++i) {
                 if (curPos.y != boundYSortArr[i].y) {
                     i += mapArray[1].length - 1;
@@ -327,46 +407,83 @@
                             i += mapArray[0].length;
                         }
                     }
-                    break;
-
+                    return i;
                 }
             }
+        }
 
-            if (curPos.name == "pac") {
-                pac.currPos = i;
-                console.log(boundYSortArr[i]);
-            }
+        function updateScore(i) {
+            score += i;
+        }
+
+        function changeMapType(pos, newT) {
+            boundYSortArr[pos].type = newT;
+        }
+
+        function chkMapNoType(i, curPos, possPos) {
             //chk type
-            if ((boundYSortArr[i].type != 0) && (boundYSortArr[i].type != 3) || (boundYSortArr[i].type == 10)) {
+            if ((boundYSortArr[i].type != 0) && (boundYSortArr[i].type != 3)) {
+                
+                //portal time!
                 if (boundYSortArr[i].type == 10) {
                     if (boundYSortArr[i].x <= 30) {
                         pac.position.x = 950;
 
                         if (boundYSortArr[i + mapArray[1].length - 3].type == 0) {
-                            boundYSortArr[i + mapArray[1].length - 2].type = 3;
-                            score++;
+                            changeMapType(i + mapArray[1].length - 2, 3);
+                            updateScore(1);
                         }
                     } else {
                         pac.position.x = 50;
 
                         if (boundYSortArr[i - mapArray[1].length - 2].type == 0) {
-                            boundYSortArr[i - mapArray[1].length - 2].type = 3;
-                            score++;
+                            changeMapType(i - mapArray[1].length - 2, 3);
+                            updateScore(1);
                         }
                     }
                 }
-
+                
+                if(curPos.name=="pac")
+                {
+                   /* pac.speed.y=0;
+                    pac.position.x-=20;
+                    pac.speed.x=0*/
+                }
                 return true;
             } else {
                 if (curPos.name == "pac") {
                     if (boundYSortArr[i].type == 0) {
                         boundYSortArr[i].type = 3;
-                        score++;
+                        changeMapType(i, 3);
+                        updateScore(1);
                     }
                 }
 
                 return false;
             }
+        }
+
+        function chkVertMapColl(curPos, possPos) {
+
+            var i = getMapPos(curPos, possPos);
+
+            if (curPos.name == "pac") {
+                pac.currPos = i;
+            }
+            var bool = chkMapNoType(i, curPos, possPos);
+            
+            chkSpeed();
+            return bool;
+        }
+        
+        function chkSpeed()
+        {
+            if(pac.xSpeed==0&&pac.ySpeed==0)
+            {
+                pac.position.x--;
+                pac.position.y--;
+            }
+           
         }
 
         function posDiff(curPos, possPos) {
