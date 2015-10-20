@@ -14,11 +14,10 @@
     <canvas id="canvasOne"></canvas>
 
     <script type="text/javascript">
-        
         //2 canvas variables used in drawing the canvas, theses are integral to the program
         var ctx;
         var canvas;
-        
+
         //create the map array that will be processed to draw the map on screen
         var mapArray = [
           [4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5],
@@ -64,7 +63,7 @@
         */
         var opnClsBool = 0;
 
-        
+
         //this is an object definition that takes in 2 values and stores them in an object
         //the values passed will be the x/y co-ordinates of another object
         function coOrds(x, y) {
@@ -72,7 +71,7 @@
             this.y = y;
         }
 
-        
+
         //this is a character definition that stores position, speed and the type of character
         //position and speed are co-ords that store an x and y value
         //type should be just a string
@@ -84,7 +83,7 @@
             this.currPos = 0;
         }
 
-        
+
         //creating 3 character objects
         //the first 2 are enemies while the third is our hero pac
         var en1 = new character({
@@ -110,10 +109,9 @@
         }, "pac");
 
         init();
-        
+
         //the init function initialises the canvas as well as calling the functions to popAccBoundArr and the draw function
-        function init()
-        {
+        function init() {
             //init canvas
             canvas = document.getElementById("canvasOne");
             canvas.height = 550;
@@ -127,7 +125,7 @@
         function draw() {
             //resetting the canvas width clears the canvas for the next animation frame
             canvas.width = canvas.width;
-            
+
             //this draws the canvas rectangle
             //and fills it with a dark blue colour
             ctx.beginPath()
@@ -136,7 +134,7 @@
             ctx.fillStyle = "rgb(7,2,42)";
             ctx.fill();
             ctx.closePath();
-            
+
             //score is drawn on the screen here
             ctx.beginPath();
             ctx.fillStyle = 'white';
@@ -156,17 +154,17 @@
             } else if (notPressed == true) {
                 move(lastPress);
             }
-            
+
             //call 2 functions
             update();
             pcDirctnSwtch();
         }
 
-        
+
         //this fucntion takes in a number "press"
         //it checks for collisions and then alters the user speeds accordingly
         function move(press) {
-            
+
             /*
             
             
@@ -175,14 +173,14 @@
             
             
             */
-            side ='';// chkCollisions();
+            side = ''; // chkCollisions();
 
             //key press handled here
             //checks collisions to the direction of pacman, 
             //if it's a valid place to move, speeds are altered
             //if it would cause a collision, the key will be saved for later and processed at the next available opportunity 
             //each press is effectively the same, only changing the needed speeds and checking the correct collisions
-            
+
             //left key press
             if (press == 37) {
                 if (side.x != 'r' && (boundYSortArr[pac.currPos - 1].type == 3 || boundYSortArr[pac.currPos - 1].type == 0)) {
@@ -242,7 +240,7 @@
                 //for pacman to face down
             } else if (pac.speed.y > 0) {
                 pacDraw(0.2, 0.8)
-                //for pacman to face up
+                    //for pacman to face up
             } else if (pac.speed.y < 0) {
                 pacDraw(1.2, 1.8);
             }
@@ -252,13 +250,13 @@
         //it takes in two variables that are multiplied by pi
         //essentially these variables control the direction pacman will face
         function pacDraw(pi1, pi2) {
-            
+
             //this is a simple sound file that plays on a loop as pacman is drawn
             //it is taken straight from the original pacman game
             //I find it adds authenticity to my unauthorized clone of pacman
             var snd = new Audio("waka waka.mp3"); // buffers automatically when created
             snd.play();
-            
+
             //draw all is called to draw the enemies and the map
             drawAll();
 
@@ -281,7 +279,7 @@
                 //set the variable to 0, effectively resetting pacman for the next draw to be open mouthed
                 opnClsBool = 0;
             }
-            
+
             //fills in the pacman object drawn to the canvas
             ctx.stroke();
             ctx.fill();
@@ -292,7 +290,7 @@
             
             */
             //window.requestAnimationFrame(chkCollisions);
-            
+
             //checks stae of opnClsBool
             //if only half way through the animation, redraw the pacman
             //or else redraw the canvas
@@ -304,17 +302,17 @@
                 setTimeout(draw, 300);
             }
         }
-        
+
         //draw all simply calls draw functions to draw the rest of the objects
         function drawAll() {
             drawItems();
             enemyDraw(en1);
             enemyDraw(en2);
         }
-        
+
         /*
         
-            PROBLY WILL BE REMOVED
+            PROBABLY WILL BE REMOVED
             NOT SURE ON IT'S USE ANY MORE
             NEEDS FURTHER TESTING
         */
@@ -343,18 +341,30 @@
             return side;
         }
 
+        //the update function calls other functions
+        //these functions update the positions of the objects
         function update() {
             usrUpdate(pac);
             enUpdate(en1);
             enUpdate(en2);
         }
 
+        //usrUpdate takes in a character object
+        //this object will always be pacman, but incase i would want to turn this into multiplayer at a later date
+        //it takes the objcet rather than calling the object directly
         function usrUpdate(pac) {
+            //possMove is the move that pacman wants to move to
             var possMove;
+            //bool is just a generic boolean
             var bool;
+            //determines which axis to alter
+            //if ySpeed is 0 then xSpeed will have a value
+            // and vice versa
             if (pac.speed.x != 0) {
                 //chk the space to the left or right   
+                //possmove is now calculated by doing the math that will occur if the move is good
                 possMove = pac.position.x + pac.speed.x;
+                //creating 2 objects, one with the current position and one with the coordinates of the next move
                 var pos = {
                     y: pac.position.y,
                     x: pac.position.x,
@@ -364,7 +374,12 @@
                     y: pac.position.y,
                     x: possMove
                 };
+
+                //chkVertMapColl will chk if the possible position is a good one or not
                 bool = chkVertMapColl(pos, pos1);
+
+                //this else statement is effectively the same as above, the only difference 
+                //is that it affects the y coordinates rather than the x coordinates
             } else if (pac.speed.y != 0) {
                 //chk the space up or down   
                 possMove = pac.position.y + pac.speed.y;
@@ -379,78 +394,145 @@
                 };
                 bool = chkVertMapColl(pos, pos1);
             }
+
+            /*
+                MAKES MORE SENSE LOGICALLY TO RETURN A TRUE IF 
+                MOVE IS VALID
+                
+                CHANGE THIS!
+            
+            */
+            //the function returns a TRUE if the move is valid
             if (bool == false) {
+                //as long as the move is valid, it will update the position
+                //the amount of the speed
                 pac.position.x += pac.speed.x;
                 pac.position.y += pac.speed.y;
             }
-            else{
-                pac.position-=pac.speed.x;   
-            }
         }
 
+        //this function loops through the array, it first finds the row of the current pacman position
+        //it then searches through that column to find the row
         function getMapPos(curPos, possPos) {
-            for (i = 0; i < boundYSortArr.length; ++i) {
-                if (curPos.y != boundYSortArr[i].y) {
-                    i += mapArray[1].length - 1;
-                } else if (curPos.x == boundYSortArr[i].x) {
-                    //found currunt position
-                    if (posDiff(curPos, possPos) == 'x') {
-                        if (curPos.x > possPos.x) {
-                            i--;
-                        } else if (curPos.x < possPos.x) {
-                            i++;
-                        }
-                    } else {
-                        if (curPos.y > possPos.y) {
-                            i -= mapArray[0].length;
-                        } else {
-                            i += mapArray[0].length;
-                        }
-                    }
-                    return i;
+            for (mapPos = 0; mapPos < boundYSortArr.length; ++mapPos) {
+                //if the column is not correct, add a the length of a row to mapPos so that it gets the next row 
+                if (curPos.y != boundYSortArr[mapPos].y) {
+                    mapPos += mapArray[1].length - 1;
+                    //to get to this part of the code, the search would have to find the row of pacman
+                    //at this point, we search through this row to find it's exact location
+                } else if (curPos.x == boundYSortArr[mapPos].x) {
+                    //found currunt position at this point
+
+                    //setPossDifference alters mapPos so that it represents the
+                    //coOrdinates of the position to be moved to
+                    mapPos = setPossDifference(curPos, possPos, mapPos);
+
+                    //this returned position is returned to the parent function
+                    return mapPos;
                 }
             }
         }
 
+        function setPossDifference(curPos, possPos, mapPos) {
+
+            //posDiff checks x value and y value of curPos and possPos
+            //it returns an 'x' if the x positions are different and a 'y' if the ys are different
+            if (posDiff(curPos, possPos) == 'x') {
+                //a check to see in what way are they different
+                //if current is bigger than potential, then pacman wants to move right
+                if (curPos.x > possPos.x) {
+                    mapPos--;
+                    //otherwise pacman wants to move left
+                } else if (curPos.x < possPos.x) {
+                    mapPos++;
+                }
+                //if 'x' wasnt return than it has to be the y that is different
+                //in this case pacman wants to move up or down
+            } else {
+                //if up then pacman needs to shift the length of a row in the 2-dim array
+                if (curPos.y > possPos.y) {
+                    mapPos -= mapArray[0].length;
+                    //otherwise he needs to shift back the same length as he is going down
+                } else {
+                    mapPos += mapArray[0].length;
+                }
+            }
+            //at this point, the position that pacman wants to move in is known in the array
+            //so that position is returned
+            return mapPos;
+        }
+
+        //simple update score function
+        //takes in a value and adds it to the score
         function updateScore(i) {
             score += i;
         }
 
+        //simply changes the type of the block
+        //takes in the position of the array and the new value on that position's type
         function changeMapType(pos, newT) {
             boundYSortArr[pos].type = newT;
         }
 
-        function chkMapNoType(i, curPos, possPos) {
-            //chk type
+
+        //chkMapNoType takes in the current position, the value in the array of the possible move
+        function chkMapNoType(i, curPos) {
+
+            //checks are made to see if the possible move is a barrier  
+            //i.e it's not a food or eaten food
             if ((boundYSortArr[i].type != 0) && (boundYSortArr[i].type != 3)) {
-                
-                //portal time!
-                if (boundYSortArr[i].type == 10) {
-                    if (boundYSortArr[i].x <= 30) {
-                        pac.position.x = 950;
 
-                        if (boundYSortArr[i + mapArray[1].length - 3].type == 0) {
-                            changeMapType(i + mapArray[1].length - 2, 3);
-                            updateScore(1);
-                        }
-                    } else {
-                        pac.position.x = 50;
+                //if this is entered, then the move is invalid immediately
+                //this is a barrier
 
-                        if (boundYSortArr[i - mapArray[1].length - 2].type == 0) {
-                            changeMapType(i - mapArray[1].length - 2, 3);
-                            updateScore(1);
+                // a check is made to see if this is pacman we are dealing with
+                //this is to ensure that only pacman enters a portal
+                if (curPos.name == "pac") {
+                    //a check here tries to determine if the block is possibly a portal
+                    //if it is then code needs to address that
+                    if (boundYSortArr[i].type == 10) {
+                        //at this point, it is known that it is a portal
+                        //we now need to see if it is a portal on the left or the right
+                        //if on the left, we need to jump pacman to the far right hand side
+                        if (boundYSortArr[i].x <= 30) {
+                            pac.position.x = 950;
+
+                            //a check on the state of the food at the other side of the portal is done
+                            //an error occurs when entering portals where the first food is not eaten
+                            //this checks that and makes sure that it is eaten
+                            if (boundYSortArr[i + mapArray[1].length - 3].type == 0) {
+                                changeMapType(i + mapArray[1].length - 2, 3);
+                                //score is updated also
+                                updateScore(1);
+                            }
+                            //if the portal is not on the left then it is on the right
+                            //the pacman's position will need to be changed
+                        } else {
+                            pac.position.x = 50;
+                            
+                            //a check on the state of the food at the other side of the portal is done
+                            //an error occurs when entering portals where the first food is not eaten
+                            //this checks that and makes sure that it is eaten
+                            if (boundYSortArr[i - mapArray[1].length - 2].type == 0) {
+                                changeMapType(i - mapArray[1].length - 2, 3);
+                                updateScore(1);
+                            }
                         }
                     }
                 }
                 
-                if(curPos.name=="pac")
-                {
-                   /* pac.speed.y=0;
-                    pac.position.x-=20;
-                    pac.speed.x=0*/
-                }
+                
+                /*
+                    SWAP TRUE AND FALSE TO MAKE MORE SENSE
+                */
+                //a boolean is returned here stating that the position is invalid
                 return true;
+                //if the position is a food place it is valid for all characters to move to
             } else {
+                //if pacman is the current character
+                //the food will need to be eaten
+                //the food state will need to change to eaten
+                //and the score will need to be updated
                 if (curPos.name == "pac") {
                     if (boundYSortArr[i].type == 0) {
                         boundYSortArr[i].type = 3;
@@ -459,33 +541,33 @@
                     }
                 }
 
+                //a boolean is returned here indicating that the position is valid
                 return false;
             }
         }
 
         function chkVertMapColl(curPos, possPos) {
 
+            //getMapPos will return the value of the position in the array that the character wants to move to
             var i = getMapPos(curPos, possPos);
 
-            if (curPos.name == "pac") {
+            //if we are dealing with pacman, then the current pos needs to be updated
+            /*
+                LOGICALLY MAKES NO SENSE
+                NO POINT UPDATING IF MOVE MIGHT NOT GO THROUGH
+            
+            */
+            
+            //a boolean is returned, indicating the legibilty of the proposed move
+            var bool = chkMapNoType(i, curPos);
+            if (curPos.name == "pac"&&bool ==false) {
                 pac.currPos = i;
             }
-            var bool = chkMapNoType(i, curPos, possPos);
-            
-            chkSpeed();
             return bool;
         }
         
-        function chkSpeed()
-        {
-            if(pac.xSpeed==0&&pac.ySpeed==0)
-            {
-                pac.position.x--;
-                pac.position.y--;
-            }
-           
-        }
-
+        //posDiff takes in two position objects
+        //it will check if the x or the y positions are different
         function posDiff(curPos, possPos) {
             //x is different
             if (curPos.x != possPos.x) {
@@ -497,8 +579,11 @@
             }
         }
 
+        
+        //this function is effectively the AI of the ghost
         function enUpdate(en) {
 
+            
             enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
             var possMove;
             var bool;
@@ -547,17 +632,24 @@
             ctx.closePath();
         }
 
+        //this function calculates which direction is faster than the others for the AI to reach pacman
         function enemyDistances(eX, eY, usrX, usrY, en) {
+            //initializing the directions to infinity
+            //this will ensure that if they are not valid options
+            //they will not be counted
             var up = Infinity,
                 left = Infinity,
                 right = Infinity,
                 down = Infinity,
                 min = 0;
+            //creating a currPos object that stores the current position of the ghost
+            //it also stores the fact that it is an enemy
             var currPos = {
                 y: en.position.y,
                 x: en.position.x,
                 name: en.type
             };
+            
             var upPos = {
                 y: eY - 10,
                 x: eX
@@ -575,6 +667,10 @@
                 x: eX + 10
             };
 
+            
+            //here the possible positions are checked
+            //using the distance of a line formula
+            //the direction with the shortest distance will be chosen
             if (!chkVertMapColl(currPos, upPos)) {
                 up = dist(eX, eY - 10, usrX, usrY);
             }
@@ -588,10 +684,20 @@
                 left = dist(eX - 10, eY, usrX, usrY);
             }
 
+            /*
+                CHECK IF SCATTER MODE
+                IF SCATTER MODE GRAB MATH.MAX
+                ALSO YOU'D NEED TO SET THE INITIAL VALUES TO 0 INSTEAD OF INFINITY
+            */
+            //math.min selects the smallest distance
             min = Math.min(up, down, right, left);
+            
+            //calcEnMove will compare the distances with the min value
+            //it will then move in that direction
             calcEnMove(up, down, right, left, min, en);
         }
 
+        //basic distance of a line formula
         function dist(enX, enY, usrX, usrY) {
             var b1 = enX - usrX;
             b1 = Math.pow(b1, 2);
@@ -600,6 +706,8 @@
             return Math.sqrt(b1 + b2);
         }
 
+        //checks which distance is min
+        //whichever it is then it moves in that direction
         function calcEnMove(u, d, r, l, min, en) {
             if (u == min) {
                 en.speed.x = 0;
@@ -616,6 +724,9 @@
             }
         }
 
+        //this function takes in the 2-dim array
+        //and converts it to an object 1 dim array, containing x, y positions for each square in the grid
+        //it also will contain the type of square that it is
         function popAccBoundArr() {
             var x = 20,
                 y = 10;
@@ -631,18 +742,20 @@
             }
         }
 
-
+        //this function creates a new array element with the passed in object parameters
         function sortBoundaries(type, x, y, arr) {
             arr.push({
                 type, x, y
             });
         }
 
+        //this function reads the object array of grid squares
+        //it then draws an object in the correct grid based on it's type
         function drawItems() {
             for (var i = 0; i < boundYSortArr.length; ++i) {
                 switch (boundYSortArr[i].type) {
 
-                    //boundary
+                    //food
                 case 0:
                     ctx.beginPath();
                     ctx.fillStyle = "rgb(9,245,0)";
@@ -653,6 +766,7 @@
                     ctx.closePath();
                     break;
 
+                    //circles
                 case 1:
                     ctx.beginPath();
                     ctx.strokeStyle = "rgb(24,202,230)";
@@ -755,6 +869,8 @@
                     //end of line
                 case 9:
                     break;
+                        
+                    //portals
                 case 10:
                     ctx.beginPath();
                     ctx.strokeStyle = "rgb(255,0,255)";
