@@ -18,6 +18,15 @@
         var ctx;
         var canvas;
 
+        //this counts every turn taken by the enemy
+        //will be helpful in allowing the ghosts better movement
+        //will stop need to recalculate path every turn
+        var enemyTurnCount = 0;
+
+        var recalcDirec = true;
+        
+        var oldX = 0,
+            oldY = 0;
         //create the map array that will be processed to draw the map on screen
         var mapArray = [
           [4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5],
@@ -29,12 +38,12 @@
           [2, 6, 5, 0, 4, 6, 6, 8, 0, 2, 0, 4, 6, 6, 6, 6, 6, 5, 0, 2, 0, 4, 8, 1, 1, 7, 5, 0, 2, 0, 4, 6, 6, 6, 6, 6, 5, 0, 2, 0, 7, 6, 6, 5, 0, 4, 6, 2],
           [2, 1, 2, 0, 2, 0, 0, 0, 0, 2, 0, 2, 1, 1, 1, 1, 1, 2, 0, 2, 0, 7, 6, 6, 6, 6, 8, 0, 2, 0, 2, 1, 1, 1, 1, 1, 2, 0, 2, 0, 0, 0, 0, 2, 0, 2, 1, 2],
           [2, 1, 2, 0, 9, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6, 6, 6, 8, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 7, 6, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6, 6, 9, 0, 2, 1, 2],
-          [2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 4, 6, 6, 6, 6, 5, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2],
-          [2, 1, 2, 0, 4, 6, 6, 6, 5, 0, 9, 6, 6, 6, 6, 5, 0, 9, 6, 8, 0, 2, 3, 3, 3, 3, 2, 0, 7, 6, 9, 0, 4, 6, 6, 6, 6, 9, 0, 4, 6, 6, 6, 5, 0, 2, 1, 2],
-          [9, 6, 8, 0, 2, 1, 1, 1, 2, 0, 2, 1, 1, 1, 1, 2, 0, 2, 0, 0, 0, 2, 3, 3, 3, 3, 2, 3, 0, 0, 2, 0, 2, 1, 1, 1, 1, 2, 0, 2, 1, 1, 1, 2, 0, 7, 6, 9],
-         [10, 3, 0, 0, 2, 1, 1, 1, 2, 0, 9, 6, 6, 6, 6, 8, 0, 2, 0, 4, 6, 3, 3, 3, 3, 3, 7, 6, 5, 0, 2, 0, 7, 6, 6, 6, 6, 9, 0, 2, 1, 1, 1, 2, 0, 0, 3, 10],
-          [9, 6, 5, 0, 2, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 2, 0, 4, 6, 9],
-          [2, 1, 2, 0, 2, 1, 1, 1, 2, 0, 4, 6, 5, 0, 4, 6, 6, 8, 0, 7, 6, 6, 6, 6, 6, 6, 6, 6, 8, 0, 7, 6, 6, 5, 0, 4, 6, 5, 0, 2, 1, 1, 1, 2, 0, 2, 1, 2],
+          [2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2],
+          [2, 1, 2, 0, 4, 6, 6, 6, 5, 0, 9, 6, 6, 6, 6, 5, 0, 9, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 9, 0, 9, 0, 4, 6, 6, 6, 6, 9, 0, 4, 6, 6, 6, 5, 0, 2, 1, 2],
+          [9, 6, 8, 0, 2, 1, 1, 1, 2, 0, 2, 1, 1, 1, 1, 2, 0, 2, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 2, 0, 2, 1, 1, 1, 1, 2, 0, 2, 1, 1, 1, 2, 0, 7, 6, 9],
+         [10, 3, 0, 0, 2, 1, 1, 1, 2, 0, 9, 6, 6, 6, 6, 8, 0, 2, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 0, 2, 0, 7, 6, 6, 6, 6, 9, 0, 2, 1, 1, 1, 2, 0, 0, 3, 10],
+          [9, 6, 5, 0, 2, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 2, 0, 4, 6, 9],
+          [2, 1, 2, 0, 2, 1, 1, 1, 2, 0, 4, 6, 5, 0, 4, 6, 6, 8, 0, 3, 3, 3, 3, 3, 6, 6, 6, 6, 8, 0, 7, 6, 6, 5, 0, 4, 6, 5, 0, 2, 1, 1, 1, 2, 0, 2, 1, 2],
           [2, 1, 2, 0, 7, 6, 6, 6, 8, 0, 2, 1, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 1, 2, 0, 7, 6, 6, 6, 8, 0, 2, 1, 2],
           [2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2, 0, 2, 0, 4, 6, 5, 0, 4, 6, 6, 6, 6, 6, 6, 5, 0, 4, 6, 5, 0, 2, 0, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2],
           [2, 1, 2, 0, 9, 0, 9, 6, 9, 0, 2, 1, 2, 0, 2, 0, 2, 1, 2, 0, 2, 1, 1, 1, 1, 1, 1, 2, 0, 2, 1, 2, 0, 2, 0, 2, 1, 2, 0, 9, 6, 9, 0, 9, 0, 2, 1, 2],
@@ -56,11 +65,9 @@
         //global score variable, is incremented when a user eats food
         var score = 0;
 
-        /*
-        
-        
-        PLACEHOLDER, FIND ACTUAL USE OF OPCLBOOL
-        */
+        //opnClsBool controls the motion of pacmans mouth movement
+        //when 0 his mouth is open
+        //when 1 his mouth is closed
         var opnClsBool = 0;
 
 
@@ -87,15 +94,15 @@
         //creating 3 character objects
         //the first 2 are enemies while the third is our hero pac
         var en1 = new character({
-            x: 530,
+            x: 90,
             y: 250
         }, {
             x: 20,
             y: 0
         }, "enemy");
         var en2 = new character({
-            x: 470,
-            y: 250
+            x: 890,
+            y: 50
         }, {
             x: 20,
             y: 0
@@ -117,6 +124,8 @@
             canvas.height = 550;
             canvas.width = 1000;
             ctx = canvas.getContext("2d");
+            oldX = pac.speed.x;
+            oldY = pac.speed.y;
             popAccBoundArr();
             draw();
         }
@@ -140,8 +149,7 @@
             ctx.fillStyle = 'white';
             ctx.font = "30px Arial";
             ctx.fillText("Score: " + score, 30, 520);
-            //ctx.closePath();
-            //window.requestAnimationFrame(chkCollisions);
+            ctx.closePath();
 
             //keypress events are handled here
             //the if statement checks the state of the notpressed boolean var
@@ -165,15 +173,6 @@
         //it checks for collisions and then alters the user speeds accordingly
         function move(press) {
 
-            /*
-            
-            
-            
-            REMOVE SIDE FROM THIS, IT'S NO GOOD
-            
-            
-            */
-            side = ''; // chkCollisions();
 
             //key press handled here
             //checks collisions to the direction of pacman, 
@@ -182,8 +181,8 @@
             //each press is effectively the same, only changing the needed speeds and checking the correct collisions
 
             //left key press
-            if (press == 37||press==65) {
-                if (side.x != 'r' && (boundYSortArr[pac.currPos - 1].type == 3 || boundYSortArr[pac.currPos - 1].type == 0)) {
+            if (press == 37 || press == 65) {
+                if ((boundYSortArr[pac.currPos - 1].type == 3 || boundYSortArr[pac.currPos - 1].type == 0)) {
                     pac.speed.x = -20;
                     pac.speed.y = 0;
                     notPressed = false
@@ -193,8 +192,8 @@
                 }
             }
             //right key press
-            else if (press == 39||press==68) {
-                if (side.x != 'l' && (boundYSortArr[pac.currPos + 1].type == 3 || boundYSortArr[pac.currPos + 1].type == 0)) {
+            else if (press == 39 || press == 68) {
+                if ((boundYSortArr[pac.currPos + 1].type == 3 || boundYSortArr[pac.currPos + 1].type == 0)) {
                     pac.speed.x = 20;
                     pac.speed.y = 0;
                     notPressed = false
@@ -204,8 +203,8 @@
                 }
             }
             //down key press
-            else if (press == 40||press==83) {
-                if (side.y != 'd' && (boundYSortArr[pac.currPos + 48].type == 3 || boundYSortArr[pac.currPos + 48].type == 0)) {
+            else if (press == 40 || press == 83) {
+                if ((boundYSortArr[pac.currPos + 48].type == 3 || boundYSortArr[pac.currPos + 48].type == 0)) {
                     pac.speed.x = 0;
                     pac.speed.y = 20;
                     notPressed = false
@@ -215,8 +214,8 @@
                 }
             }
             //up key press
-            else if (press == 38||press==87) {
-                if (side.y != 'u' && (boundYSortArr[pac.currPos - 48].type == 3 || boundYSortArr[pac.currPos - 48].type == 0)) {
+            else if (press == 38 || press == 87) {
+                if ((boundYSortArr[pac.currPos - 48].type == 3 || boundYSortArr[pac.currPos - 48].type == 0)) {
                     pac.speed.x = 0;
                     pac.speed.y = -20;
                     notPressed = false
@@ -285,11 +284,6 @@
             ctx.fill();
             ctx.closePath();
             ctx.fillStyle = "rgb(0,0,0)";
-            /*
-                REMOVE AT LATER DATE
-            
-            */
-            //window.requestAnimationFrame(chkCollisions);
 
             //checks stae of opnClsBool
             //if only half way through the animation, redraw the pacman
@@ -310,43 +304,13 @@
             enemyDraw(en2);
         }
 
-        /*
-        
-            PROBABLY WILL BE REMOVED
-            NOT SURE ON IT'S USE ANY MORE
-            NEEDS FURTHER TESTING
-        */
-
-        function chkCollisions() {
-            var side = {
-                x: '',
-                y: ''
-            };
-            if (pac.position.x + 25 >= canvas.width - 15 || pac.position.x - 25 <= 0 + 15) {
-                pac.speed.x = 0;
-                if (pac.position.x > (canvas.width / 2)) {
-                    side.x = 'r';
-                } else {
-                    side.x = 'l';
-                }
-            }
-            if (pac.position.y + 25 >= canvas.height - 15 || pac.position.y - 25 <= 0 + 15) {
-                pac.speed.y = 0;
-                if (pac.position.y > (canvas.height / 2)) {
-                    side.y = 'd';
-                } else {
-                    side.y = 'u';
-                }
-            }
-            return side;
-        }
 
         //the update function calls other functions
         //these functions update the positions of the objects
         function update() {
             usrUpdate(pac);
-            enUpdate(en1);
-            enUpdate(en2);
+            pinkGhostUpdate(en1);
+            redGhostUpdate(en2);
         }
 
         //usrUpdate takes in a character object
@@ -546,12 +510,6 @@
             var i = getMapPos(curPos, possPos);
 
             //if we are dealing with pacman, then the current pos needs to be updated
-            /*
-                LOGICALLY MAKES NO SENSE
-                NO POINT UPDATING IF MOVE MIGHT NOT GO THROUGH
-            
-            */
-
             //a boolean is returned, indicating the legibilty of the proposed move
             var bool = chkMapNoType(i, curPos);
             if (curPos.name == "pac" && bool == false) {
@@ -575,11 +533,19 @@
 
 
         //this function is effectively the AI of the ghost
-        function enUpdate(en) {
+        function redGhostUpdate(en) {
+            var bool = true;
+
+            /*
+            
+                MAKE ENMYDISTCS RETURN A VALUE
+                ENEMY WILL UPDATE LATER ON
+            
+            */
+            // while (bool == true) {
 
             enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
-            var possMove;
-            var bool;
+
             if (en.speed.x != 0) {
                 //chk the space to the left or right   
                 possMove = en.position.x + en.speed.x;
@@ -611,17 +577,118 @@
                 en.position.x += en.speed.x;
                 en.position.y += en.speed.y;
             }
+            return bool;
+        }
+
+        //this function is the AI of the pink ghost
+        function pinkGhostUpdate(en) {
+            if (scatterMode == true) {
+                //scatter!   
+            } else {
+                if (recalcDirec == true) {
+                    var numAhead = 90;
+                    
+                    if (pac.speed.x > 0) {
+                        enemyDistances(en.position.x, en.position.y, pac.position.x + numAhead, pac.position.y, en);
+                    } else if (pac.speed.x < 0) {
+                        enemyDistances(en.position.x, en.position.y, pac.position.x - numAhead, pac.position.y, en);
+                    } else if (pac.speed.y > 0) {
+                        enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y + numAhead, en);
+                    } else {
+                        enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y - numAhead, en);
+                    }
+                    recalcDirec = false;
+                }
+                enNormalMode(en);
+            }
+
+            if (enemyTurnCount >= 20) {
+                scatterMode = true;
+                
+                /*
+                
+                    TEMPORARY SOLUTION TO SCATTERMODE FOR TESTING PURPOSES
+                
+                */
+                enemyTurnCount++;
+            }
+            if (enemyTurnCount == 25) {
+                scatterMode = false;
+                enemyTurnCount = 0;
+            }
+
+        }
+
+        function scatterMode(en) {
+
+        }
+
+        function enNormalMode(en) {
+            var bool = true; 
+            var possMove;
+
+            if (en.speed.x != 0) {
+                //chk the space to the left or right   
+                possMove = en.position.x + en.speed.x;
+                var pos = {
+                    y: en.position.y,
+                    x: en.position.x,
+                    name: en.type
+                };
+                var pos1 = {
+                    y: en.position.y,
+                    x: possMove
+                };
+                bool = chkVertMapColl(pos, pos1);
+            } else if (en.speed.y != 0) {
+                //chk the space up or down   
+                possMove = en.position.y + en.speed.y;
+                var pos = {
+                    y: en.position.y,
+                    x: en.position.x,
+                    name: en.type
+                };
+                var pos1 = {
+                    y: possMove,
+                    x: en.position.x
+                };
+            }
+                
+                enemyTurnCount++;
+                bool = chkVertMapColl(pos, pos1);
+                if ((enemyTurnCount % 5 == 0) || bool == true || (oldX != pac.speed.x || oldY != pac.speed.y)) {
+                    //every 5th turn, or if the ghost is at a barrier or if the user changes directions
+                    //the ghost needs to recalculate its direction
+                    recalcDirec = true;
+                    if (oldX != pac.speed.x) {
+                        oldX = pac.speed.x;
+                    }
+                    if (oldY != pac.speed.y) {
+                        oldY = pac.speed.y;
+                    }
+            }
+            if (bool == false) {
+                en.position.x += en.speed.x;
+                en.position.y += en.speed.y;
+            }
+            return bool;
+        }
+        
+
+        function scatterMode() {
+
         }
 
         function enemyDraw(en) {
             ctx.beginPath();
             if (en == en1) {
-                ctx.fillStyle = "rgb(240,33,17)";
+                ctx.fillStyle = "rgb(240,150,240)";
             } else {
-                ctx.fillStyle = "rgb(0,0,17)";
+                ctx.fillStyle = "rgb(240,0,17)";
             }
             ctx.arc(en.position.x, en.position.y, 15, 0, 2 * Math.PI, false);
             ctx.fill();
+
             ctx.closePath();
         }
 
@@ -664,17 +731,26 @@
             //here the possible positions are checked
             //using the distance of a line formula
             //the direction with the shortest distance will be chosen
+
+            //chose to nest the call on chkVertMapColl inside an initial if statement
+            //for a more efficient calculation
+
             if (!chkVertMapColl(currPos, upPos)) {
                 up = dist(eX, eY - 10, usrX, usrY);
             }
+
             if (!chkVertMapColl(currPos, downPos)) {
                 down = dist(eX, eY + 10, usrX, usrY);
             }
-            if (!chkVertMapColl(currPos, rightPos)) {
-                right = dist(eX + 10, eY, usrX, usrY);
+            if (pac.position.x > en.position.x) {
+                if (!chkVertMapColl(currPos, rightPos)) {
+                    right = dist(eX + 10, eY, usrX, usrY);
+                }
             }
-            if (!chkVertMapColl(currPos, leftPos)) {
-                left = dist(eX - 10, eY, usrX, usrY);
+            if (pac.position.x < en.position.x) {
+                if (!chkVertMapColl(currPos, leftPos)) {
+                    left = dist(eX - 10, eY, usrX, usrY);
+                }
             }
 
             /*
@@ -865,7 +941,7 @@
 
                     //portals
                 case 10:
-                   break;   
+                    break;
                 }
 
                 ctx.strokeStyle = "rgb(0,0,0)";
