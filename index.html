@@ -32,7 +32,7 @@
           [2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 4, 6, 6, 6, 6, 5, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2],
           [2, 1, 2, 0, 4, 6, 6, 6, 5, 0, 9, 6, 6, 6, 6, 5, 0, 9, 6, 8, 0, 2, 3, 3, 3, 3, 2, 0, 7, 6, 9, 0, 4, 6, 6, 6, 6, 9, 0, 4, 6, 6, 6, 5, 0, 2, 1, 2],
           [9, 6, 8, 0, 2, 1, 1, 1, 2, 0, 2, 1, 1, 1, 1, 2, 0, 2, 0, 0, 0, 2, 3, 3, 3, 3, 2, 3, 0, 0, 2, 0, 2, 1, 1, 1, 1, 2, 0, 2, 1, 1, 1, 2, 0, 7, 6, 9],
-         [10, 0, 0, 0, 2, 1, 1, 1, 2, 0, 9, 6, 6, 6, 6, 8, 0, 2, 0, 4, 6, 3, 3, 3, 3, 3, 7, 6, 5, 0, 2, 0, 7, 6, 6, 6, 6, 9, 0, 2, 1, 1, 1, 2, 0, 0, 0, 10],
+         [10, 3, 0, 0, 2, 1, 1, 1, 2, 0, 9, 6, 6, 6, 6, 8, 0, 2, 0, 4, 6, 3, 3, 3, 3, 3, 7, 6, 5, 0, 2, 0, 7, 6, 6, 6, 6, 9, 0, 2, 1, 1, 1, 2, 0, 0, 3, 10],
           [9, 6, 5, 0, 2, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 2, 0, 4, 6, 9],
           [2, 1, 2, 0, 2, 1, 1, 1, 2, 0, 4, 6, 5, 0, 4, 6, 6, 8, 0, 7, 6, 6, 6, 6, 6, 6, 6, 6, 8, 0, 7, 6, 6, 5, 0, 4, 6, 5, 0, 2, 1, 1, 1, 2, 0, 2, 1, 2],
           [2, 1, 2, 0, 7, 6, 6, 6, 8, 0, 2, 1, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 1, 2, 0, 7, 6, 6, 6, 8, 0, 2, 1, 2],
@@ -182,7 +182,7 @@
             //each press is effectively the same, only changing the needed speeds and checking the correct collisions
 
             //left key press
-            if (press == 37) {
+            if (press == 37||press==65) {
                 if (side.x != 'r' && (boundYSortArr[pac.currPos - 1].type == 3 || boundYSortArr[pac.currPos - 1].type == 0)) {
                     pac.speed.x = -20;
                     pac.speed.y = 0;
@@ -193,7 +193,7 @@
                 }
             }
             //right key press
-            else if (press == 39) {
+            else if (press == 39||press==68) {
                 if (side.x != 'l' && (boundYSortArr[pac.currPos + 1].type == 3 || boundYSortArr[pac.currPos + 1].type == 0)) {
                     pac.speed.x = 20;
                     pac.speed.y = 0;
@@ -204,7 +204,7 @@
                 }
             }
             //down key press
-            else if (press == 40) {
+            else if (press == 40||press==83) {
                 if (side.y != 'd' && (boundYSortArr[pac.currPos + 48].type == 3 || boundYSortArr[pac.currPos + 48].type == 0)) {
                     pac.speed.x = 0;
                     pac.speed.y = 20;
@@ -215,7 +215,7 @@
                 }
             }
             //up key press
-            else if (press == 38) {
+            else if (press == 38||press==87) {
                 if (side.y != 'u' && (boundYSortArr[pac.currPos - 48].type == 3 || boundYSortArr[pac.currPos - 48].type == 0)) {
                     pac.speed.x = 0;
                     pac.speed.y = -20;
@@ -509,27 +509,26 @@
                         //we now need to see if it is a portal on the left or the right
                         //if on the left, we need to jump pacman to the far right hand side
                         if (boundYSortArr[i].x <= 30) {
-                            pac.position.x = 950;
+                            pac.position.x = 970;
 
                             //a check on the state of the food at the other side of the portal is done
                             //an error occurs when entering portals where the first food is not eaten
                             //this checks that and makes sure that it is eaten
                             if (boundYSortArr[i + mapArray[1].length - 2].type == 0) {
                                 changeMapType(i + mapArray[1].length - 2, 3);
-                                changeMapType(i + mapArray[1].length - 3, 3);
                                 //score is updated also
                                 updateScore(1);
                             }
                             //if the portal is not on the left then it is on the right
                             //the pacman's position will need to be changed
                         } else {
-                            pac.position.x = 50;
+                            pac.position.x = 30;
 
                             //a check on the state of the food at the other side of the portal is done
                             //an error occurs when entering portals where the first food is not eaten
                             //this checks that and makes sure that it is eaten
-                            if (boundYSortArr[i - mapArray[1].length - 3].type == 0) {
-                                changeMapType(i - mapArray[1].length - 3, 3);
+                            if (boundYSortArr[i - mapArray[1].length + 3].type == 0) {
+                                changeMapType(i - mapArray[1].length + 3, 3);
                                 updateScore(1);
                             }
                         }
@@ -577,7 +576,6 @@
 
         //this function is effectively the AI of the ghost
         function enUpdate(en) {
-
 
             enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
             var possMove;
