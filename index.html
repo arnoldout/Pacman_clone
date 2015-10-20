@@ -21,7 +21,7 @@
         //create the map array that will be processed to draw the map on screen
         var mapArray = [
           [4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5],
-         [10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10],
+          [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
           [2, 0, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 0, 2],
           [2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2],
           [2, 0, 7, 6, 6, 6, 6, 5, 0, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 0, 0, 4, 6, 6, 5, 0, 0, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 0, 4, 6, 6, 6, 6, 8, 0, 2],
@@ -31,9 +31,9 @@
           [2, 1, 2, 0, 9, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6, 6, 6, 8, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 7, 6, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6, 6, 9, 0, 2, 1, 2],
           [2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 4, 6, 6, 6, 6, 5, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2],
           [2, 1, 2, 0, 4, 6, 6, 6, 5, 0, 9, 6, 6, 6, 6, 5, 0, 9, 6, 8, 0, 2, 3, 3, 3, 3, 2, 0, 7, 6, 9, 0, 4, 6, 6, 6, 6, 9, 0, 4, 6, 6, 6, 5, 0, 2, 1, 2],
-          [2, 6, 8, 0, 2, 1, 1, 1, 2, 0, 2, 1, 1, 1, 1, 2, 0, 2, 0, 0, 0, 2, 3, 3, 3, 3, 2, 3, 0, 0, 2, 0, 2, 1, 1, 1, 1, 2, 0, 2, 1, 1, 1, 2, 0, 7, 6, 2],
+          [9, 6, 8, 0, 2, 1, 1, 1, 2, 0, 2, 1, 1, 1, 1, 2, 0, 2, 0, 0, 0, 2, 3, 3, 3, 3, 2, 3, 0, 0, 2, 0, 2, 1, 1, 1, 1, 2, 0, 2, 1, 1, 1, 2, 0, 7, 6, 9],
          [10, 0, 0, 0, 2, 1, 1, 1, 2, 0, 9, 6, 6, 6, 6, 8, 0, 2, 0, 4, 6, 3, 3, 3, 3, 3, 7, 6, 5, 0, 2, 0, 7, 6, 6, 6, 6, 9, 0, 2, 1, 1, 1, 2, 0, 0, 0, 10],
-          [2, 6, 5, 0, 2, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 2, 0, 4, 6, 2],
+          [9, 6, 5, 0, 2, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 2, 0, 4, 6, 9],
           [2, 1, 2, 0, 2, 1, 1, 1, 2, 0, 4, 6, 5, 0, 4, 6, 6, 8, 0, 7, 6, 6, 6, 6, 6, 6, 6, 6, 8, 0, 7, 6, 6, 5, 0, 4, 6, 5, 0, 2, 1, 1, 1, 2, 0, 2, 1, 2],
           [2, 1, 2, 0, 7, 6, 6, 6, 8, 0, 2, 1, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 1, 2, 0, 7, 6, 6, 6, 8, 0, 2, 1, 2],
           [2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2, 0, 2, 0, 4, 6, 5, 0, 4, 6, 6, 6, 6, 6, 6, 5, 0, 4, 6, 5, 0, 2, 0, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2],
@@ -101,8 +101,8 @@
             y: 0
         }, "enemy");
         var pac = new character({
-            x: 270,
-            y: 130
+            x: 890,
+            y: 270
         }, {
             x: 20,
             y: 0
@@ -480,48 +480,11 @@
 
             //checks are made to see if the possible move is a barrier  
             //i.e it's not a food or eaten food
-            if ((boundYSortArr[i].type != 0) && (boundYSortArr[i].type != 3)) {
+            if ((boundYSortArr[i].type != 0) && (boundYSortArr[i].type != 3) && (boundYSortArr[i].type != 10)) {
 
                 //if this is entered, then the move is invalid immediately
-                //this is a barrier
+                //this is a barrier       
 
-                // a check is made to see if this is pacman we are dealing with
-                //this is to ensure that only pacman enters a portal
-                if (curPos.name == "pac") {
-                    //a check here tries to determine if the block is possibly a portal
-                    //if it is then code needs to address that
-                    if (boundYSortArr[i].type == 10) {
-                        //at this point, it is known that it is a portal
-                        //we now need to see if it is a portal on the left or the right
-                        //if on the left, we need to jump pacman to the far right hand side
-                        if (boundYSortArr[i].x <= 30) {
-                            pac.position.x = 950;
-
-                            //a check on the state of the food at the other side of the portal is done
-                            //an error occurs when entering portals where the first food is not eaten
-                            //this checks that and makes sure that it is eaten
-                            if (boundYSortArr[i + mapArray[1].length - 3].type == 0) {
-                                changeMapType(i + mapArray[1].length - 2, 3);
-                                //score is updated also
-                                updateScore(1);
-                            }
-                            //if the portal is not on the left then it is on the right
-                            //the pacman's position will need to be changed
-                        } else {
-                            pac.position.x = 50;
-                            
-                            //a check on the state of the food at the other side of the portal is done
-                            //an error occurs when entering portals where the first food is not eaten
-                            //this checks that and makes sure that it is eaten
-                            if (boundYSortArr[i - mapArray[1].length - 2].type == 0) {
-                                changeMapType(i - mapArray[1].length - 2, 3);
-                                updateScore(1);
-                            }
-                        }
-                    }
-                }
-                
-                
                 /*
                     SWAP TRUE AND FALSE TO MAKE MORE SENSE
                 */
@@ -539,11 +502,43 @@
                         changeMapType(i, 3);
                         updateScore(1);
                     }
-                }
+                    //a check here tries to determine if the block is possibly a portal
+                    //if it is then code needs to address that
+                    if (boundYSortArr[i].type == 10) {
+                        //at this point, it is known that it is a portal
+                        //we now need to see if it is a portal on the left or the right
+                        //if on the left, we need to jump pacman to the far right hand side
+                        if (boundYSortArr[i].x <= 30) {
+                            pac.position.x = 950;
 
-                //a boolean is returned here indicating that the position is valid
-                return false;
+                            //a check on the state of the food at the other side of the portal is done
+                            //an error occurs when entering portals where the first food is not eaten
+                            //this checks that and makes sure that it is eaten
+                            if (boundYSortArr[i + mapArray[1].length - 2].type == 0) {
+                                changeMapType(i + mapArray[1].length - 2, 3);
+                                changeMapType(i + mapArray[1].length - 3, 3);
+                                //score is updated also
+                                updateScore(1);
+                            }
+                            //if the portal is not on the left then it is on the right
+                            //the pacman's position will need to be changed
+                        } else {
+                            pac.position.x = 50;
+
+                            //a check on the state of the food at the other side of the portal is done
+                            //an error occurs when entering portals where the first food is not eaten
+                            //this checks that and makes sure that it is eaten
+                            if (boundYSortArr[i - mapArray[1].length - 3].type == 0) {
+                                changeMapType(i - mapArray[1].length - 3, 3);
+                                updateScore(1);
+                            }
+                        }
+                    }
+                }
             }
+
+            //a boolean is returned here indicating that the position is valid
+            return false;
         }
 
         function chkVertMapColl(curPos, possPos) {
@@ -557,15 +552,15 @@
                 NO POINT UPDATING IF MOVE MIGHT NOT GO THROUGH
             
             */
-            
+
             //a boolean is returned, indicating the legibilty of the proposed move
             var bool = chkMapNoType(i, curPos);
-            if (curPos.name == "pac"&&bool ==false) {
+            if (curPos.name == "pac" && bool == false) {
                 pac.currPos = i;
             }
             return bool;
         }
-        
+
         //posDiff takes in two position objects
         //it will check if the x or the y positions are different
         function posDiff(curPos, possPos) {
@@ -579,11 +574,11 @@
             }
         }
 
-        
+
         //this function is effectively the AI of the ghost
         function enUpdate(en) {
 
-            
+
             enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
             var possMove;
             var bool;
@@ -649,7 +644,7 @@
                 x: en.position.x,
                 name: en.type
             };
-            
+
             var upPos = {
                 y: eY - 10,
                 x: eX
@@ -667,7 +662,7 @@
                 x: eX + 10
             };
 
-            
+
             //here the possible positions are checked
             //using the distance of a line formula
             //the direction with the shortest distance will be chosen
@@ -691,7 +686,7 @@
             */
             //math.min selects the smallest distance
             min = Math.min(up, down, right, left);
-            
+
             //calcEnMove will compare the distances with the min value
             //it will then move in that direction
             calcEnMove(up, down, right, left, min, en);
@@ -869,16 +864,10 @@
                     //end of line
                 case 9:
                     break;
-                        
+
                     //portals
                 case 10:
-                    ctx.beginPath();
-                    ctx.strokeStyle = "rgb(255,0,255)";
-                    ctx.moveTo(boundYSortArr[i].x, boundYSortArr[i].y - 20);
-                    ctx.lineTo(boundYSortArr[i].x, boundYSortArr[i].y + 20);
-                    ctx.stroke();
-                    ctx.closePath();
-                    break;
+                   break;   
                 }
 
                 ctx.strokeStyle = "rgb(0,0,0)";
