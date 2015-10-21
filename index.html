@@ -18,26 +18,16 @@
         var ctx;
         var canvas;
 
-        //this counts every turn taken by the enemy
-        //will be helpful in allowing the ghosts better movement
-        //will stop need to recalculate path every turn
-        var enemyTurnCount = 0;
-
-        var recalcDirec = true;
-        var scatterMode = false;
-
-        var oldX = 0,
-            oldY = 0;
         //create the map array that will be processed to draw the map on screen
         var mapArray = [
           [4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5],
           [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-          [2, 0, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 0, 2],
-          [2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2],
-          [2, 0, 7, 6, 6, 6, 6, 5, 0, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 0, 0, 4, 6, 6, 5, 0, 0, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 0, 4, 6, 6, 6, 6, 8, 0, 2],
-          [2, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 1, 1, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 2],
-          [2, 6, 5, 0, 4, 6, 6, 8, 0, 2, 0, 4, 6, 6, 6, 6, 6, 5, 0, 2, 0, 4, 8, 1, 1, 7, 5, 0, 2, 0, 4, 6, 6, 6, 6, 6, 5, 0, 2, 0, 7, 6, 6, 5, 0, 4, 6, 2],
-          [2, 1, 2, 0, 2, 0, 0, 0, 0, 2, 0, 2, 1, 1, 1, 1, 1, 2, 0, 2, 0, 7, 6, 6, 6, 6, 8, 0, 2, 0, 2, 1, 1, 1, 1, 1, 2, 0, 2, 0, 0, 0, 0, 2, 0, 2, 1, 2],
+          [2, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 2],
+          [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+          [2, 0, 9, 6, 6, 6, 6, 5, 0, 4, 6, 6, 9, 0, 9, 6, 6, 6, 6, 9, 0, 0, 4, 6, 6, 5, 0, 0, 9, 6, 6, 6, 6, 9, 0, 9, 6, 6, 5, 0, 4, 6, 6, 6, 6, 9, 0, 2],
+          [2, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 2],
+          [2, 6, 5, 0, 9, 6, 6, 8, 0, 2, 0, 4, 6, 6, 6, 6, 6, 5, 0, 9, 0, 4, 8, 1, 1, 7, 5, 0, 9, 0, 4, 6, 6, 6, 6, 6, 5, 0, 2, 0, 7, 6, 6, 9, 0, 4, 6, 2],
+          [2, 1, 2, 0, 0, 0, 0, 0, 0, 2, 0, 2, 1, 1, 1, 1, 1, 2, 0, 2, 0, 7, 6, 6, 6, 6, 8, 0, 2, 0, 2, 1, 1, 1, 1, 1, 2, 0, 2, 0, 0, 0, 0, 0, 0, 2, 1, 2],
           [2, 1, 2, 0, 9, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6, 6, 6, 8, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 7, 6, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6, 6, 9, 0, 2, 1, 2],
           [2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2],
           [2, 1, 2, 0, 4, 6, 6, 6, 5, 0, 9, 6, 6, 6, 6, 5, 0, 9, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 9, 0, 9, 0, 4, 6, 6, 6, 6, 9, 0, 4, 6, 6, 6, 5, 0, 2, 1, 2],
@@ -84,31 +74,102 @@
         //position and speed are co-ords that store an x and y value
         //type should be just a string
         //currPos will be updated whenever the the algorithm finds the user's position
-        function character(position, speed, type) {
+        function pacman(position, speed, type) {
             this.position = new coOrds(position.x, position.y);
             this.speed = new coOrds(speed.x, speed.y);
             this.type = type;
             this.currPos = 0;
+
+            this.updatePacman = function () {
+                this.position.x += this.speed.x;
+                this.position.y += this.speed.y;
+            }
         }
 
+        function enemy(position, speed, type, imgY) {
+            this.position = new coOrds(position.x, position.y);
+            this.speed = new coOrds(speed.x, speed.y);
+            this.type = type;
+            this.currPos = 0;
+            this.img = new Image();
+            this.img.src = "ImageMap.png";
+            this.scatterSpd = 10;
+            //incrementing 20 to the x position grabs the next ghost face of that type
+            this.imgXPos = 20;
+            //incrementing 20 to the y position grabs the next ghost face of a different type
+            this.imgYPos = imgY;
+            this.storedYPos = imgY;
+            this.imgH = 20;
+            this.imgW = 20;
+            this.sprW = 40;
+            this.sprH = 40;
+            this.leftEyes = 100;
+            this.downEyes = 60;
+            this.rightEyes = 120;
+            this.upEyes = 20;
+
+            this.blackScatter = 20;
+            this.whiteScatter = 40;
+            //this counts every turn taken by the enemy
+            //will be helpful in allowing the ghosts better movement
+            //will stop need to recalculate path every turn
+            this.enemyTurnCount = 0;
+
+            this.recalcDirec = true;
+            this.scatterMode = false;
+
+            this.oldX = 0;
+            this.oldY = 0;
+            this.updateEyes = function () {
+                if (this.speed.x < 0) {
+                    this.imgXPos = this.leftEyes;
+                } else if (this.speed.x > 0) {
+                    this.imgXPos = this.rightEyes;
+                } else if (this.speed.y > 0) {
+                    this.imgXPos = this.downEyes;
+                } else {
+                    this.imgXPos = this.upEyes;
+                }
+            }
+
+            this.scatterSwitch = function () {
+                if (this.scatterMode) {
+                    this.imgYPos = 160;
+                } else {
+                    this.imgYPos = this.storedYPos;
+                }
+            }
+            this.updateGhost = function () {
+                this.scatterSwitch();
+                this.position.x += this.speed.x;
+                this.position.y += this.speed.y;
+                if (this.scatterMode) {
+                    this.imgXPos += this.scatterSpd;
+                    if (this.imgXPos == 40) {
+                        this.scatterSpd = -this.scatterSpd;
+                    }
+                    
+                }
+            }
+        }
 
         //creating 3 character objects
         //the first 2 are enemies while the third is our hero pac
-        var en1 = new character({
+        var pinky = new enemy({
             x: 90,
             y: 250
         }, {
             x: 20,
             y: 0
-        }, "enemy");
-        var en2 = new character({
+        }, "enemy", 100);
+        var angry = new enemy({
             x: 890,
-            y: 50
+            y: 350
         }, {
             x: 20,
             y: 0
-        }, "enemy");
-        var pac = new character({
+        }, "enemy", 80);
+        var pac = new pacman({
             x: 890,
             y: 270
         }, {
@@ -125,8 +186,10 @@
             canvas.height = 550;
             canvas.width = 1000;
             ctx = canvas.getContext("2d");
-            oldX = pac.speed.x;
-            oldY = pac.speed.y;
+            pinky.oldX = pac.speed.x;
+            pinky.oldY = pac.speed.y;
+            angry.oldX = pac.speed.x;
+            angry.oldY = pac.speed.y;
             popAccBoundArr();
             draw();
         }
@@ -301,8 +364,8 @@
         //draw all simply calls draw functions to draw the rest of the objects
         function drawAll() {
             drawItems();
-            enemyDraw(en1);
-            enemyDraw(en2);
+            enemyDraw(pinky);
+            enemyDraw(angry);
         }
 
 
@@ -310,8 +373,8 @@
         //these functions update the positions of the objects
         function update() {
             usrUpdate(pac);
-            pinkGhostUpdate(en1);
-            redGhostUpdate(en2);
+            pinkGhostUpdate(pinky);
+            redGhostUpdate(angry);
         }
 
         //usrUpdate takes in a character object
@@ -371,8 +434,7 @@
             if (bool == false) {
                 //as long as the move is valid, it will update the position
                 //the amount of the speed
-                pac.position.x += pac.speed.x;
-                pac.position.y += pac.speed.y;
+                pac.updatePacman();
             }
         }
 
@@ -535,54 +597,24 @@
 
         //this function is effectively the AI of the ghost
         function redGhostUpdate(en) {
-            var bool = true;
+            enNormalMode(en);
+            var numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
+            var mathDoer;
 
-            /*
-            
-                MAKE ENMYDISTCS RETURN A VALUE
-                ENEMY WILL UPDATE LATER ON
-            
-            */
-            // while (bool == true) {
-
-            enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
-
-            if (en.speed.x != 0) {
-                //chk the space to the left or right   
-                possMove = en.position.x + en.speed.x;
-                var pos = {
-                    y: en.position.y,
-                    x: en.position.x,
-                    name: en.type
-                };
-                var pos1 = {
-                    y: en.position.y,
-                    x: possMove
-                };
-                bool = chkVertMapColl(pos, pos1);
-            } else if (en.speed.y != 0) {
-                //chk the space up or down   
-                possMove = en.position.y + en.speed.y;
-                var pos = {
-                    y: en.position.y,
-                    x: en.position.x,
-                    name: en.type
-                };
-                var pos1 = {
-                    y: possMove,
-                    x: en.position.x
-                };
-                bool = chkVertMapColl(pos, pos1);
+            if (en.scatterMode == true) {
+                mathDoer = Math.max.apply(null, numList);
+            } else {
+                mathDoer = Math.min.apply(null, numList);
             }
-            if (bool == false) {
-                en.position.x += en.speed.x;
-                en.position.y += en.speed.y;
-            }
-            return bool;
+
+            //calcEnMove will compare the distances with the min value
+            //it will then move in that direction
+            calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
         }
 
         //this function is the AI of the pink ghost
         function pinkGhostUpdate(en) {
+            enNormalMode(en);
             if (recalcDirec == true) {
                 var numAhead = 90;
                 var numList = [];
@@ -598,7 +630,7 @@
                 }
                 recalcDirec = false;
 
-                if (scatterMode == true) {
+                if (en.scatterMode == true) {
                     mathDoer = Math.max.apply(null, numList);
                 } else {
                     mathDoer = Math.min.apply(null, numList);
@@ -609,27 +641,21 @@
                 calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
             }
 
-            console.log(scatterMode);
-            enNormalMode(en);
+            console.log(en.scatterMode);
 
-
-            if (enemyTurnCount >= 45) {
-                scatterMode = true;
+            if (en.enemyTurnCount >= 25) {
+                en.scatterMode = true;
                 /*
                     
                     TEMPORARY SOLUTION TO SCATTERMODE FOR TESTING PURPOSES
                     
                 */
-                enemyTurnCount++;
+                en.enemyTurnCount++;
             }
-            if (enemyTurnCount >= 75) {
-                scatterMode = false;
-                enemyTurnCount = 0;
+            if (en.enemyTurnCount >= 75) {
+                en.scatterMode = false;
+                en.enemyTurnCount = 0;
             }
-
-        }
-
-        function scatterMode(en) {
 
         }
 
@@ -664,36 +690,32 @@
                 };
             }
 
-            enemyTurnCount++;
+            en.enemyTurnCount++;
             bool = chkVertMapColl(pos, pos1);
-            if ((enemyTurnCount % 5 == 0) || bool == true || (oldX != pac.speed.x || oldY != pac.speed.y)) {
+            if ((en.enemyTurnCount % 5 == 0) || bool == true || (en.oldX != pac.speed.x || en.oldY != pac.speed.y)) {
                 //every 5th turn, or if the ghost is at a barrier or if the user changes directions
                 //the ghost needs to recalculate its direction
                 recalcDirec = true;
-                if (oldX != pac.speed.x) {
-                    oldX = pac.speed.x;
+                if (en.oldX != pac.speed.x) {
+                    en.oldX = pac.speed.x;
                 }
-                if (oldY != pac.speed.y) {
-                    oldY = pac.speed.y;
+                if (en.oldY != pac.speed.y) {
+                    en.oldY = pac.speed.y;
                 }
             }
             if (bool == false) {
-                en.position.x += en.speed.x;
-                en.position.y += en.speed.y;
+                en.updateGhost();
             }
             return bool;
         }
 
         function enemyDraw(en) {
             ctx.beginPath();
-            if (en == en1) {
-                ctx.fillStyle = "rgb(240,150,240)";
-            } else {
-                ctx.fillStyle = "rgb(240,0,17)";
+            if(!en.scatterMode)
+            {
+                en.updateEyes();
             }
-            ctx.arc(en.position.x, en.position.y, 15, 0, 2 * Math.PI, false);
-            ctx.fill();
-
+            ctx.drawImage(en.img, en.imgXPos, en.imgYPos, en.imgW, en.imgH, en.position.x - 20, en.position.y - 20, en.sprW, en.sprH);
             ctx.closePath();
         }
 
@@ -702,7 +724,7 @@
             //initializing the directions to infinity or 0 depending on whether scattermode is turned on
             //this will ensure that if they are not valid options
             //and so they will not be counted
-            if (scatterMode == false) {
+            if (en.scatterMode == false) {
                 var numList = [Infinity, Infinity, Infinity, Infinity],
                     mathDoer = 0;
             } else {
