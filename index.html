@@ -93,7 +93,7 @@
             this.currPos = 0;
             this.img = new Image();
             this.img.src = "ImageMap.png";
-            this.scatterSpd = 10;
+            this.scatterSpd = 20;
             //incrementing 20 to the x position grabs the next ghost face of that type
             this.imgXPos = 20;
             //incrementing 20 to the y position grabs the next ghost face of a different type
@@ -108,8 +108,6 @@
             this.rightEyes = 120;
             this.upEyes = 20;
 
-            this.blackScatter = 20;
-            this.whiteScatter = 40;
             //this counts every turn taken by the enemy
             //will be helpful in allowing the ghosts better movement
             //will stop need to recalculate path every turn
@@ -135,6 +133,10 @@
             this.scatterSwitch = function () {
                 if (this.scatterMode) {
                     this.imgYPos = 160;
+                    if(this.enemyTurnCount==10)
+                    {
+                        this.imgXPos = 20;
+                    }
                 } else {
                     this.imgYPos = this.storedYPos;
                 }
@@ -145,7 +147,7 @@
                 this.position.y += this.speed.y;
                 if (this.scatterMode) {
                     this.imgXPos += this.scatterSpd;
-                    if (this.imgXPos == 40) {
+                    if (this.imgXPos >= 30||this.imgXPos<=10) {
                         this.scatterSpd = -this.scatterSpd;
                     }
                     
@@ -610,6 +612,19 @@
             //calcEnMove will compare the distances with the min value
             //it will then move in that direction
             calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
+             if (en.enemyTurnCount >= 10) {
+                en.scatterMode = true;
+                /*
+                    
+                    TEMPORARY SOLUTION TO SCATTERMODE FOR TESTING PURPOSES
+                    
+                */
+                en.enemyTurnCount++;
+            }
+            if (en.enemyTurnCount >= 75) {
+                en.scatterMode = false;
+                en.enemyTurnCount = 0;
+            }
         }
 
         //this function is the AI of the pink ghost
@@ -643,7 +658,7 @@
 
             console.log(en.scatterMode);
 
-            if (en.enemyTurnCount >= 25) {
+            if (en.enemyTurnCount >= 10) {
                 en.scatterMode = true;
                 /*
                     
