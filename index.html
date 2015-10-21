@@ -24,7 +24,8 @@
         var enemyTurnCount = 0;
 
         var recalcDirec = true;
-        
+        var scatterMode = false;
+
         var oldX = 0,
             oldY = 0;
         //create the map array that will be processed to draw the map on screen
@@ -582,37 +583,46 @@
 
         //this function is the AI of the pink ghost
         function pinkGhostUpdate(en) {
-            if (scatterMode == true) {
-                //scatter!   
-            } else {
-                if (recalcDirec == true) {
-                    var numAhead = 90;
-                    
-                    if (pac.speed.x > 0) {
-                        enemyDistances(en.position.x, en.position.y, pac.position.x + numAhead, pac.position.y, en);
-                    } else if (pac.speed.x < 0) {
-                        enemyDistances(en.position.x, en.position.y, pac.position.x - numAhead, pac.position.y, en);
-                    } else if (pac.speed.y > 0) {
-                        enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y + numAhead, en);
-                    } else {
-                        enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y - numAhead, en);
-                    }
-                    recalcDirec = false;
+            if (recalcDirec == true) {
+                var numAhead = 90;
+                var numList = [];
+                var mathDoer;
+                if (pac.speed.x > 0) {
+                    numList = enemyDistances(en.position.x, en.position.y, pac.position.x + numAhead, pac.position.y, en);
+                } else if (pac.speed.x < 0) {
+                    numList = enemyDistances(en.position.x, en.position.y, pac.position.x - numAhead, pac.position.y, en);
+                } else if (pac.speed.y > 0) {
+                    numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y + numAhead, en);
+                } else {
+                    numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y - numAhead, en);
                 }
-                enNormalMode(en);
+                recalcDirec = false;
+
+                if (scatterMode == true) {
+                    mathDoer = Math.max.apply(null, numList);
+                } else {
+                    mathDoer = Math.min.apply(null, numList);
+                }
+
+                //calcEnMove will compare the distances with the min value
+                //it will then move in that direction
+                calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
             }
 
-            if (enemyTurnCount >= 20) {
+            console.log(scatterMode);
+            enNormalMode(en);
+
+
+            if (enemyTurnCount >= 45) {
                 scatterMode = true;
-                
                 /*
-                
+                    
                     TEMPORARY SOLUTION TO SCATTERMODE FOR TESTING PURPOSES
-                
+                    
                 */
                 enemyTurnCount++;
             }
-            if (enemyTurnCount == 25) {
+            if (enemyTurnCount >= 75) {
                 scatterMode = false;
                 enemyTurnCount = 0;
             }
@@ -624,7 +634,7 @@
         }
 
         function enNormalMode(en) {
-            var bool = true; 
+            var bool = true;
             var possMove;
 
             if (en.speed.x != 0) {
@@ -653,30 +663,25 @@
                     x: en.position.x
                 };
             }
-                
-                enemyTurnCount++;
-                bool = chkVertMapColl(pos, pos1);
-                if ((enemyTurnCount % 5 == 0) || bool == true || (oldX != pac.speed.x || oldY != pac.speed.y)) {
-                    //every 5th turn, or if the ghost is at a barrier or if the user changes directions
-                    //the ghost needs to recalculate its direction
-                    recalcDirec = true;
-                    if (oldX != pac.speed.x) {
-                        oldX = pac.speed.x;
-                    }
-                    if (oldY != pac.speed.y) {
-                        oldY = pac.speed.y;
-                    }
+
+            enemyTurnCount++;
+            bool = chkVertMapColl(pos, pos1);
+            if ((enemyTurnCount % 5 == 0) || bool == true || (oldX != pac.speed.x || oldY != pac.speed.y)) {
+                //every 5th turn, or if the ghost is at a barrier or if the user changes directions
+                //the ghost needs to recalculate its direction
+                recalcDirec = true;
+                if (oldX != pac.speed.x) {
+                    oldX = pac.speed.x;
+                }
+                if (oldY != pac.speed.y) {
+                    oldY = pac.speed.y;
+                }
             }
             if (bool == false) {
                 en.position.x += en.speed.x;
                 en.position.y += en.speed.y;
             }
             return bool;
-        }
-        
-
-        function scatterMode() {
-
         }
 
         function enemyDraw(en) {
@@ -694,14 +699,16 @@
 
         //this function calculates which direction is faster than the others for the AI to reach pacman
         function enemyDistances(eX, eY, usrX, usrY, en) {
-            //initializing the directions to infinity
+            //initializing the directions to infinity or 0 depending on whether scattermode is turned on
             //this will ensure that if they are not valid options
-            //they will not be counted
-            var up = Infinity,
-                left = Infinity,
-                right = Infinity,
-                down = Infinity,
-                min = 0;
+            //and so they will not be counted
+            if (scatterMode == false) {
+                var numList = [Infinity, Infinity, Infinity, Infinity],
+                    mathDoer = 0;
+            } else {
+                var numList = [0, 0, 0, 0],
+                    mathDoer = Infinity;
+            }
             //creating a currPos object that stores the current position of the ghost
             //it also stores the fact that it is an enemy
             var currPos = {
@@ -736,34 +743,24 @@
             //for a more efficient calculation
 
             if (!chkVertMapColl(currPos, upPos)) {
-                up = dist(eX, eY - 10, usrX, usrY);
+                numList[0] = dist(eX, eY - 10, usrX, usrY);
             }
 
             if (!chkVertMapColl(currPos, downPos)) {
-                down = dist(eX, eY + 10, usrX, usrY);
+                numList[1] = dist(eX, eY + 10, usrX, usrY);
             }
             if (pac.position.x > en.position.x) {
                 if (!chkVertMapColl(currPos, rightPos)) {
-                    right = dist(eX + 10, eY, usrX, usrY);
+                    numList[2] = dist(eX + 10, eY, usrX, usrY);
                 }
             }
             if (pac.position.x < en.position.x) {
                 if (!chkVertMapColl(currPos, leftPos)) {
-                    left = dist(eX - 10, eY, usrX, usrY);
+                    numList[3] = dist(eX - 10, eY, usrX, usrY);
                 }
             }
 
-            /*
-                CHECK IF SCATTER MODE
-                IF SCATTER MODE GRAB MATH.MAX
-                ALSO YOU'D NEED TO SET THE INITIAL VALUES TO 0 INSTEAD OF INFINITY
-            */
-            //math.min selects the smallest distance
-            min = Math.min(up, down, right, left);
-
-            //calcEnMove will compare the distances with the min value
-            //it will then move in that direction
-            calcEnMove(up, down, right, left, min, en);
+            return (numList);
         }
 
         //basic distance of a line formula
