@@ -420,7 +420,14 @@
                     y: possMove,
                     x: pac.position.x
                 };
-                bool = chkVertMapColl(pos, pos1);
+                
+                var mapPos = getMapPos(pos, pos1);
+                bool = chkMapNoType(mapPos, pos);
+                
+                if (bool == false) 
+                {
+                    pac.currPos = mapPos;
+                }
             }
 
             /*
@@ -575,9 +582,7 @@
             //if we are dealing with pacman, then the current pos needs to be updated
             //a boolean is returned, indicating the legibilty of the proposed move
             var bool = chkMapNoType(i, curPos);
-            if (curPos.name == "pac" && bool == false) {
-                pac.currPos = i;
-            }
+            
             return bool;
         }
 
