@@ -148,7 +148,7 @@
                     if (this.imgXPos == 40) {
                         this.scatterSpd = -this.scatterSpd;
                     }
-                    
+
                 }
             }
         }
@@ -374,7 +374,7 @@
         function update() {
             usrUpdate(pac);
             pinkGhostUpdate(pinky);
-            redGhostUpdate(angry);
+            //redGhostUpdate(angry);
         }
 
         //usrUpdate takes in a character object
@@ -385,6 +385,7 @@
             var possMove;
             //bool is just a generic boolean
             var bool;
+            var pos, pos1;
             //determines which axis to alter
             //if ySpeed is 0 then xSpeed will have a value
             // and vice versa
@@ -393,42 +394,44 @@
                 //possmove is now calculated by doing the math that will occur if the move is good
                 possMove = pac.position.x + pac.speed.x;
                 //creating 2 objects, one with the current position and one with the coordinates of the next move
-                var pos = {
+                pos = {
                     y: pac.position.y,
                     x: pac.position.x,
                     name: pac.type
                 };
-                var pos1 = {
+                pos1 = {
                     y: pac.position.y,
                     x: possMove
                 };
-
-                //chkVertMapColl will chk if the possible position is a good one or not
-                bool = chkVertMapColl(pos, pos1);
 
                 //this else statement is effectively the same as above, the only difference 
                 //is that it affects the y coordinates rather than the x coordinates
             } else if (pac.speed.y != 0) {
                 //chk the space up or down   
                 possMove = pac.position.y + pac.speed.y;
-                var pos = {
+                pos = {
                     y: pac.position.y,
                     x: pac.position.x,
                     name: pac.type
                 };
-                var pos1 = {
+                pos1 = {
                     y: possMove,
                     x: pac.position.x
                 };
-                
-                var mapPos = getMapPos(pos, pos1);
-                bool = chkMapNoType(mapPos, pos);
-                
-                if (bool == false) 
-                {
-                    pac.currPos = mapPos;
-                }
             }
+            var mapPos = getMapPos(pos);
+            //setPossDifference alters mapPos so that it represents the
+            //coOrdinates of the position to be moved to
+            mapPos = setPossDifference(pos, pos1, mapPos);
+            bool = chkMapNoType(mapPos, pos);
+
+            if (bool == false) {
+                pac.currPos = mapPos;
+                //as long as the move is valid, it will update the position
+                //the amount of the speed
+                pac.updatePacman();
+            }
+
 
             /*
                 MAKES MORE SENSE LOGICALLY TO RETURN A TRUE IF 
@@ -437,17 +440,11 @@
                 CHANGE THIS!
             
             */
-            //the function returns a TRUE if the move is valid
-            if (bool == false) {
-                //as long as the move is valid, it will update the position
-                //the amount of the speed
-                pac.updatePacman();
-            }
         }
 
         //this function loops through the array, it first finds the row of the current pacman position
         //it then searches through that column to find the row
-        function getMapPos(curPos, possPos) {
+        function getMapPos(curPos) {
             for (mapPos = 0; mapPos < boundYSortArr.length; ++mapPos) {
                 //if the column is not correct, add a the length of a row to mapPos so that it gets the next row 
                 if (curPos.y != boundYSortArr[mapPos].y) {
@@ -456,10 +453,6 @@
                     //at this point, we search through this row to find it's exact location
                 } else if (curPos.x == boundYSortArr[mapPos].x) {
                     //found currunt position at this point
-
-                    //setPossDifference alters mapPos so that it represents the
-                    //coOrdinates of the position to be moved to
-                    mapPos = setPossDifference(curPos, possPos, mapPos);
 
                     //this returned position is returned to the parent function
                     return mapPos;
@@ -574,18 +567,6 @@
             return false;
         }
 
-        function chkVertMapColl(curPos, possPos) {
-
-            //getMapPos will return the value of the position in the array that the character wants to move to
-            var i = getMapPos(curPos, possPos);
-
-            //if we are dealing with pacman, then the current pos needs to be updated
-            //a boolean is returned, indicating the legibilty of the proposed move
-            var bool = chkMapNoType(i, curPos);
-            
-            return bool;
-        }
-
         //posDiff takes in two position objects
         //it will check if the x or the y positions are different
         function posDiff(curPos, possPos) {
@@ -620,7 +601,7 @@
         //this function is the AI of the pink ghost
         function pinkGhostUpdate(en) {
             enNormalMode(en);
-            if (recalcDirec == true) {
+            if (en.recalcDirec == true) {
                 var numAhead = 90;
                 var numList = [];
                 var mathDoer;
@@ -633,7 +614,7 @@
                 } else {
                     numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y - numAhead, en);
                 }
-                recalcDirec = false;
+                en.recalcDirec = false;
 
                 if (en.scatterMode == true) {
                     mathDoer = Math.max.apply(null, numList);
@@ -648,59 +629,62 @@
 
             console.log(en.scatterMode);
 
-            if (en.enemyTurnCount >= 25) {
-                en.scatterMode = true;
-                /*
-                    
-                    TEMPORARY SOLUTION TO SCATTERMODE FOR TESTING PURPOSES
-                    
-                */
-                en.enemyTurnCount++;
-            }
-            if (en.enemyTurnCount >= 75) {
-                en.scatterMode = false;
-                en.enemyTurnCount = 0;
-            }
+            /* if (en.enemyTurnCount >= 25) {
+                 en.scatterMode = true;
+                 /*
+                     
+                     TEMPORARY SOLUTION TO SCATTERMODE FOR TESTING PURPOSES
+                     
+                 
+                 en.enemyTurnCount++;
+             }
+             if (en.enemyTurnCount >= 75) {
+                 en.scatterMode = false;
+                 en.enemyTurnCount = 0;
+             }*/
 
         }
 
         function enNormalMode(en) {
-            var bool = true;
             var possMove;
+            var pos, pos1;
 
             if (en.speed.x != 0) {
                 //chk the space to the left or right   
                 possMove = en.position.x + en.speed.x;
-                var pos = {
+                pos = {
                     y: en.position.y,
                     x: en.position.x,
                     name: en.type
                 };
-                var pos1 = {
+                pos1 = {
                     y: en.position.y,
                     x: possMove
                 };
-                bool = chkVertMapColl(pos, pos1);
             } else if (en.speed.y != 0) {
                 //chk the space up or down   
                 possMove = en.position.y + en.speed.y;
-                var pos = {
+                pos = {
                     y: en.position.y,
                     x: en.position.x,
                     name: en.type
                 };
-                var pos1 = {
+                pos1 = {
                     y: possMove,
                     x: en.position.x
                 };
             }
 
             en.enemyTurnCount++;
-            bool = chkVertMapColl(pos, pos1);
+            var mapPos = getMapPos(pos);
+            //setPossDifference alters mapPos so that it represents the
+            //coOrdinates of the position to be moved to
+            mapPos = setPossDifference(pos, pos1, mapPos);
+            var bool = chkMapNoType(mapPos, pos);
             if ((en.enemyTurnCount % 5 == 0) || bool == true || (en.oldX != pac.speed.x || en.oldY != pac.speed.y)) {
                 //every 5th turn, or if the ghost is at a barrier or if the user changes directions
                 //the ghost needs to recalculate its direction
-                recalcDirec = true;
+                en.recalcDirec = true;
                 if (en.oldX != pac.speed.x) {
                     en.oldX = pac.speed.x;
                 }
@@ -716,8 +700,7 @@
 
         function enemyDraw(en) {
             ctx.beginPath();
-            if(!en.scatterMode)
-            {
+            if (!en.scatterMode) {
                 en.updateEyes();
             }
             ctx.drawImage(en.img, en.imgXPos, en.imgYPos, en.imgW, en.imgH, en.position.x - 20, en.position.y - 20, en.sprW, en.sprH);
@@ -739,54 +722,49 @@
             //creating a currPos object that stores the current position of the ghost
             //it also stores the fact that it is an enemy
             var currPos = {
-                y: en.position.y,
-                x: en.position.x,
-                name: en.type
+                y: eY,
+                x: eX
             };
 
-            var upPos = {
-                y: eY - 10,
-                x: eX
-            };
-            var downPos = {
-                y: eY + 10,
-                x: eX
-            };
-            var leftPos = {
-                y: eY,
-                x: eX - 10
-            };
-            var rightPos = {
-                y: eY,
-                x: eX + 10
-            };
+            var positions = [{
+                    y: eY - 10,
+                    x: eX
+            },
+                {
+                    y: eY + 10,
+                    x: eX
+            },
+                {
+                    y: eY,
+                    x: eX - 10
+            },
+                {
+                    y: eY,
+                    x: eX + 10
+            }];
 
 
             //here the possible positions are checked
             //using the distance of a line formula
             //the direction with the shortest distance will be chosen
 
-            //chose to nest the call on chkVertMapColl inside an initial if statement
-            //for a more efficient calculation
+            var mapPos = getMapPos(currPos);
+            //setPossDifference alters mapPos so that it represents the
+            //coOrdinates of the position to be moved to
 
-            if (!chkVertMapColl(currPos, upPos)) {
-                numList[0] = dist(eX, eY - 10, usrX, usrY);
-            }
 
-            if (!chkVertMapColl(currPos, downPos)) {
-                numList[1] = dist(eX, eY + 10, usrX, usrY);
-            }
-            if (pac.position.x > en.position.x) {
-                if (!chkVertMapColl(currPos, rightPos)) {
-                    numList[2] = dist(eX + 10, eY, usrX, usrY);
+            //mapHolder stores the mapPos in it's current form, mapPos will be altered and
+            //and the original value of mapPos is needed to finish the calculations
+            var mapHolder = mapPos;
+            for (var counter = 0; counter < positions.length; ++counter) {
+                mapPos = setPossDifference(currPos, positions[counter], mapPos);
+                if (pac.position.x > en.position.x) {
+                    if (!chkMapNoType(mapPos, currPos)) {
+                        numList[counter] = dist(positions[counter].x, positions[counter].y, usrX, usrY);
+                    }
                 }
+                mapPos = mapHolder;
             }
-            if (pac.position.x < en.position.x) {
-                if (!chkVertMapColl(currPos, leftPos)) {
-                    numList[3] = dist(eX - 10, eY, usrX, usrY);
-                }
-            }
-
             return (numList);
         }
 
@@ -801,7 +779,7 @@
 
         //checks which distance is min
         //whichever it is then it moves in that direction
-        function calcEnMove(u, d, r, l, min, en) {
+        function calcEnMove(u, d, l, r, min, en) {
             if (u == min) {
                 en.speed.x = 0;
                 en.speed.y = -20;
