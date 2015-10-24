@@ -20,30 +20,37 @@
 
         //create the map array that will be processed to draw the map on screen
         var mapArray = [
-          [4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5],
-          [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-          [2, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 2],
-          [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-          [2, 0, 9, 6, 6, 6, 6, 5, 0, 4, 6, 6, 9, 0, 9, 6, 6, 6, 6, 9, 0, 0, 4, 6, 6, 5, 0, 0, 9, 6, 6, 6, 6, 9, 0, 9, 6, 6, 5, 0, 4, 6, 6, 6, 6, 9, 0, 2],
-          [2, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 2],
-          [2, 6, 5, 0, 9, 6, 6, 8, 0, 2, 0, 4, 6, 6, 6, 6, 6, 5, 0, 9, 0, 4, 8, 1, 1, 7, 5, 0, 9, 0, 4, 6, 6, 6, 6, 6, 5, 0, 2, 0, 7, 6, 6, 9, 0, 4, 6, 2],
-          [2, 1, 2, 0, 0, 0, 0, 0, 0, 2, 0, 2, 1, 1, 1, 1, 1, 2, 0, 2, 0, 7, 6, 6, 6, 6, 8, 0, 2, 0, 2, 1, 1, 1, 1, 1, 2, 0, 2, 0, 0, 0, 0, 0, 0, 2, 1, 2],
-          [2, 1, 2, 0, 9, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6, 6, 6, 8, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 7, 6, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6, 6, 9, 0, 2, 1, 2],
-          [2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2],
-          [2, 1, 2, 0, 4, 6, 6, 6, 5, 0, 9, 6, 6, 6, 6, 5, 0, 9, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 9, 0, 9, 0, 4, 6, 6, 6, 6, 9, 0, 4, 6, 6, 6, 5, 0, 2, 1, 2],
-          [9, 6, 8, 0, 2, 1, 1, 1, 2, 0, 2, 1, 1, 1, 1, 2, 0, 2, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 2, 0, 2, 1, 1, 1, 1, 2, 0, 2, 1, 1, 1, 2, 0, 7, 6, 9],
-         [10, 3, 0, 0, 2, 1, 1, 1, 2, 0, 9, 6, 6, 6, 6, 8, 0, 2, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 0, 2, 0, 7, 6, 6, 6, 6, 9, 0, 2, 1, 1, 1, 2, 0, 0, 3, 10],
-          [9, 6, 5, 0, 2, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 2, 0, 4, 6, 9],
-          [2, 1, 2, 0, 2, 1, 1, 1, 2, 0, 4, 6, 5, 0, 4, 6, 6, 8, 0, 3, 3, 3, 3, 3, 6, 6, 6, 6, 8, 0, 7, 6, 6, 5, 0, 4, 6, 5, 0, 2, 1, 1, 1, 2, 0, 2, 1, 2],
-          [2, 1, 2, 0, 7, 6, 6, 6, 8, 0, 2, 1, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 1, 2, 0, 7, 6, 6, 6, 8, 0, 2, 1, 2],
-          [2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2, 0, 2, 0, 4, 6, 5, 0, 4, 6, 6, 6, 6, 6, 6, 5, 0, 4, 6, 5, 0, 2, 0, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2],
-          [2, 1, 2, 0, 9, 0, 9, 6, 9, 0, 2, 1, 2, 0, 2, 0, 2, 1, 2, 0, 2, 1, 1, 1, 1, 1, 1, 2, 0, 2, 1, 2, 0, 2, 0, 2, 1, 2, 0, 9, 6, 9, 0, 9, 0, 2, 1, 2],
-          [2, 1, 2, 0, 2, 0, 2, 0, 2, 0, 2, 1, 2, 0, 2, 0, 2, 1, 2, 0, 2, 1, 1, 1, 1, 1, 1, 2, 0, 2, 1, 2, 0, 2, 0, 2, 1, 2, 0, 2, 0, 2, 0, 2, 0, 2, 1, 2],
-          [2, 1, 2, 0, 2, 0, 9, 0, 9, 0, 7, 6, 8, 0, 9, 0, 7, 6, 8, 0, 2, 1, 1, 1, 1, 1, 1, 2, 0, 7, 6, 8, 0, 9, 0, 7, 6, 8, 0, 9, 0, 9, 0, 2, 0, 2, 1, 2],
-          [2, 1, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 1, 2],
-          [2, 1, 2, 0, 9, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 2, 1, 1, 1, 1, 1, 1, 2, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 9, 0, 2, 1, 2],
-          [2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2],
-          [7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 8, 6, 6, 6, 6, 6, 6, 8, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 8]
+          [4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5],
+          [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+          [2, 0, 4, 6, 6, 5, 0, 4, 6, 6, 6, 5, 0, 2, 2, 0, 4, 6, 6, 6, 5, 0, 4, 6, 6, 5, 0, 2],
+          [2, 0, 2, 3, 3, 2, 0, 2, 3, 3, 3, 2, 0, 2, 2, 0, 2, 3, 3, 3, 2, 0, 2, 3, 3, 2, 0, 2],
+          [2, 0, 7, 6, 6, 8, 0, 7, 6, 6, 6, 8, 0, 7, 8, 0, 7, 6, 6, 6, 8, 0, 7, 6, 6, 8, 0, 2],
+          [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+          [2, 0, 4, 6, 6, 5, 0, 4, 5, 0, 4, 6, 6, 6, 6, 6, 6, 5, 0, 4, 5, 0, 4, 6, 6, 5, 0, 2],
+          [2, 0, 7, 6, 6, 8, 0, 2, 2, 0, 7, 6, 6, 5, 4, 6, 6, 8, 0, 2, 2, 0, 7, 6, 6, 8, 0, 2],
+          [2, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 2],
+          [7, 6, 6, 6, 6, 5, 0, 2, 7, 6, 6, 5, 3, 2, 2, 3, 4, 6, 6, 8, 2, 0, 4, 6, 6, 6, 6, 8],
+          [3, 6, 6, 6, 5, 2, 0, 2, 4, 6, 6, 8, 3, 7, 8, 3, 7, 6, 6, 5, 2, 0, 2, 4, 6, 6, 6, 9],
+          [3, 3, 3, 3, 2, 2, 0, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 0, 2, 2, 3, 3, 3, 3],
+          [3, 6, 6, 6, 8, 2, 0, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 0, 2, 7, 6, 6, 6, 3],
+          [9, 6, 6, 6, 6, 8, 0, 7, 8, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 8, 0, 7, 6, 6, 6, 6, 3],
+         [10, 3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 10],
+          [9, 6, 6, 6, 6, 5, 0, 4, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 5, 0, 4, 6, 6, 6, 6, 9],
+          [3, 6, 6, 6, 5, 2, 0, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 0, 2, 4, 6, 6, 6, 3],
+          [3, 3, 3, 3, 2, 2, 0, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 0, 2, 2, 3, 3, 3, 3],
+          [3, 6, 6, 6, 8, 2, 0, 2, 2, 3, 4, 6, 6, 6, 6, 6, 6, 5, 3, 2, 2, 0, 2, 7, 6, 6, 6, 3],
+          [9, 6, 6, 6, 6, 8, 0, 7, 8, 3, 7, 6, 6, 5, 4, 6, 6, 8, 3, 7, 8, 0, 7, 6, 6, 6, 6, 5],
+          [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+          [2, 0, 4, 6, 6, 5, 0, 4, 6, 6, 6, 5, 0, 2, 2, 0, 4, 6, 6, 6, 5, 0, 4, 6, 6, 5, 0, 2],
+          [2, 0, 7, 6, 5, 2, 0, 7, 6, 6, 6, 8, 0, 7, 8, 0, 7, 6, 6, 6, 8, 0, 2, 4, 6, 8, 0, 2],
+          [2, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 2],
+          [1, 6, 5, 0, 2, 2, 0, 4, 5, 0, 4, 6, 6, 6, 6, 6, 6, 5, 0, 4, 5, 0, 2, 2, 0, 4, 6, 2],
+          [4, 6, 8, 0, 7, 8, 0, 2, 2, 0, 7, 6, 6, 5, 4, 6, 6, 8, 0, 2, 2, 0, 7, 8, 0, 7, 6, 2],
+          [2, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 2],
+          [2, 0, 4, 6, 6, 6, 6, 8, 7, 6, 6, 5, 0, 2, 2, 0, 4, 6, 6, 8, 7, 6, 6, 6, 6, 5, 0, 2],
+          [2, 0, 7, 6, 6, 6, 6, 6, 6, 6, 6, 8, 0, 7, 8, 0, 7, 6, 6, 6, 6, 6, 6, 6, 6, 8, 0, 2],
+          [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+          [7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 8]
       ];
 
         //boundYSortArr will hold the processed objects that are formed from the 2-dim map array
@@ -156,22 +163,22 @@
         //creating 3 character objects
         //the first 2 are enemies while the third is our hero pac
         var pinky = new enemy({
-            x: 90,
+            x: 130,
             y: 250
         }, {
             x: 20,
             y: 0
         }, "enemy", 100);
         var angry = new enemy({
-            x: 890,
+            x: 130,
             y: 350
         }, {
             x: 20,
             y: 0
         }, "enemy", 80);
         var pac = new pacman({
-            x: 890,
-            y: 270
+            x: 150,
+            y: 310
         }, {
             x: 20,
             y: 0
@@ -183,8 +190,8 @@
         function init() {
             //init canvas
             canvas = document.getElementById("canvasOne");
-            canvas.height = 550;
-            canvas.width = 1000;
+            canvas.height = 700;
+            canvas.width = 600;
             ctx = canvas.getContext("2d");
             pinky.oldX = pac.speed.x;
             pinky.oldY = pac.speed.y;
@@ -204,7 +211,7 @@
             ctx.beginPath()
             ctx.lineWidth = 2;
             ctx.rect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "rgb(7,2,42)";
+            ctx.fillStyle = "rgb(0,0,0)";
             ctx.fill();
             ctx.closePath();
 
@@ -212,7 +219,7 @@
             ctx.beginPath();
             ctx.fillStyle = 'white';
             ctx.font = "30px Arial";
-            ctx.fillText("Score: " + score, 30, 520);
+            ctx.fillText("Score: " + score, 30, 680);
             ctx.closePath();
 
             //keypress events are handled here
@@ -236,7 +243,6 @@
         //this fucntion takes in a number "press"
         //it checks for collisions and then alters the user speeds accordingly
         function move(press) {
-
 
             //key press handled here
             //checks collisions to the direction of pacman, 
@@ -268,7 +274,7 @@
             }
             //down key press
             else if (press == 40 || press == 83) {
-                if ((boundYSortArr[pac.currPos + 48].type == 3 || boundYSortArr[pac.currPos + 48].type == 0)) {
+                if ((boundYSortArr[pac.currPos + mapArray[1].length].type == 3 || boundYSortArr[pac.currPos + mapArray[1].length].type == 0)) {
                     pac.speed.x = 0;
                     pac.speed.y = 20;
                     notPressed = false
@@ -279,7 +285,7 @@
             }
             //up key press
             else if (press == 38 || press == 87) {
-                if ((boundYSortArr[pac.currPos - 48].type == 3 || boundYSortArr[pac.currPos - 48].type == 0)) {
+                if ((boundYSortArr[pac.currPos - mapArray[1].length].type == 3 || boundYSortArr[pac.currPos - mapArray[1].length].type == 0)) {
                     pac.speed.x = 0;
                     pac.speed.y = -20;
                     notPressed = false
@@ -374,7 +380,7 @@
         function update() {
             usrUpdate(pac);
             pinkGhostUpdate(pinky);
-            //redGhostUpdate(angry);
+            redGhostUpdate(angry);
         }
 
         //usrUpdate takes in a character object
@@ -536,7 +542,7 @@
                         //we now need to see if it is a portal on the left or the right
                         //if on the left, we need to jump pacman to the far right hand side
                         if (boundYSortArr[i].x <= 30) {
-                            pac.position.x = 970;
+                            pac.position.x = 570;
 
                             //a check on the state of the food at the other side of the portal is done
                             //an error occurs when entering portals where the first food is not eaten
@@ -629,19 +635,19 @@
 
             console.log(en.scatterMode);
 
-             if (en.enemyTurnCount >= 25) {
-                 en.scatterMode = true;
-                 /*
-                     
-                     TEMPORARY SOLUTION TO SCATTERMODE FOR TESTING PURPOSES
-                     
-                 */
-                 en.enemyTurnCount++;
-             }
-             if (en.enemyTurnCount >= 75) {
-                 en.scatterMode = false;
-                 en.enemyTurnCount = 0;
-             }
+            if (en.enemyTurnCount >= 25) {
+                en.scatterMode = true;
+                /*
+                    
+                    TEMPORARY SOLUTION TO SCATTERMODE FOR TESTING PURPOSES
+                    
+                */
+                en.enemyTurnCount++;
+            }
+            if (en.enemyTurnCount >= 75) {
+                en.scatterMode = false;
+                en.enemyTurnCount = 0;
+            }
 
         }
 
@@ -829,7 +835,7 @@
                     //food
                 case 0:
                     ctx.beginPath();
-                    ctx.fillStyle = "rgb(9,245,0)";
+                    ctx.fillStyle = "rgb(255,169,164)";
                     ctx.arc(boundYSortArr[i].x, boundYSortArr[i].y, 3, 0, 2 * Math.PI, false);
                     ctx.lineWidth = 0;
                     ctx.fill();
@@ -839,18 +845,18 @@
 
                     //circles
                 case 1:
-                    ctx.beginPath();
-                    ctx.strokeStyle = "rgb(24,202,230)";
-                    ctx.arc(boundYSortArr[i].x, boundYSortArr[i].y, 10, 0, 2 * Math.PI, false);
-                    ctx.lineWidth = 2;
-                    ctx.stroke();
-                    ctx.closePath();
+                    /* ctx.beginPath();
+                     ctx.strokeStyle = "rgb(24,202,230)";
+                     ctx.arc(boundYSortArr[i].x, boundYSortArr[i].y, 10, 0, 2 * Math.PI, false);
+                     ctx.lineWidth = 2;
+                     ctx.stroke();
+                     ctx.closePath();*/
                     break;
 
                     // verticle side
                 case 2:
                     ctx.beginPath();
-                    ctx.strokeStyle = "rgb(255,0,255)";
+                    ctx.strokeStyle = "rgb(32,32,224)";
                     ctx.moveTo(boundYSortArr[i].x, boundYSortArr[i].y - 20);
                     ctx.lineTo(boundYSortArr[i].x, boundYSortArr[i].y + 20);
                     ctx.stroke();
@@ -863,14 +869,14 @@
                     //top left corner
                 case 4:
                     ctx.beginPath();
-                    ctx.strokeStyle = "rgb(255,0,255)";
+                    ctx.strokeStyle = "rgb(32,32,224)";
                     ctx.moveTo(boundYSortArr[i].x, boundYSortArr[i].y);
                     ctx.lineTo(boundYSortArr[i].x, boundYSortArr[i].y + 10);
                     ctx.stroke();
                     ctx.closePath();
 
                     ctx.beginPath();
-                    ctx.strokeStyle = "rgb(255,0,255)";
+                    ctx.strokeStyle = "rgb(32,32,224)";
                     ctx.moveTo(boundYSortArr[i].x, boundYSortArr[i].y);
                     ctx.lineTo(boundYSortArr[i].x + 10, boundYSortArr[i].y);
                     ctx.stroke();
@@ -880,14 +886,14 @@
                     //top right corner
                 case 5:
                     ctx.beginPath();
-                    ctx.strokeStyle = "rgb(255,0,255)";
+                    ctx.strokeStyle = "rgb(32,32,224)";
                     ctx.moveTo(boundYSortArr[i].x, boundYSortArr[i].y);
                     ctx.lineTo(boundYSortArr[i].x, boundYSortArr[i].y + 10);
                     ctx.stroke();
                     ctx.closePath();
 
                     ctx.beginPath();
-                    ctx.strokeStyle = "rgb(255,0,255)";
+                    ctx.strokeStyle = "rgb(32,32,224)";
                     ctx.moveTo(boundYSortArr[i].x, boundYSortArr[i].y);
                     ctx.lineTo(boundYSortArr[i].x - 10, boundYSortArr[i].y);
                     ctx.stroke();
@@ -897,7 +903,7 @@
                     //horizontal line
                 case 6:
                     ctx.beginPath();
-                    ctx.strokeStyle = "rgb(255,0,255)";
+                    ctx.strokeStyle = "rgb(32,32,224)";
                     ctx.moveTo(boundYSortArr[i].x - 20, boundYSortArr[i].y);
                     ctx.lineTo(boundYSortArr[i].x + 20, boundYSortArr[i].y);
                     ctx.stroke();
@@ -907,14 +913,14 @@
                     //bottom left Corner
                 case 7:
                     ctx.beginPath();
-                    ctx.strokeStyle = "rgb(255,0,255)";
+                    ctx.strokeStyle = "rgb(32,32,224)";
                     ctx.moveTo(boundYSortArr[i].x, boundYSortArr[i].y - 10);
                     ctx.lineTo(boundYSortArr[i].x, boundYSortArr[i].y);
                     ctx.stroke();
                     ctx.closePath();
 
                     ctx.beginPath();
-                    ctx.strokeStyle = "rgb(255,0,255)";
+                    ctx.strokeStyle = "rgb(32,32,224)";
                     ctx.moveTo(boundYSortArr[i].x + 10, boundYSortArr[i].y);
                     ctx.lineTo(boundYSortArr[i].x, boundYSortArr[i].y);
                     ctx.stroke();
@@ -923,14 +929,14 @@
                     //bottom right corner    
                 case 8:
                     ctx.beginPath();
-                    ctx.strokeStyle = "rgb(255,0,255)";
+                    ctx.strokeStyle = "rgb(32,32,224)";
                     ctx.moveTo(boundYSortArr[i].x, boundYSortArr[i].y - 10);
                     ctx.lineTo(boundYSortArr[i].x, boundYSortArr[i].y);
                     ctx.stroke();
                     ctx.closePath();
 
                     ctx.beginPath();
-                    ctx.strokeStyle = "rgb(255,0,255)";
+                    ctx.strokeStyle = "rgb(32,32,224)";
                     ctx.moveTo(boundYSortArr[i].x - 10, boundYSortArr[i].y);
                     ctx.lineTo(boundYSortArr[i].x, boundYSortArr[i].y);
                     ctx.stroke();
@@ -943,6 +949,22 @@
 
                     //portals
                 case 10:
+                    break;
+                case 11:
+                    ctx.beginPath();
+                    ctx.strokeStyle = "rgb(32,32,224)";
+                    ctx.moveTo(boundYSortArr[i].x, boundYSortArr[i].y - 5);
+                    ctx.lineTo(boundYSortArr[i].x, boundYSortArr[i].y + 20);
+                    ctx.stroke();
+                    ctx.closePath();
+                    break;
+                case 12:
+                    ctx.beginPath();
+                    ctx.strokeStyle = "rgb(32,32,224)";
+                    ctx.moveTo(boundYSortArr[i].x, boundYSortArr[i].y - 20);
+                    ctx.lineTo(boundYSortArr[i].x, boundYSortArr[i].y + 5);
+                    ctx.stroke();
+                    ctx.closePath();
                     break;
                 }
 

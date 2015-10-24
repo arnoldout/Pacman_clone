@@ -27,9 +27,6 @@ add lives when they do collide
 }
 sprites
 {
-add sprite images to all walls
-remove the balls 
-sprite the food
 sprite the superfood and fruit
 maybe also sprite the score text
 }
