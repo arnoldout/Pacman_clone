@@ -1,0 +1,35 @@
+Task List
+*********
+fix scattermode
+{
+set proper variable controlled scattermode
+fix sprite issues
+change name of scattermode as its not technically scattermode
+	it's actually scared mode
+}
+add a real scattermode
+{
+should use same code as current scattermode 
+	but will not have flashing colour of a scared sprite
+}
+add superfood and fruit
+{
+attach a bigger score variable to them
+when superfood is eaten, then code should turn on scared mode
+	this should happen for possibly a predetermined amount of time
+	maybe variable controlled?
+}
+add collisions between pac and ghosts
+{
+add lives when they do collide
+	these will decrease when a collision is made
+	when lies are zero the game will restart or end
+}
+sprites
+{
+add sprite images to all walls
+remove the balls 
+sprite the food
+sprite the superfood and fruit
+maybe also sprite the score text
+}
