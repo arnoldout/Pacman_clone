@@ -22,8 +22,8 @@
 
         var mapArray = [
           [4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5],
-          [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-          [2, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 9, 6, 6, 6, 6, 6, 6, 5, 0, 4, 6, 5, 0, 4, 6, 6, 6, 6, 6, 9, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 2],
+          [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 2],
+          [2, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 2],
           [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
           [2, 0, 9, 6, 6, 6, 6, 9, 0, 4, 6, 6, 9, 0, 9, 6, 6, 6, 6, 9, 0, 0, 4, 6, 6, 5, 0, 0, 9, 6, 6, 6, 6, 9, 0, 9, 6, 6, 5, 0, 9, 6, 6, 6, 6, 9, 0, 2],
           [2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2],
@@ -172,29 +172,41 @@
                 } else if (score == this.scatterTurnOffNum) {
                     this.scatterMode = false;
                 }
+                if (score % 40 == 0) {
+                    this.scatterCounter--;
+                }
             }
 
             this.scaredSwitch = function () {
-                /*if (this.scaredMode) {
+                if (this.scaredMode) {
+                    if (this.enemyTurnCount+1 == this.scareValue) {
+                        this.imgXPos = 40;
+                    }
                     this.imgYPos = 160;
                     this.scareSpd = -this.scareSpd;
-                    if (this.enemyTurnCount - 1 == this.scareValue) {
-                        this.imgXPos = 40;
+                    
+                    if(this.enemyTurnCount>10)
+                    {
+                        this.scaredMode = false;
+                        this.updateGhost();
                     }
                 } else {
                     this.imgYPos = this.storedYPos;
-                }*/
+                    this.enemyTurnCount = 0;
+                }
             }
             this.updateGhost = function (moveBool) {
                 this.scaredSwitch();
-                this.scatterModeSwitcher();
+                if (this.scatterCounter > 4) {
+                    this.scatterModeSwitcher();
+                }
                 if (moveBool == true) {
                     this.position.x += this.speed.x;
                     this.position.y += this.speed.y;
                 }
-                /*if (this.scaredMode) {
+                if (this.scaredMode) {
                     this.imgXPos += this.scareSpd;
-                }*/
+                }
             }
         }
 
@@ -215,7 +227,7 @@
             y: 0
         }, "enemy", 80);
         var pac = new pacman({
-            x: 150,
+            x: 750,
             y: 210
         }, {
             x: 20,
@@ -268,15 +280,14 @@
             drawScore();
         }
 
-        function drawScore()
-        {
-          //score is drawn on the screen here
+        function drawScore() {
+            //score is drawn on the screen here
             ctx.beginPath();
             ctx.fillStyle = 'white';
             ctx.font = "30px Arial";
             ctx.fillText("Score: " + score, 30, 680);
             ctx.closePath();
-   
+
         }
         //this fucntion takes in a number "press"
         //it checks for collisions and then alters the user speeds accordingly
@@ -290,7 +301,7 @@
 
             //left key press
             if (press == 37 || press == 65) {
-                if ((boundYSortArr[pac.currPos - 1].type == 3 || boundYSortArr[pac.currPos - 1].type == 0)) {
+                if ((boundYSortArr[pac.currPos - 1].type == 3 || boundYSortArr[pac.currPos - 1].type == 0 || boundYSortArr[pac.currPos - 1].type == 13)) {
                     pac.speed.x = -20;
                     pac.speed.y = 0;
                     notPressed = false
@@ -301,7 +312,7 @@
             }
             //right key press
             else if (press == 39 || press == 68) {
-                if ((boundYSortArr[pac.currPos + 1].type == 3 || boundYSortArr[pac.currPos + 1].type == 0)) {
+                if ((boundYSortArr[pac.currPos + 1].type == 3 || boundYSortArr[pac.currPos + 1].type == 0 || boundYSortArr[pac.currPos + 1].type == 13)) {
                     pac.speed.x = 20;
                     pac.speed.y = 0;
                     notPressed = false
@@ -312,7 +323,7 @@
             }
             //down key press
             else if (press == 40 || press == 83) {
-                if ((boundYSortArr[pac.currPos + mapArray[1].length].type == 3 || boundYSortArr[pac.currPos + mapArray[1].length].type == 0)) {
+                if ((boundYSortArr[pac.currPos + mapArray[1].length].type == 3 || boundYSortArr[pac.currPos + mapArray[1].length].type == 0 || boundYSortArr[pac.currPos + mapArray[1].length].type == 13)) {
                     pac.speed.x = 0;
                     pac.speed.y = 20;
                     notPressed = false
@@ -323,7 +334,7 @@
             }
             //up key press
             else if (press == 38 || press == 87) {
-                if ((boundYSortArr[pac.currPos - mapArray[1].length].type == 3 || boundYSortArr[pac.currPos - mapArray[1].length].type == 0)) {
+                if ((boundYSortArr[pac.currPos - mapArray[1].length].type == 3 || boundYSortArr[pac.currPos - mapArray[1].length].type == 0 || boundYSortArr[pac.currPos - mapArray[1].length].type == 13)) {
                     pac.speed.x = 0;
                     pac.speed.y = -20;
                     notPressed = false
@@ -401,7 +412,7 @@
                     pacDraw(pi1, pi2);
                 }, 100)
             } else {
-                setTimeout(draw, 300);
+                setTimeout(draw, 150);
             }
         }
 
@@ -551,7 +562,7 @@
 
             //checks are made to see if the possible move is a barrier  
             //i.e it's not a food or eaten food
-            if ((boundYSortArr[i].type != 0) && (boundYSortArr[i].type != 3) && (boundYSortArr[i].type != 10)) {
+            if ((boundYSortArr[i].type != 0) && (boundYSortArr[i].type != 3) && (boundYSortArr[i].type != 10) && (boundYSortArr[i].type != 13)) {
 
                 //if this is entered, then the move is invalid immediately
                 //this is a barrier       
@@ -572,6 +583,12 @@
                         boundYSortArr[i].type = 3;
                         changeMapType(i, 3);
                         updateScore(1);
+                    } else if (boundYSortArr[i].type == 13) {
+                        boundYSortArr[i].type = 3;
+                        changeMapType(i, 3);
+                        angry.scaredMode = true;
+                        pinky.scaredMode = true;
+                        updateScore(5);
                     }
                     //a check here tries to determine if the block is possibly a portal
                     //if it is then code needs to address that
@@ -652,6 +669,8 @@
                 var numAhead = 80;
                 var numList = [];
                 var mathDoer;
+                //this part will send the co-ordinates of the enemy and of the variable set position in front of pacman
+                //unless pacman is to close to the end of the map, in that case, pacman's current position is passed instead
                 if (pac.speed.x > 0) {
                     if (pac.position.x + numAhead < 590) {
                         numList = enemyDistances(en.position.x, en.position.y, pac.position.x + numAhead, pac.position.y, en);
@@ -679,7 +698,7 @@
                 }
                 en.recalcDirec = false;
 
-                if (en.scaredMode||en.scatterMode == true) {
+                if (en.scaredMode || en.scatterMode == true) {
                     mathDoer = Math.max.apply(null, numList);
                 } else {
                     mathDoer = Math.min.apply(null, numList);
@@ -694,13 +713,12 @@
 
         function chkPossNewMoveAi(en) {
             if (en.speed.x > 0 || en.speed.x < 0) {
-                if (boundYSortArr[en.currPos + mapArray[1].length].type == 3 || boundYSortArr[en.currPos + mapArray[1].length].type == 0 
-                    || boundYSortArr[en.currPos - mapArray[1].length].type == 3 || boundYSortArr[en.currPos - mapArray[1].length].type == 0) {
+                if (boundYSortArr[en.currPos + mapArray[1].length].type == 3 || boundYSortArr[en.currPos + mapArray[1].length].type == 0 || boundYSortArr[en.currPos + mapArray[1].length].type == 13 || boundYSortArr[en.currPos - mapArray[1].length].type == 3 || boundYSortArr[en.currPos - mapArray[1].length].type == 0 || boundYSortArr[en.currPos - mapArray[1].length].type == 13) {
                     return true;
                 }
             } else if (en.speed.y > 0 || en.speed.y < 0) {
-                if (boundYSortArr[en.currPos + 1].type == 3 || boundYSortArr[en.currPos + 1].type == 0 ||
-                    boundYSortArr[en.currPos - 1].type == 3 || boundYSortArr[en.currPos - 1].type == 0) {
+                if (boundYSortArr[en.currPos + 1].type == 3 || boundYSortArr[en.currPos + 1].type == 0 || boundYSortArr[en.currPos + 1].type == 13 ||
+                    boundYSortArr[en.currPos - 1].type == 3 || boundYSortArr[en.currPos - 1].type == 0 || boundYSortArr[en.currPos - 1].type == 13) {
                     return true;
                 }
             }
@@ -766,7 +784,7 @@
             //initializing the directions to infinity or 0 depending on whether scattermode is turned on
             //this will ensure that if they are not valid options
             //and so they will not be counted
-            if (en.scatterMode==false&&en.scaredMode == false) {
+            if (en.scatterMode == false && en.scaredMode == false) {
                 var numList = [Infinity, Infinity, Infinity, Infinity],
                     mathDoer = 0;
             } else {
@@ -1024,6 +1042,33 @@
                     ctx.stroke();
                     ctx.closePath();
                     break;
+                case 13:
+                    ctx.beginPath();
+                    ctx.fillStyle = "rgb(255,169,164)";
+                    ctx.arc(boundYSortArr[i].x, boundYSortArr[i].y, 5, 0, 2 * Math.PI, false);
+                    ctx.lineWidth = 0;
+                    ctx.fill();
+                    ctx.strokeStyle = "rgb(24,202,230)";
+                    ctx.closePath();
+                    break;
+
+                case 14:
+                    ctx.beginPath();
+                    ctx.strokeStyle = "rgb(32,32,224)";
+                    ctx.moveTo(boundYSortArr[i].x-5, boundYSortArr[i].y);
+                    ctx.lineTo(boundYSortArr[i].x+20, boundYSortArr[i].ya);
+                    ctx.stroke();
+                    ctx.closePath();
+                    break;
+                case 15:
+                    ctx.beginPath();
+                    ctx.strokeStyle = "rgb(32,32,224)";
+                    ctx.moveTo(boundYSortArr[i].x-20, boundYSortArr[i].y);
+                    ctx.lineTo(boundYSortArr[i].x+5, boundYSortArr[i].y);
+                    ctx.stroke();
+                    ctx.closePath();
+                    break;
+
                 }
 
                 ctx.strokeStyle = "rgb(0,0,0)";
