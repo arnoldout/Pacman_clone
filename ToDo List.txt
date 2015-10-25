@@ -30,3 +30,7 @@ sprites
 sprite the superfood and fruit
 maybe also sprite the score text
 }
+recalc
+{
+add a recalc paramater where the ghost recalculates if user goest through a portal
+}	

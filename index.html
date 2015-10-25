@@ -19,7 +19,34 @@
         var canvas;
 
         //create the map array that will be processed to draw the map on screen
+        
         var mapArray = [
+          [4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,  6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,  6, 6, 6, 6, 6, 5],
+          [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 2],
+          [2, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6,  9, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 9, 6, 6, 6, 6, 6, 6,  6, 6, 6, 9, 0, 2],
+          [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 2],
+          [2, 0, 9, 6, 6, 6, 6, 9, 0, 4, 6, 6,  9, 0, 9, 6, 6, 6, 6, 9, 0, 0, 4, 6, 6, 5, 0, 0, 9, 6, 6, 6, 6, 9, 0, 9, 6, 6, 5, 0, 9, 6,  6, 6, 6, 9, 0, 2],
+          [2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0,  0, 0, 0, 0, 0, 2],
+          [3, 6, 5, 0, 9, 6, 6, 9, 0, 2, 0, 4,  6, 6, 6, 6, 6, 5, 0, 9, 0, 4, 8, 7, 8, 7, 5, 0, 9, 0, 4, 6, 6, 6, 6, 6, 5, 0, 2, 0, 9, 6,  6, 9, 0, 4, 6, 3],
+          [3, 5, 2, 0, 0, 0, 0, 0, 0, 2, 0, 2,  9, 6, 6, 6, 9, 2, 0, 2, 0, 7, 6, 6, 6, 6, 8, 0, 2, 0, 2, 9, 6, 6, 6, 9, 2, 0, 2, 0, 0, 0,  0, 0, 0, 2, 4, 3],
+          [3, 2, 2, 0, 9, 6, 6, 6, 6, 8, 0, 7,  6, 6, 6, 6, 6, 8, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 7, 6, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6,  6, 9, 0, 2, 2, 3],
+          [3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 2, 2, 3],
+          [3, 8, 2, 0, 4, 6, 6, 6, 5, 0, 9, 6,  6, 6, 6, 5, 0, 9, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 9, 0, 9, 0, 4, 6, 6, 6, 6, 9, 0, 4, 6, 6,  6, 5, 0, 2, 7, 3],
+          [9, 6, 8, 0, 2, 4, 6, 5, 2, 0, 2, 9,  6, 6, 9, 2, 0, 2, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 2, 0, 2, 9, 6, 6, 9, 2, 0, 2, 4, 6,  5, 2, 0, 7, 6, 9],
+         [10, 3, 3, 0, 2, 2, 1, 2, 2, 0, 9, 6,  6, 6, 6, 8, 0, 2, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 0, 2, 0, 7, 6, 6, 6, 6, 9, 0, 2, 2, 1,  2, 2, 0, 3, 3, 10],
+          [9, 6, 5, 0, 2, 2, 1, 2, 2, 0, 0, 0,  0, 0, 0, 0, 0, 2, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 1,  2, 2, 0, 4, 6, 9],
+          [3, 5, 2, 0, 2, 7, 6, 8, 2, 0, 4, 6,  5, 0, 4, 6, 6, 8, 0, 3, 3, 3, 3, 3, 6, 6, 6, 6, 8, 0, 7, 6, 6, 5, 0, 4, 6, 5, 0, 2, 7, 6,  8, 2, 0, 2, 4, 3],
+          [3, 2, 2, 0, 7, 6, 6, 6, 8, 0, 2, 11, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 11, 2, 0, 7, 6, 6,  6, 8, 0, 2, 2, 3],
+          [3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 2, 2,  2, 0, 2, 0, 4, 6, 5, 0, 4, 6, 6, 6, 6, 6, 6, 5, 0, 4, 6, 5, 0, 2, 0, 2, 2, 2, 0, 0, 0, 0,  0, 0, 0, 2, 2, 3],
+          [3, 2, 2, 0, 9, 0, 11, 0,11,0, 2, 2,  2, 0, 2, 0, 2, 11,2, 0, 2, 4, 6, 6, 6, 6, 5, 2, 0, 2, 11,2, 0, 2, 0, 2, 2, 2, 0, 11,0, 11, 0, 9, 0, 2, 2, 3],
+          [3, 2, 2, 0, 2, 0, 2, 0, 2, 0, 2, 12, 2, 0, 2, 0, 2, 12,2, 0, 2, 2, 1, 1, 1, 1, 2, 2, 0, 2, 12,2, 0, 2, 0, 2, 12, 2, 0, 2, 0, 2,  0, 2, 0, 2, 2, 3],
+          [3, 2, 2, 0, 2, 0, 9, 0, 9, 0, 7, 6,  8, 0, 9, 0, 7, 6, 8, 0, 2, 2, 1, 1, 1, 1, 2, 2, 0, 7, 6, 8, 0, 9, 0, 7, 6, 8, 0, 12,0, 12, 0, 2, 0, 2, 2, 3],
+          [3, 2, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 1, 1, 1, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 2, 0, 2, 2, 3],
+          [3, 2, 2, 0, 9, 0, 9, 6, 6, 6, 6, 6,  6, 6, 6, 6, 6, 6, 9, 0, 2, 2, 1, 1, 1, 1, 2, 2, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9,  0, 9, 0, 2, 2, 3],
+          [3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 1, 1, 1, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 2, 2, 3],
+          [3, 3, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6,  6, 6, 6, 6, 6, 6, 6, 6, 8, 3, 3, 3, 3, 3, 3, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,  6, 6, 6, 8, 3, 3]
+      ];
+        var mapArray1 = [
           [4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5],
           [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
           [2, 0, 4, 6, 6, 5, 0, 4, 6, 6, 6, 5, 0, 2, 2, 0, 4, 6, 6, 6, 5, 0, 4, 6, 6, 5, 0, 2],
@@ -96,7 +123,6 @@
         function enemy(position, speed, type, imgY) {
             this.position = new coOrds(position.x, position.y);
             this.speed = new coOrds(speed.x, speed.y);
-            this.oldSpeed = new coOrds(speed.x, speed.y);
             this.type = type;
             this.currPos = null;
             this.img = new Image();
@@ -165,21 +191,21 @@
         //the first 2 are enemies while the third is our hero pac
         var pinky = new enemy({
             x: 50,
-            y: 610
+            y: 50
         }, {
             x: 20,
             y: 0
         }, "enemy", 100);
         var angry = new enemy({
-            x: 250,
-            y: 350
+            x: 290,
+            y: 370
         }, {
             x: 20,
             y: 0
         }, "enemy", 80);
         var pac = new pacman({
             x: 150,
-            y: 310
+            y: 350
         }, {
             x: 20,
             y: 0
@@ -192,7 +218,7 @@
             //init canvas
             canvas = document.getElementById("canvasOne");
             canvas.height = 700;
-            canvas.width = 600;
+            canvas.width = 1000;
             ctx = canvas.getContext("2d");
             popAccBoundArr();
             draw();
@@ -508,7 +534,6 @@
         //chkMapNoType takes in the current position, the value in the array of the possible move
         function chkMapNoType(i, curPos) {
 
-            console.log(boundYSortArr[i]);
             //checks are made to see if the possible move is a barrier  
             //i.e it's not a food or eaten food
             if ((boundYSortArr[i].type != 0) && (boundYSortArr[i].type != 3) && (boundYSortArr[i].type != 10)) {
@@ -536,11 +561,13 @@
                     //a check here tries to determine if the block is possibly a portal
                     //if it is then code needs to address that
                     if (boundYSortArr[i].type == 10) {
+                        angry.recalcDirec = true;
+                        pinky.recalcDirec = true;
                         //at this point, it is known that it is a portal
                         //we now need to see if it is a portal on the left or the right
                         //if on the left, we need to jump pacman to the far right hand side
                         if (boundYSortArr[i].x <= 30) {
-                            pac.position.x = 570;
+                            pac.position.x = boundYSortArr[(i+mapArray[0].length)-1].x;
 
                             //a check on the state of the food at the other side of the portal is done
                             //an error occurs when entering portals where the first food is not eaten
@@ -600,7 +627,6 @@
 
             //calcEnMove will compare the distances with the min value
             //it will then move in that direction
-            en.oldSpeed = en.speed;
             calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
         }
 
@@ -608,7 +634,7 @@
         function pinkGhostUpdate(en) {
             enNormalMode(en);
             if (en.recalcDirec == true) {
-                var numAhead = 40;
+                var numAhead = 80;
                 var numList = [];
                 var mathDoer;
                 if (pac.speed.x > 0) {
@@ -646,7 +672,6 @@
 
                 //calcEnMove will compare the distances with the min value
                 //it will then move in that direction
-                en.oldSpeed = en.speed;
                 calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
             }
 
@@ -670,10 +695,9 @@
             if (en.speed.x > 0 || en.speed.x < 0) {
                 if (boundYSortArr[en.currPos + mapArray[1].length].type == 3 || boundYSortArr[en.currPos + mapArray[1].length].type == 0 
                     || boundYSortArr[en.currPos - mapArray[1].length].type == 3 || boundYSortArr[en.currPos - mapArray[1].length].type == 0) {
-                    console.log(boundYSortArr[en.currPos+mapArray[1].length]);
                         return true;
                     }
-            } else {
+            } else if(en.speed.y>0||en.speed.y<0) {
                  if (boundYSortArr[en.currPos + 1].type == 3 || boundYSortArr[en.currPos + 1].type == 0 ||
                      boundYSortArr[en.currPos - 1].type == 3 || boundYSortArr[en.currPos - 1].type == 0) {
                     return true;
@@ -719,7 +743,7 @@
             mapPos = setPossDifference(pos, pos1, mapPos);
             var bool = chkMapNoType(mapPos, pos);
             en.currPos = mapPos;
-            if (chkPossNewMoveAi(en) == true || bool == true) {
+            if (chkPossNewMoveAi(en) == true) {
                 //every 5th turn, or if the ghost is at a barrier or if the user changes directions
                 //the ghost needs to recalculate its direction
                 en.recalcDirec = true;
@@ -761,19 +785,27 @@
 
             var positions = [{
                     y: eY - 20,
-                    x: eX
+                    x: eX,
+                    spdX: 0,
+                    spdY: -20
             },
                 {
                     y: eY + 20,
-                    x: eX
+                    x: eX,
+                    spdX: 0,
+                    spdY: 20
             },
                 {
                     y: eY,
-                    x: eX - 20
+                    x: eX - 20,
+                    spdX: -20,
+                    spdY: 0
             },
                 {
                     y: eY,
-                    x: eX + 20
+                    x: eX + 20,
+                    spdX: 20,
+                    spdY: 0
             }];
 
 
@@ -793,19 +825,9 @@
             for (var counter = 0; counter < positions.length; ++counter) {
                 mapPos = setPossDifference(enCurrPos, positions[counter], mapPos);
                 if (!chkMapNoType(mapPos, enCurrPos)) {
-                    if(en.oldSpeed!=en.speed)
-                    {
-                        /*
-                        
-                            WORK OUT A WAY SO THAT THE GHOSTS DON'T GO BACK ON THEMESELVES
-                            CHECK THEIR OLD SPEEDS AGAINST THE NEW ONES?
-                            IF GHOST IS TRYING TO GO BACK THE WAY IT JUST CAME
-                            STOP THAT!!!
-                        
-                        */
-                        numList[counter] = dist(positions[counter].x, positions[counter].y, usrX, usrY);
-                    }
-                }
+                        if((en.speed.y!=-positions[counter].spdY&&en.speed.y!=0)||(en.speed.x!=-positions[counter].spdX&&en.speed.x!=0)){
+                        numList[counter] = dist(positions[counter].x, positions[counter].y+20, usrX, usrY);}
+                    }                    
                 mapPos = mapHolder;
             }
             return (numList);
