@@ -96,11 +96,13 @@
         function enemy(position, speed, type, imgY) {
             this.position = new coOrds(position.x, position.y);
             this.speed = new coOrds(speed.x, speed.y);
+            this.oldSpeed = new coOrds(speed.x, speed.y);
             this.type = type;
-            this.currPos = 0;
+            this.currPos = null;
             this.img = new Image();
             this.img.src = "ImageMap.png";
-            this.scatterSpd = 10;
+            this.scatterValue = 2;
+            this.scatterSpd = 20;
             //incrementing 20 to the x position grabs the next ghost face of that type
             this.imgXPos = 20;
             //incrementing 20 to the y position grabs the next ghost face of a different type
@@ -115,8 +117,6 @@
             this.rightEyes = 120;
             this.upEyes = 20;
 
-            this.blackScatter = 20;
-            this.whiteScatter = 40;
             //this counts every turn taken by the enemy
             //will be helpful in allowing the ghosts better movement
             //will stop need to recalculate path every turn
@@ -125,8 +125,6 @@
             this.recalcDirec = true;
             this.scatterMode = false;
 
-            this.oldX = 0;
-            this.oldY = 0;
             this.updateEyes = function () {
                 if (this.speed.x < 0) {
                     this.imgXPos = this.leftEyes;
@@ -142,6 +140,9 @@
             this.scatterSwitch = function () {
                 if (this.scatterMode) {
                     this.imgYPos = 160;
+                    if (this.enemyTurnCount == this.scatterValue) {
+                        this.imgXPos = 20;
+                    }
                 } else {
                     this.imgYPos = this.storedYPos;
                 }
@@ -163,14 +164,14 @@
         //creating 3 character objects
         //the first 2 are enemies while the third is our hero pac
         var pinky = new enemy({
-            x: 130,
-            y: 250
+            x: 50,
+            y: 610
         }, {
             x: 20,
             y: 0
         }, "enemy", 100);
         var angry = new enemy({
-            x: 130,
+            x: 250,
             y: 350
         }, {
             x: 20,
@@ -193,10 +194,6 @@
             canvas.height = 700;
             canvas.width = 600;
             ctx = canvas.getContext("2d");
-            pinky.oldX = pac.speed.x;
-            pinky.oldY = pac.speed.y;
-            angry.oldX = pac.speed.x;
-            angry.oldY = pac.speed.y;
             popAccBoundArr();
             draw();
         }
@@ -511,6 +508,7 @@
         //chkMapNoType takes in the current position, the value in the array of the possible move
         function chkMapNoType(i, curPos) {
 
+            console.log(boundYSortArr[i]);
             //checks are made to see if the possible move is a barrier  
             //i.e it's not a food or eaten food
             if ((boundYSortArr[i].type != 0) && (boundYSortArr[i].type != 3) && (boundYSortArr[i].type != 10)) {
@@ -571,6 +569,7 @@
 
             //a boolean is returned here indicating that the position is valid
             return false;
+
         }
 
         //posDiff takes in two position objects
@@ -601,6 +600,7 @@
 
             //calcEnMove will compare the distances with the min value
             //it will then move in that direction
+            en.oldSpeed = en.speed;
             calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
         }
 
@@ -608,17 +608,33 @@
         function pinkGhostUpdate(en) {
             enNormalMode(en);
             if (en.recalcDirec == true) {
-                var numAhead = 90;
+                var numAhead = 40;
                 var numList = [];
                 var mathDoer;
                 if (pac.speed.x > 0) {
-                    numList = enemyDistances(en.position.x, en.position.y, pac.position.x + numAhead, pac.position.y, en);
+                    if (pac.position.x + numAhead < 590) {
+                        numList = enemyDistances(en.position.x, en.position.y, pac.position.x + numAhead, pac.position.y, en);
+                    } else {
+                        numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
+                    }
                 } else if (pac.speed.x < 0) {
-                    numList = enemyDistances(en.position.x, en.position.y, pac.position.x - numAhead, pac.position.y, en);
+                    if (pac.position.x - numAhead > 10) {
+                        numList = enemyDistances(en.position.x, en.position.y, pac.position.x - numAhead, pac.position.y, en);
+                    } else {
+                        numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
+                    }
                 } else if (pac.speed.y > 0) {
-                    numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y + numAhead, en);
+                    if (pac.position.y + numAhead < 630) {
+                        numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y + numAhead, en);
+                    } else {
+                        numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
+                    }
                 } else {
-                    numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y - numAhead, en);
+                    if (pac.position.y - numAhead > 10) {
+                        numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y - numAhead, en);
+                    } else {
+                        numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
+                    }
                 }
                 en.recalcDirec = false;
 
@@ -630,25 +646,40 @@
 
                 //calcEnMove will compare the distances with the min value
                 //it will then move in that direction
+                en.oldSpeed = en.speed;
                 calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
             }
 
-            console.log(en.scatterMode);
-
-            if (en.enemyTurnCount >= 25) {
-                en.scatterMode = true;
-                /*
-                    
-                    TEMPORARY SOLUTION TO SCATTERMODE FOR TESTING PURPOSES
-                    
-                */
-                en.enemyTurnCount++;
+            /* if (en.enemyTurnCount >= en.scatterValue) {
+                 en.scatterMode = true;
+                 /*
+                     
+                     TEMPORARY SOLUTION TO SCATTERMODE FOR TESTING PURPOSES
+                     
+                 */
+            /*en.enemyTurnCount++; 
             }
             if (en.enemyTurnCount >= 75) {
                 en.scatterMode = false;
                 en.enemyTurnCount = 0;
-            }
+            }*/
 
+        }
+
+        function chkPossNewMoveAi(en) {
+            if (en.speed.x > 0 || en.speed.x < 0) {
+                if (boundYSortArr[en.currPos + mapArray[1].length].type == 3 || boundYSortArr[en.currPos + mapArray[1].length].type == 0 
+                    || boundYSortArr[en.currPos - mapArray[1].length].type == 3 || boundYSortArr[en.currPos - mapArray[1].length].type == 0) {
+                    console.log(boundYSortArr[en.currPos+mapArray[1].length]);
+                        return true;
+                    }
+            } else {
+                 if (boundYSortArr[en.currPos + 1].type == 3 || boundYSortArr[en.currPos + 1].type == 0 ||
+                     boundYSortArr[en.currPos - 1].type == 3 || boundYSortArr[en.currPos - 1].type == 0) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         function enNormalMode(en) {
@@ -687,16 +718,11 @@
             //coOrdinates of the position to be moved to
             mapPos = setPossDifference(pos, pos1, mapPos);
             var bool = chkMapNoType(mapPos, pos);
-            if ((en.enemyTurnCount % 5 == 0) || bool == true || (en.oldX != pac.speed.x || en.oldY != pac.speed.y)) {
+            en.currPos = mapPos;
+            if (chkPossNewMoveAi(en) == true || bool == true) {
                 //every 5th turn, or if the ghost is at a barrier or if the user changes directions
                 //the ghost needs to recalculate its direction
                 en.recalcDirec = true;
-                if (en.oldX != pac.speed.x) {
-                    en.oldX = pac.speed.x;
-                }
-                if (en.oldY != pac.speed.y) {
-                    en.oldY = pac.speed.y;
-                }
             }
             if (bool == false) {
                 en.updateGhost();
@@ -727,26 +753,27 @@
             }
             //creating a currPos object that stores the current position of the ghost
             //it also stores the fact that it is an enemy
-            var currPos = {
+    
+            var enCurrPos = {
                 y: eY,
                 x: eX
             };
 
             var positions = [{
-                    y: eY - 10,
+                    y: eY - 20,
                     x: eX
             },
                 {
-                    y: eY + 10,
+                    y: eY + 20,
                     x: eX
             },
                 {
                     y: eY,
-                    x: eX - 10
+                    x: eX - 20
             },
                 {
                     y: eY,
-                    x: eX + 10
+                    x: eX + 20
             }];
 
 
@@ -754,7 +781,7 @@
             //using the distance of a line formula
             //the direction with the shortest distance will be chosen
 
-            var mapPos = getMapPos(currPos);
+            var mapPos = getMapPos(enCurrPos);
             //setPossDifference alters mapPos so that it represents the
             //coOrdinates of the position to be moved to
 
@@ -762,10 +789,20 @@
             //mapHolder stores the mapPos in it's current form, mapPos will be altered and
             //and the original value of mapPos is needed to finish the calculations
             var mapHolder = mapPos;
+
             for (var counter = 0; counter < positions.length; ++counter) {
-                mapPos = setPossDifference(currPos, positions[counter], mapPos);
-                if (pac.position.x > en.position.x) {
-                    if (!chkMapNoType(mapPos, currPos)) {
+                mapPos = setPossDifference(enCurrPos, positions[counter], mapPos);
+                if (!chkMapNoType(mapPos, enCurrPos)) {
+                    if(en.oldSpeed!=en.speed)
+                    {
+                        /*
+                        
+                            WORK OUT A WAY SO THAT THE GHOSTS DON'T GO BACK ON THEMESELVES
+                            CHECK THEIR OLD SPEEDS AGAINST THE NEW ONES?
+                            IF GHOST IS TRYING TO GO BACK THE WAY IT JUST CAME
+                            STOP THAT!!!
+                        
+                        */
                         numList[counter] = dist(positions[counter].x, positions[counter].y, usrX, usrY);
                     }
                 }
