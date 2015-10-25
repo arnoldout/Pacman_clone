@@ -1,17 +1,6 @@
 Task List
 *********
-fix scattermode
-{
-set proper variable controlled scattermode
-fix sprite issues
-change name of scattermode as its not technically scattermode
-	it's actually scared mode
-}
-add a real scattermode
-{
-should use same code as current scattermode 
-	but will not have flashing colour of a scared sprite
-}
+
 add superfood and fruit
 {
 attach a bigger score variable to them
@@ -30,7 +19,3 @@ sprites
 sprite the superfood and fruit
 maybe also sprite the score text
 }
-recalc
-{
-add a recalc paramater where the ghost recalculates if user goest through a portal
-}	
