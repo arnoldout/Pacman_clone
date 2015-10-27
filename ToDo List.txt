@@ -1,21 +1,17 @@
 Task List
 *********
 
-add superfood and fruit
-{
-attach a bigger score variable to them
-when superfood is eaten, then code should turn on scared mode
-	this should happen for possibly a predetermined amount of time
-	maybe variable controlled?
-}
-add collisions between pac and ghosts
-{
-add lives when they do collide
-	these will decrease when a collision is made
-	when lies are zero the game will restart or end
-}
 sprites
 {
-sprite the superfood and fruit
+sprite the fruit
 maybe also sprite the score text
+}
+fix AI
+{
+change scattermode and scaremode variable switches to use ghosts move count instead of score
+}
+Add Invincible mode {
+after losing a life, it is unfair to lose another one within a few moves
+	to fix this, implement an invincible mode where pacman cant lose a life
+	this should last at most 2/3 seconds
 }

@@ -22,24 +22,24 @@
 
         var mapArray = [
           [4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5],
-          [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 2],
-          [2, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 2],
           [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+          [2, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 2],
+          [2, 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 2],
           [2, 0, 9, 6, 6, 6, 6, 9, 0, 4, 6, 6, 9, 0, 9, 6, 6, 6, 6, 9, 0, 0, 4, 6, 6, 5, 0, 0, 9, 6, 6, 6, 6, 9, 0, 9, 6, 6, 5, 0, 9, 6, 6, 6, 6, 9, 0, 2],
-          [2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+          [2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 4, 5, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2],
           [3, 6, 5, 0, 9, 6, 6, 9, 0, 2, 0, 4, 6, 6, 6, 6, 6, 5, 0, 9, 0, 4, 8, 7, 8, 7, 5, 0, 9, 0, 4, 6, 6, 6, 6, 6, 5, 0, 2, 0, 9, 6, 6, 9, 0, 4, 6, 3],
           [3, 5, 2, 0, 0, 0, 0, 0, 0, 2, 0, 2, 9, 6, 6, 6, 9, 2, 0, 2, 0, 7, 6, 6, 6, 6, 8, 0, 2, 0, 2, 9, 6, 6, 6, 9, 2, 0, 2, 0, 0, 0, 0, 0, 0, 2, 4, 3],
-          [3, 2, 2, 0, 9, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6, 6, 6, 8, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 7, 6, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6, 6, 9, 0, 2, 2, 3],
-          [3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3],
-          [3, 8, 2, 0, 4, 6, 6, 6, 5, 0, 9, 6, 6, 6, 6, 5, 0, 9, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 9, 0, 9, 0, 4, 6, 6, 6, 6, 9, 0, 4, 6, 6, 6, 5, 0, 2, 7, 3],
-          [9, 6, 8, 0, 2, 4, 6, 5, 2, 0, 2, 9, 6, 6, 9, 2, 0, 2, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 2, 0, 2, 9, 6, 6, 9, 2, 0, 2, 4, 6, 5, 2, 0, 7, 6, 9],
-         [10, 3, 3, 0, 2, 2, 1, 2, 2, 0, 9, 6, 6, 6, 6, 8, 0, 2, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 0, 2, 0, 7, 6, 6, 6, 6, 9, 0, 2, 2, 1, 2, 2, 0, 3, 3, 10],
-          [9, 6, 5, 0, 2, 2, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 1, 2, 2, 0, 4, 6, 9],
-          [3, 5, 2, 0, 2, 7, 6, 8, 2, 0, 4, 6, 5, 0, 4, 6, 6, 8, 0, 3, 3, 3, 3, 3, 6, 6, 6, 6, 8, 0, 7, 6, 6, 5, 0, 4, 6, 5, 0, 2, 7, 6, 8, 2, 0, 2, 4, 3],
+          [3, 2, 2, 0, 9, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6, 6, 6, 8, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 7, 6, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6, 6, 9, 0, 2, 2, 3],
+          [3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3],
+          [3, 8, 2, 0, 4, 6, 6, 6, 5, 0, 9, 6, 6, 6, 6, 5, 0, 9, 0, 4, 6, 6, 6, 16, 16, 16, 6, 6, 5, 0, 9, 0, 4, 6, 6, 6, 6, 9, 0, 4, 6, 6, 6, 5, 0, 2, 7, 3],
+          [9, 6, 8, 0, 2, 4, 6, 5, 2, 0, 2, 9, 6, 6, 9, 2, 0, 2, 0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 2, 0, 2, 0, 2, 9, 6, 6, 9, 2, 0, 2, 4, 6, 5, 2, 0, 7, 6, 9],
+         [10, 3, 3, 0, 2, 2, 1, 2, 2, 0, 9, 6, 6, 6, 6, 8, 0, 2, 0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 2, 0, 2, 0, 7, 6, 6, 6, 6, 9, 0, 2, 2, 1, 2, 2, 0, 3, 3, 10],
+          [9, 6, 5, 0, 2, 2, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 1, 2, 2, 0, 4, 6, 9],
+          [3, 5, 2, 0, 2, 7, 6, 8, 2, 0, 4, 6, 5, 0, 4, 6, 6, 8, 0, 7, 6, 6, 6, 6, 6, 6, 6, 6, 8, 0, 7, 6, 6, 5, 0, 4, 6, 5, 0, 2, 7, 6, 8, 2, 0, 2, 4, 3],
           [3, 2, 2, 0, 7, 6, 6, 6, 8, 0, 2, 11, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 11, 2, 0, 7, 6, 6, 6, 8, 0, 2, 2, 3],
           [3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 2, 0, 4, 6, 5, 0, 4, 6, 6, 6, 6, 6, 6, 5, 0, 4, 6, 5, 0, 2, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3],
           [3, 2, 2, 0, 9, 0, 11, 0, 11, 0, 2, 2, 2, 0, 2, 0, 2, 11, 2, 0, 2, 4, 6, 6, 6, 6, 5, 2, 0, 2, 11, 2, 0, 2, 0, 2, 2, 2, 0, 11, 0, 11, 0, 9, 0, 2, 2, 3],
-          [3, 2, 2, 0, 2, 0, 2, 0, 2, 0, 2, 12, 2, 0, 2, 0, 2, 12, 2, 0, 2, 2, 1, 1, 1, 1, 2, 2, 0, 2, 12, 2, 0, 2, 0, 2, 12, 2, 0, 2, 0, 2, 0, 2, 0, 2, 2, 3],
+          [3, 2, 2, 13, 2, 0, 2, 0, 2, 0, 2, 12, 2, 0, 2, 0, 2, 12, 2, 0, 2, 2, 1, 1, 1, 1, 2, 2, 0, 2, 12, 2, 0, 2, 0, 2, 12, 2, 0, 2, 0, 2, 0, 2, 13, 2, 2, 3],
           [3, 2, 2, 0, 2, 0, 9, 0, 9, 0, 7, 6, 8, 0, 9, 0, 7, 6, 8, 0, 2, 2, 1, 1, 1, 1, 2, 2, 0, 7, 6, 8, 0, 9, 0, 7, 6, 8, 0, 12, 0, 12, 0, 2, 0, 2, 2, 3],
           [3, 2, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 1, 1, 1, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 2, 3],
           [3, 2, 2, 0, 9, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 2, 2, 1, 1, 1, 1, 2, 2, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 9, 0, 2, 2, 3],
@@ -59,11 +59,11 @@
           [7, 6, 6, 6, 6, 5, 0, 2, 7, 6, 6, 5, 3, 2, 2, 3, 4, 6, 6, 8, 2, 0, 4, 6, 6, 6, 6, 8],
           [3, 6, 6, 6, 5, 2, 0, 2, 4, 6, 6, 8, 3, 7, 8, 3, 7, 6, 6, 5, 2, 0, 2, 4, 6, 6, 6, 9],
           [3, 3, 3, 3, 2, 2, 0, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 0, 2, 2, 3, 3, 3, 3],
-          [3, 6, 6, 6, 8, 2, 0, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 0, 2, 7, 6, 6, 6, 3],
-          [9, 6, 6, 6, 6, 8, 0, 7, 8, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 8, 0, 7, 6, 6, 6, 6, 3],
-         [10, 3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 10],
-          [9, 6, 6, 6, 6, 5, 0, 4, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 5, 0, 4, 6, 6, 6, 6, 9],
-          [3, 6, 6, 6, 5, 2, 0, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 0, 2, 4, 6, 6, 6, 3],
+          [3, 6, 6, 6, 8, 2, 0, 2, 2, 3, 4, 6, 6, 16, 16, 16, 6, 5, 3, 2, 2, 0, 2, 7, 6, 6, 6, 3],
+          [9, 6, 6, 6, 6, 8, 0, 7, 8, 3, 2, 3, 3, 3, 3, 3, 3, 2, 3, 7, 8, 0, 7, 6, 6, 6, 6, 3],
+         [10, 3, 3, 3, 3, 3, 0, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 0, 3, 3, 3, 3, 3, 10],
+          [9, 6, 6, 6, 6, 5, 0, 4, 5, 3, 2, 3, 3, 3, 3, 3, 3, 2, 3, 4, 5, 0, 4, 6, 6, 6, 6, 9],
+          [3, 6, 6, 6, 5, 2, 0, 2, 2, 3, 7, 6, 6, 6, 6, 6, 6, 8, 3, 2, 2, 0, 2, 4, 6, 6, 6, 3],
           [3, 3, 3, 3, 2, 2, 0, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 0, 2, 2, 3, 3, 3, 3],
           [3, 6, 6, 6, 8, 2, 0, 2, 2, 3, 4, 6, 6, 6, 6, 6, 6, 5, 3, 2, 2, 0, 2, 7, 6, 6, 6, 3],
           [9, 6, 6, 6, 6, 8, 0, 7, 8, 3, 7, 6, 6, 5, 4, 6, 6, 8, 3, 7, 8, 0, 7, 6, 6, 6, 6, 5],
@@ -80,6 +80,8 @@
           [7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 8]
       ];
 
+
+        var currentMap;
         //boundYSortArr will hold the processed objects that are formed from the 2-dim map array
         var boundYSortArr = [];
 
@@ -90,6 +92,7 @@
         //global score variable, is incremented when a user eats food
         var score = 0;
 
+        var portalChannel;
         //opnClsBool controls the motion of pacmans mouth movement
         //when 0 his mouth is open
         //when 1 his mouth is closed
@@ -113,16 +116,42 @@
             this.speed = new coOrds(speed.x, speed.y);
             this.type = type;
             this.currPos = 0;
+            this.inGame = true;
+            this.lives = 3;
+            this.dead = false;
+            this.img = new Image();
+            this.img.src = "ImageMap.png";
 
             this.updatePacman = function () {
-                this.position.x += this.speed.x;
-                this.position.y += this.speed.y;
+                if (this.dead == false) {
+                    this.position.x += this.speed.x;
+                    this.position.y += this.speed.y;
+                    this.drawLives();   
+                }
+            }
+            this.reset = function () {
+                this.lives--;
+                if (this.lives <= 0) {
+                    this.dead = true;
+                }
+            }
+            this.drawLives = function () {
+                /*
+                    PERFECT OPPORTUNITY TO BRING IN NON WHOLE CANVAS CLEARING
+                    BEING ABLE TO ONLY REDRAW THIS WHEN NEEDED WOULD SAVE TIME
+                */
+                for(var liveCount = 0; liveCount < this.lives; liveCount++)
+                {
+                    ctx.drawImage(this.img, 80, 160, 20, 20, 110+(liveCount*20), 570, 40, 40);
+                }
+                //ctx.drawImage(en.img, en.imgXPos, en.imgYPos, en.imgW, en.imgH, en.position.x - 20, en.position.y - 20, en.sprW, en.sprH);
             }
         }
 
         function enemy(position, speed, type, imgY) {
             this.position = new coOrds(position.x, position.y);
             this.speed = new coOrds(speed.x, speed.y);
+            this.strtingPos = new coOrds(510, 210);
             this.type = type;
             this.currPos = null;
             this.img = new Image();
@@ -153,6 +182,9 @@
             this.scaredMode = false;
             this.scatterMode = false;
 
+            this.inGame = false;
+            this.isActive = false;
+
             this.updateEyes = function () {
                 if (this.speed.x < 0) {
                     this.imgXPos = this.leftEyes;
@@ -166,7 +198,7 @@
             }
 
             this.scatterModeSwitcher = function () {
-                if (score % 20 == 0) {
+                if (score % 20 == 0 && this.scatterCounter > 4) {
                     this.scatterMode = true;
                     this.scatterTurnOffNum = score + this.scatterCounter;
                 } else if (score == this.scatterTurnOffNum) {
@@ -179,15 +211,14 @@
 
             this.scaredSwitch = function () {
                 if (this.scaredMode) {
-                    if (this.enemyTurnCount+1 == this.scareValue) {
+                    if (this.enemyTurnCount + 1 == this.scareValue) {
                         this.imgXPos = 40;
                     }
                     this.imgYPos = 160;
                     this.scareSpd = -this.scareSpd;
-                    
-                    if(this.enemyTurnCount>10)
-                    {
-                        this.scaredMode = false;
+
+                    if (this.enemyTurnCount > 10) {
+                        this.updateScaredMode(false);
                         this.updateGhost();
                     }
                 } else {
@@ -196,16 +227,21 @@
                 }
             }
             this.updateGhost = function (moveBool) {
-                this.scaredSwitch();
-                if (this.scatterCounter > 4) {
+                if (this.isActive) {
+                    this.scaredSwitch();
                     this.scatterModeSwitcher();
+                    if (moveBool == true) {
+                        this.position.x += this.speed.x;
+                        this.position.y += this.speed.y;
+                    }
+                    if (this.scaredMode) {
+                        this.imgXPos += this.scareSpd;
+                    }
                 }
-                if (moveBool == true) {
-                    this.position.x += this.speed.x;
-                    this.position.y += this.speed.y;
-                }
-                if (this.scaredMode) {
-                    this.imgXPos += this.scareSpd;
+            }
+            this.updateScaredMode = function (modeBool) {
+                if (this.inGame) {
+                    this.scaredMode = modeBool;
                 }
             }
         }
@@ -213,17 +249,17 @@
         //creating 3 character objects
         //the first 2 are enemies while the third is our hero pac
         var pinky = new enemy({
-            x: 50,
-            y: 50
+            x: 450,
+            y: 270
         }, {
             x: 20,
             y: 0
         }, "enemy", 100);
         var angry = new enemy({
-            x: 290,
-            y: 370
+            x: 530,
+            y: 270
         }, {
-            x: 20,
+            x: -20,
             y: 0
         }, "enemy", 80);
         var pac = new pacman({
@@ -234,14 +270,37 @@
             y: 0
         }, "pac");
 
-        init();
-
+        init(mapArray, {
+            x: 450,
+            y: 270
+        }, {
+            x: 530,
+            y: 270
+        }, {
+            x: 750,
+            y: 210
+        }, {
+            x: 510,
+            y: 210
+        }, 2);
+        //init(mapArray1, {x:310, y:310}, {x:350, y:330}, {x:250, y:250}, {x:350, y:270}, 5);
         //the init function initialises the canvas as well as calling the functions to popAccBoundArr and the draw function
-        function init() {
+        function init(currentMapVal, pinkyPos, angryPos, pacPos, strtPos, corridorDist) {
             //init canvas
+            currentMap = currentMapVal;
             canvas = document.getElementById("canvasOne");
             canvas.height = 700;
             canvas.width = 1000;
+
+            boundYSortArr = [];
+
+            portalChannel = corridorDist;
+            pac.position = pacPos;
+            pinky.position = pinkyPos;
+            pinky.strtingPos = strtPos;
+            angry.position = angryPos;
+            angry.strtingPos = strtPos;
+
             ctx = canvas.getContext("2d");
             popAccBoundArr();
             draw();
@@ -278,6 +337,14 @@
             update();
             pcDirctnSwtch();
             drawScore();
+
+
+            //UNACTIVATED CODE FOR SWITCHING ON BONUS LEVEL
+            /*if(score==30)
+            {
+                score++;
+                init(mapArray1, {x:310, y:310}, {x:350, y:330}, {x:250, y:250}, {x:350, y:270}, 5);   
+            }*/
         }
 
         function drawScore() {
@@ -323,7 +390,7 @@
             }
             //down key press
             else if (press == 40 || press == 83) {
-                if ((boundYSortArr[pac.currPos + mapArray[1].length].type == 3 || boundYSortArr[pac.currPos + mapArray[1].length].type == 0 || boundYSortArr[pac.currPos + mapArray[1].length].type == 13)) {
+                if ((boundYSortArr[pac.currPos + currentMap[1].length].type == 3 || boundYSortArr[pac.currPos + currentMap[1].length].type == 0 || boundYSortArr[pac.currPos + currentMap[1].length].type == 13)) {
                     pac.speed.x = 0;
                     pac.speed.y = 20;
                     notPressed = false
@@ -334,7 +401,7 @@
             }
             //up key press
             else if (press == 38 || press == 87) {
-                if ((boundYSortArr[pac.currPos - mapArray[1].length].type == 3 || boundYSortArr[pac.currPos - mapArray[1].length].type == 0 || boundYSortArr[pac.currPos - mapArray[1].length].type == 13)) {
+                if ((boundYSortArr[pac.currPos - currentMap[1].length].type == 3 || boundYSortArr[pac.currPos - currentMap[1].length].type == 0 || boundYSortArr[pac.currPos - currentMap[1].length].type == 13)) {
                     pac.speed.x = 0;
                     pac.speed.y = -20;
                     notPressed = false
@@ -430,6 +497,9 @@
             usrUpdate(pac);
             pinkGhostUpdate(pinky);
             redGhostUpdate(angry);
+            if (chkCharacterCollisions(pac, pinky) || chkCharacterCollisions(pac, angry)) {
+                pac.reset();
+            }
         }
 
         //usrUpdate takes in a character object
@@ -478,7 +548,7 @@
             //setPossDifference alters mapPos so that it represents the
             //coOrdinates of the position to be moved to
             mapPos = setPossDifference(pos, pos1, mapPos);
-            bool = chkMapNoType(mapPos, pos);
+            bool = chkMapNoType(mapPos, pos, pac);
 
             if (bool) {
                 pac.currPos = mapPos;
@@ -486,15 +556,6 @@
                 //the amount of the speed
                 pac.updatePacman();
             }
-
-
-            /*
-                MAKES MORE SENSE LOGICALLY TO RETURN A TRUE IF 
-                MOVE IS VALID
-                
-                CHANGE THIS!
-            
-            */
         }
 
         //this function loops through the array, it first finds the row of the current pacman position
@@ -503,7 +564,7 @@
             for (mapPos = 0; mapPos < boundYSortArr.length; ++mapPos) {
                 //if the column is not correct, add a the length of a row to mapPos so that it gets the next row 
                 if (curPos.y != boundYSortArr[mapPos].y) {
-                    mapPos += mapArray[1].length - 1;
+                    mapPos += currentMap[1].length - 1;
                     //to get to this part of the code, the search would have to find the row of pacman
                     //at this point, we search through this row to find it's exact location
                 } else if (curPos.x == boundYSortArr[mapPos].x) {
@@ -533,10 +594,10 @@
             } else {
                 //if up then pacman needs to shift the length of a row in the 2-dim array
                 if (curPos.y > possPos.y) {
-                    mapPos -= mapArray[0].length;
+                    mapPos -= currentMap[0].length;
                     //otherwise he needs to shift back the same length as he is going down
                 } else {
-                    mapPos += mapArray[0].length;
+                    mapPos += currentMap[0].length;
                 }
             }
             //at this point, the position that pacman wants to move in is known in the array
@@ -556,20 +617,38 @@
             boundYSortArr[pos].type = newT;
         }
 
+        function chkCharacterCollisions(char1, char2) {
+            if (char1.currPos == char2.currPos || char1.currPos == char2.currPos - 1 || char1.currPos == char2.currPos + 1 || char1.currPos == char2.currPos - currentMap[1].length || char1.currPos == char2.currPos - currentMap[1].length) {
+                return true;
+            }
+            return false;
+        }
 
         //chkMapNoType takes in the current position, the value in the array of the possible move
-        function chkMapNoType(i, curPos) {
-
+        function chkMapNoType(i, curPos, en) {
+            if (curPos.name != "pac") {
+                if (boundYSortArr[i].type == 16) {
+                    if (en.inGame == false) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                //check if the possible route leads down to the portal corridor
+                if (!(i - portalChannel < 1 || i + portalChannel > currentMap[1].length)) {
+                    if (boundYSortArr[i + portalChannel].type == 10 || boundYSortArr[i - portalChannel].type == 10) {
+                        return false;
+                    }
+                }
+            }
             //checks are made to see if the possible move is a barrier  
             //i.e it's not a food or eaten food
+
             if ((boundYSortArr[i].type != 0) && (boundYSortArr[i].type != 3) && (boundYSortArr[i].type != 10) && (boundYSortArr[i].type != 13)) {
 
                 //if this is entered, then the move is invalid immediately
                 //this is a barrier       
 
-                /*
-                    SWAP TRUE AND FALSE TO MAKE MORE SENSE
-                */
                 //a boolean is returned here stating that the position is invalid
                 return false;
                 //if the position is a food place it is valid for all characters to move to
@@ -586,10 +665,11 @@
                     } else if (boundYSortArr[i].type == 13) {
                         boundYSortArr[i].type = 3;
                         changeMapType(i, 3);
-                        angry.scaredMode = true;
-                        pinky.scaredMode = true;
+                        angry.updateScaredMode(true);
+                        pinky.updateScaredMode(true);
                         updateScore(5);
                     }
+
                     //a check here tries to determine if the block is possibly a portal
                     //if it is then code needs to address that
                     if (boundYSortArr[i].type == 10) {
@@ -599,13 +679,13 @@
                         //we now need to see if it is a portal on the left or the right
                         //if on the left, we need to jump pacman to the far right hand side
                         if (boundYSortArr[i].x <= 30) {
-                            pac.position.x = boundYSortArr[(i + mapArray[0].length) - 1].x;
+                            pac.position.x = boundYSortArr[(i + currentMap[0].length) - 1].x;
 
                             //a check on the state of the food at the other side of the portal is done
                             //an error occurs when entering portals where the first food is not eaten
                             //this checks that and makes sure that it is eaten
-                            if (boundYSortArr[i + mapArray[1].length - 2].type == 0) {
-                                changeMapType(i + mapArray[1].length - 2, 3);
+                            if (boundYSortArr[i + currentMap[1].length - 2].type == 0) {
+                                changeMapType(i + currentMap[1].length - 2, 3);
                                 //score is updated also
                                 updateScore(1);
                             }
@@ -617,8 +697,8 @@
                             //a check on the state of the food at the other side of the portal is done
                             //an error occurs when entering portals where the first food is not eaten
                             //this checks that and makes sure that it is eaten
-                            if (boundYSortArr[i - mapArray[1].length + 3].type == 0) {
-                                changeMapType(i - mapArray[1].length + 3, 3);
+                            if (boundYSortArr[i - currentMap[1].length + 3].type == 0) {
+                                changeMapType(i - currentMap[1].length + 3, 3);
                                 updateScore(1);
                             }
                         }
@@ -647,58 +727,12 @@
 
         //this function is effectively the AI of the ghost
         function redGhostUpdate(en) {
-            enNormalMode(en);
-            var numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
-            var mathDoer;
-
-            if (en.scaredMode || en.scatterMode) {
-                mathDoer = Math.max.apply(null, numList);
-            } else {
-                mathDoer = Math.min.apply(null, numList);
-            }
-
-            //calcEnMove will compare the distances with the min value
-            //it will then move in that direction
-            calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
-        }
-
-        //this function is the AI of the pink ghost
-        function pinkGhostUpdate(en) {
-            enNormalMode(en);
-            if (en.recalcDirec == true) {
-                var numAhead = 80;
-                var numList = [];
+            if (en.inGame) {
+                enNormalMode(en);
+                var numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
                 var mathDoer;
-                //this part will send the co-ordinates of the enemy and of the variable set position in front of pacman
-                //unless pacman is to close to the end of the map, in that case, pacman's current position is passed instead
-                if (pac.speed.x > 0) {
-                    if (pac.position.x + numAhead < 590) {
-                        numList = enemyDistances(en.position.x, en.position.y, pac.position.x + numAhead, pac.position.y, en);
-                    } else {
-                        numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
-                    }
-                } else if (pac.speed.x < 0) {
-                    if (pac.position.x - numAhead > 10) {
-                        numList = enemyDistances(en.position.x, en.position.y, pac.position.x - numAhead, pac.position.y, en);
-                    } else {
-                        numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
-                    }
-                } else if (pac.speed.y > 0) {
-                    if (pac.position.y + numAhead < 630) {
-                        numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y + numAhead, en);
-                    } else {
-                        numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
-                    }
-                } else {
-                    if (pac.position.y - numAhead > 10) {
-                        numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y - numAhead, en);
-                    } else {
-                        numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
-                    }
-                }
-                en.recalcDirec = false;
 
-                if (en.scaredMode || en.scatterMode == true) {
+                if (en.scaredMode || en.scatterMode) {
                     mathDoer = Math.max.apply(null, numList);
                 } else {
                     mathDoer = Math.min.apply(null, numList);
@@ -707,13 +741,81 @@
                 //calcEnMove will compare the distances with the min value
                 //it will then move in that direction
                 calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
+            } else if (score >= 5) {
+                en.isActive = true;
+                enNormalMode(en);
+                numList = enemyDistances(en.position.x, en.position.y, 510, 210, en);
+                mathDoer = Math.min.apply(null, numList);
+                calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en)
+                if (en.position.x == 510 && en.position.y == 210) {
+                    en.inGame = true;
+                }
+            }
+        }
+
+        //this function is the AI of the pink ghost
+        function pinkGhostUpdate(en) {
+            if (en.inGame) {
+                enNormalMode(en);
+                if (en.recalcDirec == true) {
+                    var numAhead = 80;
+                    var numList = [];
+                    var mathDoer;
+                    //this part will send the co-ordinates of the enemy and of the variable set position in front of pacman
+                    //unless pacman is to close to the end of the map, in that case, pacman's current position is passed instead
+                    if (pac.speed.x > 0) {
+                        if (pac.position.x + numAhead < 590) {
+                            numList = enemyDistances(en.position.x, en.position.y, pac.position.x + numAhead, pac.position.y, en);
+                        } else {
+                            numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
+                        }
+                    } else if (pac.speed.x < 0) {
+                        if (pac.position.x - numAhead > 10) {
+                            numList = enemyDistances(en.position.x, en.position.y, pac.position.x - numAhead, pac.position.y, en);
+                        } else {
+                            numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
+                        }
+                    } else if (pac.speed.y > 0) {
+                        if (pac.position.y + numAhead < 630) {
+                            numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y + numAhead, en);
+                        } else {
+                            numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
+                        }
+                    } else {
+                        if (pac.position.y - numAhead > 10) {
+                            numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y - numAhead, en);
+                        } else {
+                            numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
+                        }
+                    }
+                    en.recalcDirec = false;
+
+                    if (en.scaredMode || en.scatterMode == true) {
+                        mathDoer = Math.max.apply(null, numList);
+                    } else {
+                        mathDoer = Math.min.apply(null, numList);
+                    }
+
+                    //calcEnMove will compare the distances with the min value
+                    //it will then move in that direction
+                    calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
+                }
+            } else if (score >= 50) {
+                en.isActive = true;
+                enNormalMode(en);
+                numList = enemyDistances(en.position.x, en.position.y, 510, 210, en);
+                mathDoer = Math.min.apply(null, numList);
+                calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en)
+                if (en.position.x == 510 && en.position.y == 210) {
+                    en.inGame = true;
+                }
             }
 
         }
 
         function chkPossNewMoveAi(en) {
             if (en.speed.x > 0 || en.speed.x < 0) {
-                if (boundYSortArr[en.currPos + mapArray[1].length].type == 3 || boundYSortArr[en.currPos + mapArray[1].length].type == 0 || boundYSortArr[en.currPos + mapArray[1].length].type == 13 || boundYSortArr[en.currPos - mapArray[1].length].type == 3 || boundYSortArr[en.currPos - mapArray[1].length].type == 0 || boundYSortArr[en.currPos - mapArray[1].length].type == 13) {
+                if (boundYSortArr[en.currPos + currentMap[1].length].type == 3 || boundYSortArr[en.currPos + currentMap[1].length].type == 0 || boundYSortArr[en.currPos + currentMap[1].length].type == 13 || boundYSortArr[en.currPos - currentMap[1].length].type == 3 || boundYSortArr[en.currPos - currentMap[1].length].type == 0 || boundYSortArr[en.currPos - currentMap[1].length].type == 13) {
                     return true;
                 }
             } else if (en.speed.y > 0 || en.speed.y < 0) {
@@ -760,7 +862,7 @@
             //setPossDifference alters mapPos so that it represents the
             //coOrdinates of the position to be moved to
             mapPos = setPossDifference(pos, pos1, mapPos);
-            var bool = chkMapNoType(mapPos, pos);
+            var bool = chkMapNoType(mapPos, pos, en);
             en.currPos = mapPos;
             if (chkPossNewMoveAi(en) == true) {
                 //every 5th turn, or if the ghost is at a barrier or if the user changes directions
@@ -840,7 +942,7 @@
 
             for (var counter = 0; counter < positions.length; ++counter) {
                 mapPos = setPossDifference(enCurrPos, positions[counter], mapPos);
-                if (chkMapNoType(mapPos, enCurrPos)) {
+                if (chkMapNoType(mapPos, enCurrPos, en)) {
                     if ((en.speed.y != -positions[counter].spdY && en.speed.y != 0) || (en.speed.x != -positions[counter].spdX && en.speed.x != 0)) {
                         numList[counter] = dist(positions[counter].x, positions[counter].y + 20, usrX, usrY);
                     }
@@ -883,8 +985,8 @@
         function popAccBoundArr() {
             var x = 20,
                 y = 10;
-            for (var i = 0; i < mapArray.length; ++i) {
-                var inner = mapArray[i];
+            for (var i = 0; i < currentMap.length; ++i) {
+                var inner = currentMap[i];
                 y += 20;
                 x = 30;
                 for (var j = 0; j < inner.length; ++j) {
@@ -912,7 +1014,7 @@
                 case 0:
                     ctx.beginPath();
                     ctx.fillStyle = "rgb(255,169,164)";
-                    ctx.arc(boundYSortArr[i].x, boundYSortArr[i].y, 3, 0, 2 * Math.PI, false);
+                    ctx.arc(boundYSortArr[i].x, boundYSortArr[i].y, 2, 0, 2 * Math.PI, false);
                     ctx.lineWidth = 0;
                     ctx.fill();
                     ctx.strokeStyle = "rgb(24,202,230)";
@@ -1055,16 +1157,25 @@
                 case 14:
                     ctx.beginPath();
                     ctx.strokeStyle = "rgb(32,32,224)";
-                    ctx.moveTo(boundYSortArr[i].x-5, boundYSortArr[i].y);
-                    ctx.lineTo(boundYSortArr[i].x+20, boundYSortArr[i].ya);
+                    ctx.moveTo(boundYSortArr[i].x - 5, boundYSortArr[i].y);
+                    ctx.lineTo(boundYSortArr[i].x + 20, boundYSortArr[i].ya);
                     ctx.stroke();
                     ctx.closePath();
                     break;
                 case 15:
                     ctx.beginPath();
                     ctx.strokeStyle = "rgb(32,32,224)";
-                    ctx.moveTo(boundYSortArr[i].x-20, boundYSortArr[i].y);
-                    ctx.lineTo(boundYSortArr[i].x+5, boundYSortArr[i].y);
+                    ctx.moveTo(boundYSortArr[i].x - 20, boundYSortArr[i].y);
+                    ctx.lineTo(boundYSortArr[i].x + 5, boundYSortArr[i].y);
+                    ctx.stroke();
+                    ctx.closePath();
+                    break;
+
+                case 16:
+                    ctx.beginPath();
+                    ctx.strokeStyle = "rgb(255,60,60)";
+                    ctx.moveTo(boundYSortArr[i].x - 20, boundYSortArr[i].y);
+                    ctx.lineTo(boundYSortArr[i].x + 20, boundYSortArr[i].y);
                     ctx.stroke();
                     ctx.closePath();
                     break;
