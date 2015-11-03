@@ -120,8 +120,8 @@
         //objectStrtPos is an array that stores needed information for when the user loses a life
         //such as the AI's starting position, and the user's starting position
         var objectStrtPos = [];
-        
-        
+
+
         //deadloop is used in the dead pacman animation, as there are 12 sprites in that animation, deadloop iterates every
         //new frame, and when it hits 12, it is used to close the function and return to the game
         var deadLoop = 0;
@@ -486,7 +486,7 @@
 
         //dotAnim handles the animation needed for the homeScreen
         //namely that of the animated text and it also calls the ghost movement function
-        
+
         /*
             the two "menu" parameters are ghosts, the pX and aX are their current speeds
             num controls which dot on the menu to change the colour of
@@ -585,7 +585,7 @@
             //draw is called which controls most of the game, it calls most functions, and draws everything to the screen
             draw();
         }
-        
+
         function drawDeadPacman() {
 
             //this draws the canvas rectangle
@@ -644,6 +644,9 @@
             }, 100);
         }
 
+        //this function is called when the game wants to restart
+        //used primarily when moving from highscore to in game
+        //and also when the game runs out of food and needs to get some more
         function restartGame(pinkyPos, angryPos, pacPos, strtPos, nMapArr, corridorDis) {
             if (currentMap != nMapArr) {
                 currentMap = nMapArr;
@@ -662,10 +665,12 @@
             angry.strtingPos.y = strtPos.y;
             pinky.reset();
             angry.reset();
+            //if restart is called and pac is dead, then the score and pacman is reset
             if (pac.dead) {
                 score = 0;
                 pac.reset();
             }
+            //emptying the objectStrtPos array and calling init which will repopulate objectStrtPos with new values
             objectStrtPos = [];
             init(nMapArr, pinkyPos, angryPos, pacPos, strtPos, corridorDis);
         }
@@ -995,6 +1000,7 @@
         //takes in a value and adds it to the score
         function updateScore(i) {
             score += i;
+            //score is checked against the amount of food left, if food amount is empty, then the map will be refilled by calling restartGame
             if (currGridScrVal <= 0) {
                 canvas.width = canvas.width;
                 pac.stunned = true;
@@ -1015,14 +1021,16 @@
         //this allows me to simply check each characters current grid number against 
         //each other for accurate collision detection
         function chkCharacterCollisions(char1, char2) {
-            if (char1.currPos == char2.currPos) {
-                if (char2.scaredMode == true && char1.type == "pac") {
-                    canvas.width = canvas.width;
-                    char2.deadMode = true;
-                    char2.inGame = false;
-                    return false;
+            if (!char2.deadMode) {
+                if (char1.currPos == char2.currPos) {
+                    if (char2.scaredMode == true && char1.type == "pac") {
+                        canvas.width = canvas.width;
+                        char2.deadMode = true;
+                        char2.inGame = false;
+                        return false;
+                    }
+                    return true;
                 }
-                return true;
             }
             return false;
         }
@@ -1133,32 +1141,65 @@
             }
         }
 
-
-        //this function is effectively the AI of the ghost
+        /*
+            The main way the AI works is that it calculates the distance of the line between 
+            the ghost's possible moves and some point on the map. I check the validity of a move up, down,
+            left and right, and then calculate the distance between only the valid moves and the point on the map.
+            
+            The move is also not calculated every move, thee ghost only recalculates when theres an opening on the map.
+            
+            The ghost can also not go back on itself, unless it is scared or scattering.
+            
+            The red ghost moves towards pacman's actual location, while the pink ghost
+            moves towards the co-ordinate 4 moves ahead of pacman. 
+        */
         function redGhostUpdate(en) {
+            //enemyDistances returns a list of numbers, numList is needed to store this list
             var numList;
+            //mathDoer will grab either the highest or lowest distance value (game state dependent) from the numList
             var mathDoer;
+            //collision is checked between the ghost and the user before the ghost moves, and also after the ghost moves
             if (chkCharacterCollisions(pac, en)) {
+                //if there is a collision then a life should be taken, and the death animation should be played
                 pac.reset();
             }
 
+            //provided the ghost is in game (actively hunting pacman) it can move
             if (en.inGame) {
+                //checking for a collision between the two ghosts, if there is no collision then the ghost can move
                 if (!chkCharacterCollisions(pinky, en)) {
                     enNormalMode(en);
                 } else {
+                    //if there is a collision between the ghosts, then the current ghost is told to recalculate its current trajectory 
                     en.recalcDirec = true;
                 }
-                numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
 
-                if (en.scaredMode || en.scatterMode) {
-                    mathDoer = Math.max.apply(null, numList);
-                } else {
-                    mathDoer = Math.min.apply(null, numList);
+                //if red has been told in the last run through that it needs to recalculate it's move, then it will do so here
+                if (en.recalcDirec) {
+                    //enemyDistances is called, it takes in the ghost's position and also a target position, it will then return a list of line distances
+                    numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
+
+                    //if the AI is in scare or scattermode, it needs to move as far away from the target as possible
+                    //in this case I simply calculate the max distance from the target from the list of numbers
+                    if (en.scaredMode || en.scatterMode) {
+                        mathDoer = Math.max.apply(null, numList);
+                        //otherwise the ghost wants to move as closly as it can to it's target
+                        //and so it then just needs to calculate the minimun distance instead
+                    } else {
+                        mathDoer = Math.min.apply(null, numList);
+                    }
+
+                    //calcEnMove will compare the distances with the min or max value
+                    //as math.min/max does not return a position in the array, calcEnMove finds out which direction was chosen
+                    //and then it will move in that direction
+                    calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
                 }
-
-                //calcEnMove will compare the distances with the min value
-                //it will then move in that direction
-                calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
+                //if the ghost is in deadmode, or simply not inGame it needs to move independently of everything else in game
+                //movToSpecLoc is called and the position it must move to is passed down
+                //movToSpecLoc just gives the ghost a different target to the normal pacman
+                //if its dead it needs to return to the cage to spawn back
+                //and if it's not inGame, then it needs to initially move outside the cage
+                //objectStrtPos contains the co-ordinates of both of these locations
             } else if (en.deadMode) {
                 movToSpecLoc(en, numList, mathDoer, objectStrtPos[1]);
             } else if (score >= 5) {
@@ -1168,6 +1209,7 @@
         }
 
         //this function is the AI of the pink ghost
+        //the breakdown of how the ghosts work is shown above the redGhostUpdate
         function pinkGhostUpdate(en) {
             var numList = [];
             var mathDoer;
@@ -1242,6 +1284,7 @@
                 if (!en.deadMode) {
                     en.inGame = true;
                 } else {
+                    console.log(en.position + "" + position);
                     en.deadMode = false;
                     en.inGame = false;
                 }
