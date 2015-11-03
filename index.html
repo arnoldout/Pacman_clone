@@ -138,27 +138,42 @@
             this.currPos = 0;
             //inGame is a boolean used to see if pacman is in the game at the current time or not
             this.inGame = true;
+            //lives keeps the number of retries (or "lives") the user has left until the user loses
             this.lives = 3;
+            //stunned is used to control the canvas when the user dies
+            //without this control, the code continues to draw the game, calculating everything while also killing the game
+            //this looks weird and is not the effect i'm looking for
             this.stunned = false;
+            //dead is turned on when all lives are lost
+            //it will trigger the highscore screen when true
             this.dead = false;
+            //img is linked to my spriteMap
             this.img = new Image();
             this.img.src = "ImageMap.png";
 
 
+            //pacman moves when he's alive
+            //updating his position by way of his speed, which is calculated elsewhere
             this.updatePacman = function () {
                 if (this.dead == false) {
                     this.position.x += this.speed.x;
                     this.position.y += this.speed.y;
                 }
             }
+            //reset is called when a new game is started and also when the user loses a life
+            //it resets the properties needed from the start of the game
             this.reset = function () {
+                //if reset is called and pacman is not dead, a life will be lost
                 if (!this.dead) {
                     this.lives--;
+                    //this sets dead to true should all lives be lost
                     if (this.lives <= 0) {
                         this.dead = true;
                     }
+                    //afterDeathReset is called here, which resets rest of the game
                     afterDeathReset(objectStrtPos[0], objectStrtPos[1], objectStrtPos[2], objectStrtPos[3]);
                 } else {
+                    //if reset is called and pacman is already dead, various needed variables will be reset
                     this.position = new coOrds(position.x, position.y);
                     this.speed = new coOrds(speed.x, speed.y);
                     this.type = type;
@@ -169,11 +184,9 @@
                     this.dead = false;
                 }
             }
+            //this simply draws an image of a life for every life that is left
             this.drawLives = function () {
-                /*
-                    PERFECT OPPORTUNITY TO BRING IN NON WHOLE CANVAS CLEARING
-                    BEING ABLE TO ONLY REDRAW THIS WHEN NEEDED WOULD SAVE TIME
-                */
+                
                 ctx.beginPath();
                 ctx.fillStyle = 'white';
                 ctx.font = "30px Arial";
@@ -185,19 +198,31 @@
             }
         }
 
+        //Enemy is used to create a new enemy object, such as a new ghost
         function enemy(position, speed, type, imgY) {
+            //position is the x and y co-ordinates of this ghost
             this.position = new coOrds(position.x, position.y);
+            //speed is used to control the ghost's movements
             this.speed = new coOrds(speed.x, speed.y);
+            //startingPos is the position that the ghost will move to when it is acive but not in game
+            //it will be a position slightly outside of it's cage
+            //when it hits this position, inGame will be set to true, and the ghost will start to move to pacman instead
             this.strtingPos = new coOrds(510, 210);
+            //type is an identifier for the type of object in use i.e. enemy or pacman
             this.type = type;
+            //currPos is updated every move, it will store the grid position of the enemy
             this.currPos = null;
+            //this is the sprite map image
             this.img = new Image();
             this.img.src = "ImageMap.png";
+            //scareValue triggers the ghost to turn blue and white when scared
             this.scareValue = 2;
+            //this is the value used to change the sprite from blue to white when scared
             this.scareSpd = 20;
             //incrementing 20 to the x position grabs the next ghost face of that type
             this.imgXPos = 20;
-            //incrementing 20 to the y position grabs the next ghost face of a different type
+        
+            //these variables are used to control the sprite position
             this.imgYPos = imgY;
             this.storedYPos = imgY;
             this.imgH = 20;
@@ -213,19 +238,29 @@
             //this counts every turn taken by the enemy
             //will be helpful in allowing the ghosts better movement
             //will stop need to recalculate path every turn
+            
             this.enemyTurnCount = 0;
-
             this.scareConst = 40;
             this.scareAdapt = 0;
 
+            //when true, the AI will recalculate their direction
+            //this is only triggered when there is a new possible move for it, or if it is colliding with another ghost
+            //the AI will never be able to go back on itself unless it is in scared or scatter mode
             this.recalcDirec = true;
+            //these vars are self explantory
+            //when any of the "Modes" are switched on, the ghost will have different behaviour
             this.scaredMode = false;
             this.deadMode = false;
             this.scatterMode = false;
 
+            //these vars are used to control the ghost as it leaves the cage
+            //instead of randomly moving around the cage, it is given a co-ordinate to move toward
+            //located just outside of the cage, when it hits that position, inGame is set to true
+            //isActive is triggered when the user has predetermind score
             this.inGame = false;
             this.isActive = false;
 
+            //this resets lots of variables when called
             this.reset = function () {
                 this.scatterCounter = 7;
                 this.scatterTurnOffNum = 0;
@@ -241,6 +276,8 @@
                 this.deadMode = false;
             }
 
+            //this changes the sprite depending on it's speed
+            //it gives the illusion that the ghost is looking in the direction it is moving toward
             this.updateEyes = function () {
                 if (!this.deadMode) {
                     if (this.speed.x < 0) {
@@ -255,6 +292,7 @@
                 }
             }
 
+            
             this.scatterModeSwitcher = function () {
                 if (this.enemyTurnCount % 20 == 0 && this.scatterCounter > 4 && this.inGame) {
                     this.scatterMode = true;
