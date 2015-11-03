@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
@@ -16,7 +15,7 @@
     <script type="text/javascript">
         //2 canvas variables used in drawing the canvas, theses are integral to the program
         var ctx;
-        var canvas;
+        var canvas = document.getElementById("canvasOne");
 
         //create the map array that will be processed to draw the map on screen
 
@@ -25,11 +24,11 @@
           [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
           [2, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 9, 0, 2],
           [2, 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 2],
-          [2, 0, 9, 6, 6, 6, 6, 9, 0, 4, 6, 6, 9, 0, 9, 6, 6, 6, 6, 9, 0, 0, 4, 6, 6, 5, 0, 0, 9, 6, 6, 6, 6, 9, 0, 9, 6, 6, 5, 0, 9, 6, 6, 6, 6, 9, 0, 2],
-          [2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 4, 5, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-          [3, 6, 5, 0, 9, 6, 6, 9, 0, 2, 0, 4, 6, 6, 6, 6, 6, 5, 0, 9, 0, 4, 8, 7, 8, 7, 5, 0, 9, 0, 4, 6, 6, 6, 6, 6, 5, 0, 2, 0, 9, 6, 6, 9, 0, 4, 6, 3],
-          [3, 5, 2, 0, 0, 0, 0, 0, 0, 2, 0, 2, 9, 6, 6, 6, 9, 2, 0, 2, 0, 7, 6, 6, 6, 6, 8, 0, 2, 0, 2, 9, 6, 6, 6, 9, 2, 0, 2, 0, 0, 0, 0, 0, 0, 2, 4, 3],
-          [3, 2, 2, 0, 9, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6, 6, 6, 8, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 7, 6, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6, 6, 9, 0, 2, 2, 3],
+          [2, 0, 9, 6, 6, 6, 6, 9, 0, 4, 6, 6, 9, 0, 9, 6, 6, 6, 6, 6, 3, 0, 4, 6, 6, 5, 0, 3, 6, 6, 6, 6, 6, 9, 0, 9, 6, 6, 5, 0, 9, 6, 6, 6, 6, 9, 0, 2],
+          [2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+          [3, 6, 5, 0, 9, 6, 6, 9, 0, 2, 0, 4, 6, 6, 6, 6, 6, 5, 0, 9, 0, 4, 8, 2, 2, 7, 5, 0, 9, 0, 4, 6, 6, 6, 6, 6, 5, 0, 2, 0, 9, 6, 6, 9, 0, 4, 6, 3],
+          [3, 5, 2, 0, 0, 0, 0, 0, 0, 2, 0, 2, 9, 6, 6, 6, 9, 2, 0, 2, 0, 2, 6, 3, 3, 6, 2, 0, 2, 0, 2, 9, 6, 6, 6, 9, 2, 0, 2, 0, 0, 0, 0, 0, 0, 2, 4, 3],
+          [3, 2, 2, 0, 9, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6, 6, 6, 8, 0, 12, 0, 7, 6, 6, 6, 6, 8, 0, 12, 0, 7, 6, 6, 6, 6, 6, 8, 0, 7, 6, 6, 6, 6, 9, 0, 2, 2, 3],
           [3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3],
           [3, 8, 2, 0, 4, 6, 6, 6, 5, 0, 9, 6, 6, 6, 6, 5, 0, 9, 0, 4, 6, 6, 6, 16, 16, 16, 6, 6, 5, 0, 9, 0, 4, 6, 6, 6, 6, 9, 0, 4, 6, 6, 6, 5, 0, 2, 7, 3],
           [9, 6, 8, 0, 2, 4, 6, 5, 2, 0, 2, 9, 6, 6, 9, 2, 0, 2, 0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 2, 0, 2, 0, 2, 9, 6, 6, 9, 2, 0, 2, 4, 6, 5, 2, 0, 7, 6, 9],
@@ -46,6 +45,9 @@
           [3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 1, 1, 1, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3],
           [3, 3, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 8, 3, 3, 3, 3, 3, 3, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 8, 3, 3]
       ];
+        
+        //this map is for a buggy bonus level
+        //it is a remake of the original pacman game
         var mapArray1 = [
           [4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5],
           [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
@@ -81,9 +83,15 @@
       ];
 
 
+        //currentMap is used to enable me to make multiple different maps
+        //I simply assign it to the map I want to use now
+        //the rest of the code should be dynamic enough to adjust
         var currentMap;
         //boundYSortArr will hold the processed objects that are formed from the 2-dim map array
         var boundYSortArr = [];
+
+        //this array will store the highscores of past users
+        var highscores = [];
 
         //last press holds the last key pressed by the user, it needs to be global to keep it in scope
         var lastPress;
@@ -92,12 +100,23 @@
         //global score variable, is incremented when a user eats food
         var score = 0;
 
+        //cuurGridScrVal is incremented when the grid is setup up
+        //1 is added to its value whenever the setup search finds a food item
+        //1 is taken away whenever the user eats food
+        //when all the food is eaten, this number will be 0, the code will then reset the map, keeping the current score
+        //effectively creating a new level
+        var currGridScrVal = 0;
+
+        //portal channel is used to stop the AI from going near the portal blocks
         var portalChannel;
         //opnClsBool controls the motion of pacmans mouth movement
         //when 0 his mouth is open
         //when 1 his mouth is closed
         var opnClsBool = 0;
 
+        //objectStrtPos is an array that stores needed information for when the user loses a life
+        //such as the AI's starting position, and the user's starting position
+        var objectStrtPos = [];
 
         //this is an object definition that takes in 2 values and stores them in an object
         //the values passed will be the x/y co-ordinates of another object
@@ -114,25 +133,40 @@
         function pacman(position, speed, type) {
             this.position = new coOrds(position.x, position.y);
             this.speed = new coOrds(speed.x, speed.y);
+            //type is a string used to differentiate between a pacman and an enemy
             this.type = type;
             this.currPos = 0;
+            //inGame is a boolean used to see if pacman is in the game at the current time or not
             this.inGame = true;
             this.lives = 3;
+            this.stunned = false;
             this.dead = false;
             this.img = new Image();
             this.img.src = "ImageMap.png";
+
 
             this.updatePacman = function () {
                 if (this.dead == false) {
                     this.position.x += this.speed.x;
                     this.position.y += this.speed.y;
-                    this.drawLives();   
                 }
             }
             this.reset = function () {
-                this.lives--;
-                if (this.lives <= 0) {
-                    this.dead = true;
+                if (!this.dead) {
+                    this.lives--;
+                    if (this.lives <= 0) {
+                        this.dead = true;
+                    }
+                    afterDeathReset(objectStrtPos[0], objectStrtPos[1], objectStrtPos[2], objectStrtPos[3]);
+                } else {
+                    this.position = new coOrds(position.x, position.y);
+                    this.speed = new coOrds(speed.x, speed.y);
+                    this.type = type;
+                    this.currPos = 0;
+
+                    this.lives = 3;
+                    this.stunned = false;
+                    this.dead = false;
                 }
             }
             this.drawLives = function () {
@@ -140,11 +174,14 @@
                     PERFECT OPPORTUNITY TO BRING IN NON WHOLE CANVAS CLEARING
                     BEING ABLE TO ONLY REDRAW THIS WHEN NEEDED WOULD SAVE TIME
                 */
-                for(var liveCount = 0; liveCount < this.lives; liveCount++)
-                {
-                    ctx.drawImage(this.img, 80, 160, 20, 20, 110+(liveCount*20), 570, 40, 40);
+                ctx.beginPath();
+                ctx.fillStyle = 'white';
+                ctx.font = "30px Arial";
+                ctx.fillText("Lives: ", 400, 680);
+                ctx.closePath();
+                for (var liveCount = 0; liveCount < this.lives; liveCount++) {
+                    ctx.drawImage(this.img, 80, 160, 20, 20, 480 + (liveCount * 20), 650, 40, 40);
                 }
-                //ctx.drawImage(en.img, en.imgXPos, en.imgYPos, en.imgW, en.imgH, en.position.x - 20, en.position.y - 20, en.sprW, en.sprH);
             }
         }
 
@@ -178,52 +215,79 @@
             //will stop need to recalculate path every turn
             this.enemyTurnCount = 0;
 
+            this.scareConst = 40;
+            this.scareAdapt = 0;
+
             this.recalcDirec = true;
             this.scaredMode = false;
+            this.deadMode = false;
             this.scatterMode = false;
 
             this.inGame = false;
             this.isActive = false;
 
+            this.reset = function () {
+                this.scatterCounter = 7;
+                this.scatterTurnOffNum = 0;
+                this.enemyTurnCount = 0;
+                this.recalcDirec = true;
+                this.scaredMode = false;
+                this.scatterMode = false;
+                this.inGame = false;
+                this.isActive = false;
+                this.scareValue = 2;
+                this.scareSpd = 20;
+                this.currPos = null;
+                this.deadMode = false;
+            }
+
             this.updateEyes = function () {
-                if (this.speed.x < 0) {
-                    this.imgXPos = this.leftEyes;
-                } else if (this.speed.x > 0) {
-                    this.imgXPos = this.rightEyes;
-                } else if (this.speed.y > 0) {
-                    this.imgXPos = this.downEyes;
-                } else {
-                    this.imgXPos = this.upEyes;
+                if (!this.deadMode) {
+                    if (this.speed.x < 0) {
+                        this.imgXPos = this.leftEyes;
+                    } else if (this.speed.x > 0) {
+                        this.imgXPos = this.rightEyes;
+                    } else if (this.speed.y > 0) {
+                        this.imgXPos = this.downEyes;
+                    } else {
+                        this.imgXPos = this.upEyes;
+                    }
                 }
             }
 
             this.scatterModeSwitcher = function () {
-                if (score % 20 == 0 && this.scatterCounter > 4) {
+                if (this.enemyTurnCount % 20 == 0 && this.scatterCounter > 4 && this.inGame) {
                     this.scatterMode = true;
                     this.scatterTurnOffNum = score + this.scatterCounter;
-                } else if (score == this.scatterTurnOffNum) {
+                } else if (this.enemyTurnCount == this.scatterTurnOffNum) {
                     this.scatterMode = false;
                 }
-                if (score % 40 == 0) {
+                if (this.enemyTurnCount % 40 == 0) {
                     this.scatterCounter--;
                 }
             }
 
             this.scaredSwitch = function () {
-                if (this.scaredMode) {
+                if (this.scaredMode && this.deadMode == false) {
                     if (this.enemyTurnCount + 1 == this.scareValue) {
                         this.imgXPos = 40;
+
                     }
                     this.imgYPos = 160;
                     this.scareSpd = -this.scareSpd;
 
-                    if (this.enemyTurnCount > 10) {
+                    if (this.enemyTurnCount > this.scareAdapt) {
                         this.updateScaredMode(false);
                         this.updateGhost();
                     }
+                } else if (this.deadMode) {
+                    this.scaredMode = false;
+                    this.imgXPos = 40;
+                    this.imgYPos = 200;
                 } else {
                     this.imgYPos = this.storedYPos;
                     this.enemyTurnCount = 0;
+                    this.scareSpd = 20;
                 }
             }
             this.updateGhost = function (moveBool) {
@@ -242,6 +306,7 @@
             this.updateScaredMode = function (modeBool) {
                 if (this.inGame) {
                     this.scaredMode = modeBool;
+                    this.scareAdapt += this.scareConst;
                 }
             }
         }
@@ -270,81 +335,268 @@
             y: 0
         }, "pac");
 
-        init(mapArray, {
-            x: 450,
-            y: 270
-        }, {
-            x: 530,
-            y: 270
-        }, {
-            x: 750,
-            y: 210
-        }, {
-            x: 510,
-            y: 210
-        }, 2);
+        function homeScreen() {
+
+            canvas.height = 700;
+            canvas.width = 1000;
+            ctx = canvas.getContext("2d");
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            var menuPinky = new enemy({
+                x: 800,
+                y: 450
+            }, {
+                x: -20,
+                y: 0
+            }, "enemy", 80);
+
+            var menuAngry = new enemy({
+                x: 200,
+                y: 550
+            }, {
+                x: 20,
+                y: 0
+            }, "enemy", 100);
+
+
+            var imageObj = new Image();
+            imageObj.src = "PacLogo.png";
+
+            imageObj.onload = function () {
+                ctx.drawImage(imageObj, 190, 50);
+            }
+            ctx.beginPath();
+            ctx.fillStyle = 'pink';
+            ctx.textAlign = 'center';
+            ctx.font = "30px Arial";
+            ctx.fillText("Click to start", 475, 380);
+            ctx.closePath();
+            var pX = menuPinky.speed.x;
+            var aX = menuAngry.speed.x;
+            var num = 1;
+            dotAnim(menuPinky, menuAngry, pX, aX, num);
+
+        }
+
+        var strtGameCntrl = true;
+
+        function dotAnim(menuPinky, menuAngry, pX, aX, num) {
+            if (strtGameCntrl == true) {
+                pX = menuEnMv(pX, menuPinky);
+                enemyDraw(menuPinky);
+                aX = menuEnMv(aX, menuAngry);
+                enemyDraw(menuPinky);
+                enemyDraw(menuAngry);
+                ctx.clearRect(578 + (17 * num), 375, 5, 5);
+                ctx.fillStyle = 'black';
+                ctx.fillRect(568, 370, 100, 20);
+
+                ctx.beginPath();
+                ctx.fillStyle = 'pink';
+                ctx.textAlign = 'center';
+                ctx.font = "30px Arial";
+                ctx.fillText(". . .", 598, 380);
+                ctx.closePath();
+
+                ctx.beginPath();
+                ctx.fillStyle = 'white';
+                ctx.textAlign = 'center';
+                ctx.font = "30px Arial";
+                ctx.fillText(".", 581 + (17 * num), 380);
+                ctx.closePath();
+                num++;
+                setTimeout(function () {
+                    dotAnim(menuPinky, menuAngry, pX, aX, num)
+                }, 150);
+            }
+            if (num == 3) {
+                num = 0;
+            }
+        }
+
+        homeScreen();
+
+        canvas.addEventListener('click', function (event) {
+            if (strtGameCntrl == true) {
+                strtGameCntrl = false;
+                if (!pac.dead) {
+                    canvas.width = canvas.width;
+                    init(mapArray, {
+                        x: 450,
+                        y: 270
+                    }, {
+                        x: 530,
+                        y: 270
+                    }, {
+                        x: 750,
+                        y: 210
+                    }, {
+                        x: 510,
+                        y: 210
+                    }, 2);
+
+                } else {
+                    restartGame(objectStrtPos[0], objectStrtPos[1], objectStrtPos[2], objectStrtPos[3], mapArray, 2);
+                }
+            }
+        }, false);
+
+
         //init(mapArray1, {x:310, y:310}, {x:350, y:330}, {x:250, y:250}, {x:350, y:270}, 5);
         //the init function initialises the canvas as well as calling the functions to popAccBoundArr and the draw function
         function init(currentMapVal, pinkyPos, angryPos, pacPos, strtPos, corridorDist) {
             //init canvas
             currentMap = currentMapVal;
-            canvas = document.getElementById("canvasOne");
-            canvas.height = 700;
-            canvas.width = 1000;
+            pac.stunned = false;
+            objectStrtPos.push(new coOrds(pinkyPos.x, pinkyPos.y));
+            objectStrtPos.push(new coOrds(angryPos.x, angryPos.y));
+            objectStrtPos.push(new coOrds(pacPos.x, pacPos.y));
+            objectStrtPos.push(new coOrds(strtPos.x, strtPos.y));
 
             boundYSortArr = [];
-
             portalChannel = corridorDist;
-            pac.position = pacPos;
-            pinky.position = pinkyPos;
-            pinky.strtingPos = strtPos;
-            angry.position = angryPos;
-            angry.strtingPos = strtPos;
-
-            ctx = canvas.getContext("2d");
             popAccBoundArr();
             draw();
         }
+        var deadLoop = 0;
 
-        //the draw function draws the canvas
-        function draw() {
-            //resetting the canvas width clears the canvas for the next animation frame
-            canvas.width = canvas.width;
+        function drawDeadPacman() {
 
             //this draws the canvas rectangle
             //and fills it with a dark blue colour
+            canvas.height = canvas.height;
             ctx.beginPath()
             ctx.lineWidth = 2;
             ctx.rect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "rgb(0,0,0)";
             ctx.fill();
-            ctx.closePath();
+            ctx.closePath()
+            drawItems();
+            //change pinky to pac
+            ctx.drawImage(pinky.img, 0 + (20 * deadLoop), 240, 20, 20, pac.position.x - 20, pac.position.y - 20, 40, 40);
+            deadLoop++;
+        }
 
-            //drawScore();
-            //keypress events are handled here
-            //the if statement checks the state of the notpressed boolean var
-            //essentially it takes the current key pressed or the last key pressed
-            //and passes that number to a move function that handles either presses
-            if (notPressed == false) {
-                document.addEventListener('keydown', function (event) {
-                    move(event.keyCode);
-                });
-            } else if (notPressed == true) {
-                move(lastPress);
+        function afterDeathReset(pinkyPos, angryPos, pacPos, strtPos) {
+            drawDeadPacman();
+            pac.stunned = true;
+            var intrvl = setInterval(function () {
+                drawDeadPacman();
+
+                if (deadLoop > 12 && pac.dead == false && pac.stunned == true) {
+                    pac.stunned = false;
+
+                    pac.position.x = pacPos.x;
+                    pac.position.y = pacPos.y;
+                    pinky.position.x = pinkyPos.x;
+                    pinky.position.y = pinkyPos.y;
+                    pinky.strtingPos = strtPos;
+                    angry.position.x = angryPos.x;
+                    angry.position.y = angryPos.y;
+                    angry.strtingPos.x = strtPos.x;
+                    angry.strtingPos.y = strtPos.y;
+                    pac.speed.y = 0;
+                    pac.speed.x = 20;
+                    angry.reset();
+                    pinky.reset();
+                    draw();
+                    deadLoop = 0;
+                    clearInterval(intrvl);
+                } else if (pac.dead && deadLoop > 12) {
+                    canvas.width = 1000;
+                    setupLS();
+                    clearInterval(intrvl);
+                }
+            }, 100);
+        }
+
+        function restartGame(pinkyPos, angryPos, pacPos, strtPos, nMapArr, corridorDis) {
+            if (currentMap != nMapArr) {
+                currentMap = nMapArr;
+                portalChannel = corridorDis;
             }
 
-            //call 2 functions
-            update();
-            pcDirctnSwtch();
-            drawScore();
+            deadLoop = 0;
+            pac.position.x = pacPos.x;
+            pac.position.y = pacPos.y;
+            pinky.position.x = pinkyPos.x;
+            pinky.position.y = pinkyPos.y;
+            pinky.strtingPos = strtPos;
+            angry.position.x = angryPos.x;
+            angry.position.y = angryPos.y;
+            angry.strtingPos.x = strtPos.x;
+            angry.strtingPos.y = strtPos.y;
+            pinky.reset();
+            angry.reset();
+            if (pac.dead) {
+                score = 0;
+                pac.reset();
+            }
+            objectStrtPos = [];
+            init(nMapArr, pinkyPos, angryPos, pacPos, strtPos, corridorDis);
+        }
 
+        //the draw function draws the canvas
+        function draw() {
+            if (!pac.stunned) {
 
-            //UNACTIVATED CODE FOR SWITCHING ON BONUS LEVEL
-            /*if(score==30)
-            {
-                score++;
-                init(mapArray1, {x:310, y:310}, {x:350, y:330}, {x:250, y:250}, {x:350, y:270}, 5);   
-            }*/
+                //this draws the canvas rectangle
+                //and fills it with a dark blue colour
+                canvas.height = canvas.height;
+                ctx.beginPath()
+                ctx.lineWidth = 2;
+                ctx.rect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "rgb(0,0,0)";
+                ctx.fill();
+                ctx.closePath();
+
+                //keypress events are handled here
+                //the if statement checks the state of the notpressed boolean var
+                //essentially it takes the current key pressed or the last key pressed
+                //and passes that number to a move function that handles either presses
+                if (notPressed == false) {
+                    document.addEventListener('keydown', function (event) {
+                        move(event.keyCode);
+                    });
+                } else if (notPressed == true) {
+                    move(lastPress);
+                }
+
+                //call 3 functions
+                update();
+                pcDirctnSwtch();
+                drawScore();
+
+                
+                //code for highly buggy bonus level
+                //lots of unexpected bugs occur when using this map
+                //for now I will stick to the map i created 
+                //possibly in the future I may implement this
+               /* if (score == 3000) {
+                    canvas.width = 600;
+                    score++;
+                    boundYSortArr = [];
+                    popAccBoundArr();
+                    objectStrtPos = [];
+                    pac.stunned = true;
+                    currGridScrVal = 0;
+                    setTimeout(function () {
+                        restartGame({
+                            x: 230,
+                            y: 310
+                        }, {
+                            x: 250,
+                            y: 350
+                        }, {
+                            x: 250,
+                            y: 250
+                        }, {
+                            x: 230,
+                            y: 250
+                        }, mapArray1, 5)
+                    }, 500);
+                }*/
+            }
         }
 
         function drawScore() {
@@ -352,62 +604,63 @@
             ctx.beginPath();
             ctx.fillStyle = 'white';
             ctx.font = "30px Arial";
-            ctx.fillText("Score: " + score, 30, 680);
+            ctx.fillText("Score: " + score, 100, 680);
             ctx.closePath();
 
         }
         //this fucntion takes in a number "press"
         //it checks for collisions and then alters the user speeds accordingly
         function move(press) {
+            if (!pac.dead) {
+                //key press handled here
+                //checks collisions to the direction of pacman, 
+                //if it's a valid place to move, speeds are altered
+                //if it would cause a collision, the key will be saved for later and processed at the next available opportunity 
+                //each press is effectively the same, only changing the needed speeds and checking the correct collisions
 
-            //key press handled here
-            //checks collisions to the direction of pacman, 
-            //if it's a valid place to move, speeds are altered
-            //if it would cause a collision, the key will be saved for later and processed at the next available opportunity 
-            //each press is effectively the same, only changing the needed speeds and checking the correct collisions
-
-            //left key press
-            if (press == 37 || press == 65) {
-                if ((boundYSortArr[pac.currPos - 1].type == 3 || boundYSortArr[pac.currPos - 1].type == 0 || boundYSortArr[pac.currPos - 1].type == 13)) {
-                    pac.speed.x = -20;
-                    pac.speed.y = 0;
-                    notPressed = false
-                } else {
-                    lastPress = press;
-                    notPressed = true;
+                //left key press
+                if (press == 37 || press == 65) {
+                    if ((boundYSortArr[pac.currPos - 1].type == 3 || boundYSortArr[pac.currPos - 1].type == 0 || boundYSortArr[pac.currPos - 1].type == 13)) {
+                        pac.speed.x = -20;
+                        pac.speed.y = 0;
+                        notPressed = false
+                    } else {
+                        lastPress = press;
+                        notPressed = true;
+                    }
                 }
-            }
-            //right key press
-            else if (press == 39 || press == 68) {
-                if ((boundYSortArr[pac.currPos + 1].type == 3 || boundYSortArr[pac.currPos + 1].type == 0 || boundYSortArr[pac.currPos + 1].type == 13)) {
-                    pac.speed.x = 20;
-                    pac.speed.y = 0;
-                    notPressed = false
-                } else {
-                    lastPress = press;
-                    notPressed = true;
+                //right key press
+                else if (press == 39 || press == 68) {
+                    if ((boundYSortArr[pac.currPos + 1].type == 3 || boundYSortArr[pac.currPos + 1].type == 0 || boundYSortArr[pac.currPos + 1].type == 13)) {
+                        pac.speed.x = 20;
+                        pac.speed.y = 0;
+                        notPressed = false
+                    } else {
+                        lastPress = press;
+                        notPressed = true;
+                    }
                 }
-            }
-            //down key press
-            else if (press == 40 || press == 83) {
-                if ((boundYSortArr[pac.currPos + currentMap[1].length].type == 3 || boundYSortArr[pac.currPos + currentMap[1].length].type == 0 || boundYSortArr[pac.currPos + currentMap[1].length].type == 13)) {
-                    pac.speed.x = 0;
-                    pac.speed.y = 20;
-                    notPressed = false
-                } else {
-                    lastPress = press;
-                    notPressed = true;
+                //down key press
+                else if (press == 40 || press == 83) {
+                    if ((boundYSortArr[pac.currPos + currentMap[1].length].type == 3 || boundYSortArr[pac.currPos + currentMap[1].length].type == 0 || boundYSortArr[pac.currPos + currentMap[1].length].type == 13)) {
+                        pac.speed.x = 0;
+                        pac.speed.y = 20;
+                        notPressed = false
+                    } else {
+                        lastPress = press;
+                        notPressed = true;
+                    }
                 }
-            }
-            //up key press
-            else if (press == 38 || press == 87) {
-                if ((boundYSortArr[pac.currPos - currentMap[1].length].type == 3 || boundYSortArr[pac.currPos - currentMap[1].length].type == 0 || boundYSortArr[pac.currPos - currentMap[1].length].type == 13)) {
-                    pac.speed.x = 0;
-                    pac.speed.y = -20;
-                    notPressed = false
-                } else {
-                    lastPress = press;
-                    notPressed = true;
+                //up key press
+                else if (press == 38 || press == 87) {
+                    if ((boundYSortArr[pac.currPos - currentMap[1].length].type == 3 || boundYSortArr[pac.currPos - currentMap[1].length].type == 0 || boundYSortArr[pac.currPos - currentMap[1].length].type == 13)) {
+                        pac.speed.x = 0;
+                        pac.speed.y = -20;
+                        notPressed = false
+                    } else {
+                        lastPress = press;
+                        notPressed = true;
+                    }
                 }
             }
         }
@@ -435,12 +688,11 @@
         //it takes in two variables that are multiplied by pi
         //essentially these variables control the direction pacman will face
         function pacDraw(pi1, pi2) {
-
             //this is a simple sound file that plays on a loop as pacman is drawn
             //it is taken straight from the original pacman game
             //I find it adds authenticity to my unauthorized clone of pacman
-            var snd = new Audio("waka waka.mp3"); // buffers automatically when created
-            snd.play();
+            //var snd = new Audio("waka waka.mp3"); // buffers automatically when created
+            //snd.play();
 
             //draw all is called to draw the enemies and the map
             drawAll();
@@ -477,9 +729,11 @@
             if (opnClsBool == 1) {
                 setTimeout(function () {
                     pacDraw(pi1, pi2);
-                }, 100)
+                }, 100);
             } else {
-                setTimeout(draw, 150);
+                if (!pac.stunned) {
+                    setTimeout(draw, 150);
+                }
             }
         }
 
@@ -497,9 +751,6 @@
             usrUpdate(pac);
             pinkGhostUpdate(pinky);
             redGhostUpdate(angry);
-            if (chkCharacterCollisions(pac, pinky) || chkCharacterCollisions(pac, angry)) {
-                pac.reset();
-            }
         }
 
         //usrUpdate takes in a character object
@@ -556,6 +807,7 @@
                 //the amount of the speed
                 pac.updatePacman();
             }
+
         }
 
         //this function loops through the array, it first finds the row of the current pacman position
@@ -609,6 +861,13 @@
         //takes in a value and adds it to the score
         function updateScore(i) {
             score += i;
+            if (currGridScrVal <= 0) {
+                canvas.width = canvas.width;
+                pac.stunned = true;
+                setTimeout(function () {
+                    restartGame(objectStrtPos[0], objectStrtPos[1], objectStrtPos[2], objectStrtPos[3], mapArray, 2)
+                }, 300);
+            }
         }
 
         //simply changes the type of the block
@@ -617,8 +876,18 @@
             boundYSortArr[pos].type = newT;
         }
 
+        //character collisions are checked here
+        //as each character moves, their position in the grid is recorded
+        //this allows me to simply check each characters current grid number against 
+        //each other for accurate collision detection
         function chkCharacterCollisions(char1, char2) {
-            if (char1.currPos == char2.currPos || char1.currPos == char2.currPos - 1 || char1.currPos == char2.currPos + 1 || char1.currPos == char2.currPos - currentMap[1].length || char1.currPos == char2.currPos - currentMap[1].length) {
+            if (char1.currPos == char2.currPos) {
+                if (char2.scaredMode == true && char1.type == "pac") {
+                    canvas.width = canvas.width;
+                    char2.deadMode = true;
+                    char2.inGame = false;
+                    return false;
+                }
                 return true;
             }
             return false;
@@ -634,12 +903,16 @@
                         return false;
                     }
                 }
+
+                //this needs a check as when in certain parts of the map these calculations will link to a grid square that dosnt exist
                 //check if the possible route leads down to the portal corridor
-                if (!(i - portalChannel < 1 || i + portalChannel > currentMap[1].length)) {
+                if ((boundYSortArr[(i - portalChannel)] != undefined && boundYSortArr[i + portalChannel] != undefined)) {
                     if (boundYSortArr[i + portalChannel].type == 10 || boundYSortArr[i - portalChannel].type == 10) {
                         return false;
                     }
                 }
+
+
             }
             //checks are made to see if the possible move is a barrier  
             //i.e it's not a food or eaten food
@@ -659,10 +932,12 @@
                 //and the score will need to be updated
                 if (curPos.name == "pac") {
                     if (boundYSortArr[i].type == 0) {
+                        currGridScrVal--;
                         boundYSortArr[i].type = 3;
                         changeMapType(i, 3);
                         updateScore(1);
                     } else if (boundYSortArr[i].type == 13) {
+                        currGridScrVal--;
                         boundYSortArr[i].type = 3;
                         changeMapType(i, 3);
                         angry.updateScaredMode(true);
@@ -727,10 +1002,19 @@
 
         //this function is effectively the AI of the ghost
         function redGhostUpdate(en) {
+            var numList;
+            var mathDoer;
+            if (chkCharacterCollisions(pac, en)) {
+                pac.reset();
+            }
+
             if (en.inGame) {
-                enNormalMode(en);
-                var numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
-                var mathDoer;
+                if (!chkCharacterCollisions(pinky, en)) {
+                    enNormalMode(en);
+                } else {
+                    en.recalcDirec = true;
+                }
+                numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
 
                 if (en.scaredMode || en.scatterMode) {
                     mathDoer = Math.max.apply(null, numList);
@@ -741,76 +1025,93 @@
                 //calcEnMove will compare the distances with the min value
                 //it will then move in that direction
                 calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
+            } else if (en.deadMode) {
+                movToSpecLoc(en, numList, mathDoer, objectStrtPos[1]);
             } else if (score >= 5) {
-                en.isActive = true;
-                enNormalMode(en);
-                numList = enemyDistances(en.position.x, en.position.y, 510, 210, en);
-                mathDoer = Math.min.apply(null, numList);
-                calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en)
-                if (en.position.x == 510 && en.position.y == 210) {
-                    en.inGame = true;
-                }
+                movToSpecLoc(en, numList, mathDoer, objectStrtPos[3]);
             }
+
         }
 
         //this function is the AI of the pink ghost
         function pinkGhostUpdate(en) {
+            var numList = [];
+            var mathDoer;
+            if (chkCharacterCollisions(pac, en)) {
+
+                pac.reset();
+            }
             if (en.inGame) {
-                enNormalMode(en);
-                if (en.recalcDirec == true) {
-                    var numAhead = 80;
-                    var numList = [];
-                    var mathDoer;
-                    //this part will send the co-ordinates of the enemy and of the variable set position in front of pacman
-                    //unless pacman is to close to the end of the map, in that case, pacman's current position is passed instead
-                    if (pac.speed.x > 0) {
-                        if (pac.position.x + numAhead < 590) {
-                            numList = enemyDistances(en.position.x, en.position.y, pac.position.x + numAhead, pac.position.y, en);
-                        } else {
-                            numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
-                        }
-                    } else if (pac.speed.x < 0) {
-                        if (pac.position.x - numAhead > 10) {
-                            numList = enemyDistances(en.position.x, en.position.y, pac.position.x - numAhead, pac.position.y, en);
-                        } else {
-                            numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
-                        }
-                    } else if (pac.speed.y > 0) {
-                        if (pac.position.y + numAhead < 630) {
-                            numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y + numAhead, en);
-                        } else {
-                            numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
-                        }
-                    } else {
-                        if (pac.position.y - numAhead > 10) {
-                            numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y - numAhead, en);
-                        } else {
-                            numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
-                        }
-                    }
-                    en.recalcDirec = false;
 
-                    if (en.scaredMode || en.scatterMode == true) {
-                        mathDoer = Math.max.apply(null, numList);
-                    } else {
-                        mathDoer = Math.min.apply(null, numList);
+                if (en.deadMode) {
+                    movToSpecLoc(en, numList, mathDoer, objectStrtPos[0]);
+                } else {
+                    enNormalMode(en);
+                    if (chkCharacterCollisions(angry, en)) {
+                        en.recalcDirec = true;
                     }
+                    if (en.recalcDirec == true) {
+                        var numAhead = 80;
+                        //this part will send the co-ordinates of the enemy and of the variable set position in front of pacman
+                        //unless pacman is to close to the end of the map, in that case, pacman's current position is passed instead
+                        if (pac.speed.x > 0) {
+                            if (pac.position.x + numAhead < 590) {
+                                numList = enemyDistances(en.position.x, en.position.y, pac.position.x + numAhead, pac.position.y, en);
+                            } else {
+                                numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
+                            }
+                        } else if (pac.speed.x < 0) {
+                            if (pac.position.x - numAhead > 10) {
+                                numList = enemyDistances(en.position.x, en.position.y, pac.position.x - numAhead, pac.position.y, en);
+                            } else {
+                                numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
+                            }
+                        } else if (pac.speed.y > 0) {
+                            if (pac.position.y + numAhead < 630) {
+                                numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y + numAhead, en);
+                            } else {
+                                numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
+                            }
+                        } else {
+                            if (pac.position.y - numAhead > 10) {
+                                numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y - numAhead, en);
+                            } else {
+                                numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
+                            }
+                        }
+                        en.recalcDirec = false;
 
-                    //calcEnMove will compare the distances with the min value
-                    //it will then move in that direction
-                    calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
+                        if (en.scaredMode || en.scatterMode == true) {
+                            mathDoer = Math.max.apply(null, numList);
+                        } else {
+                            mathDoer = Math.min.apply(null, numList);
+                        }
+
+                        //calcEnMove will compare the distances with the min value
+                        //it will then move in that direction
+                        calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
+                    }
                 }
             } else if (score >= 50) {
-                en.isActive = true;
-                enNormalMode(en);
-                numList = enemyDistances(en.position.x, en.position.y, 510, 210, en);
-                mathDoer = Math.min.apply(null, numList);
-                calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en)
-                if (en.position.x == 510 && en.position.y == 210) {
-                    en.inGame = true;
-                }
+                movToSpecLoc(en, numList, mathDoer, objectStrtPos[3]);
             }
 
+        }
+
+        function movToSpecLoc(en, numList, mathDoer, position) {
+            en.isActive = true;
+            enNormalMode(en);
+            numList = enemyDistances(en.position.x, en.position.y, position.x, position.y, en);
+            mathDoer = Math.min.apply(null, numList);
+            calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en)
+            if (en.position.x == position.x && en.position.y == position.y) {
+                if (!en.deadMode) {
+                    en.inGame = true;
+                } else {
+                    en.deadMode = false;
+                    en.inGame = false;
+                }
+            }
         }
 
         function chkPossNewMoveAi(en) {
@@ -864,12 +1165,15 @@
             mapPos = setPossDifference(pos, pos1, mapPos);
             var bool = chkMapNoType(mapPos, pos, en);
             en.currPos = mapPos;
-            if (chkPossNewMoveAi(en) == true) {
+            if (chkPossNewMoveAi(en) || en.scaredMode || en.scatterMode || chkCharacterCollisions(angry, pinky)) {
                 //every 5th turn, or if the ghost is at a barrier or if the user changes directions
                 //the ghost needs to recalculate its direction
                 en.recalcDirec = true;
             }
             en.updateGhost(bool);
+            if (chkCharacterCollisions(pac, en)) {
+                pac.reset();
+            }
         }
 
         function enemyDraw(en) {
@@ -886,7 +1190,7 @@
             //initializing the directions to infinity or 0 depending on whether scattermode is turned on
             //this will ensure that if they are not valid options
             //and so they will not be counted
-            if (en.scatterMode == false && en.scaredMode == false) {
+            if ((en.scatterMode == false && en.scaredMode == false) || (en.deadMode == true && en.isActive == true)) {
                 var numList = [Infinity, Infinity, Infinity, Infinity],
                     mathDoer = 0;
             } else {
@@ -991,10 +1295,17 @@
                 x = 30;
                 for (var j = 0; j < inner.length; ++j) {
                     var outer = inner[j];
+                    if (outer == 0 || outer == 13) {
+                        updateMaxScore();
+                    }
                     sortBoundaries(outer, x, y, boundYSortArr);
                     x += 20;
                 }
             }
+        }
+
+        function updateMaxScore() {
+            currGridScrVal++;
         }
 
         //this function creates a new array element with the passed in object parameters
@@ -1007,6 +1318,7 @@
         //this function reads the object array of grid squares
         //it then draws an object in the correct grid based on it's type
         function drawItems() {
+            pac.drawLives();
             for (var i = 0; i < boundYSortArr.length; ++i) {
                 switch (boundYSortArr[i].type) {
 
@@ -1184,6 +1496,228 @@
 
                 ctx.strokeStyle = "rgb(0,0,0)";
             }
+        }
+
+        //Local storage code
+        function highscore(name, score) {
+            this.name = name;
+            this.score = score;
+        }
+
+        function convertTo4Digits(int) {
+            if (int < 100 && int > 9) {
+                int = "00" + int;
+            } else if (int < 9) {
+                int = "000" + int;
+            } else if (int < 999) {
+                int = "0" + int;
+            }
+            return int;
+        }
+
+        function convertTo3Letters(str) {
+            if (str.length == 2) {
+                str = str + "A";
+            } else if (str.length == 1) {
+                str = str + "AA";
+            } else if (str.length == 0) {
+                str = "ABC";
+            }
+            return str;
+        }
+
+        function newScore() {
+            var userName = window.prompt("Enter your 3 initials: ", "");
+            userName = userName.substr(0, 3);
+            if (userName.length < 3) {
+                userName = convertTo3Letters(userName);
+            }
+            var convrtdScr = convertTo4Digits(score);
+            return new highscore(userName, convrtdScr);
+        }
+
+        function setupLS() {
+
+            if (typeof (Storage) !== "undefined") {
+                highscores = [];
+                if (localStorage.getItem(0) == null) {
+                    initLS();
+                } else {
+                    getLSItems();
+                }
+                if (score > highscores[0].score) {
+                    localStorage.removeItem(0);
+                    var nHS = newScore();
+                    localStorage.setItem("0", nHS.name + "" + nHS.score);
+                    highscores[0] = nHS;
+                }
+                bubbleSort(highscores);
+                saveScores();
+                displayScores();
+
+            } else {
+                // Sorry! No Web Storage support..
+                alert("Update Browser!");
+            }
+        }
+
+        function saveScores() {
+            for (var i = 0; i <= 10; ++i) {
+                localStorage.setItem(i.toString(), highscores[i].name + "" + highscores[i].score);
+            }
+        }
+
+        function initLS() {
+            for (var scoreCount = 0; scoreCount <= 10; ++scoreCount) {
+                var nameScore = "ABC000" + scoreCount;
+                localStorage.setItem(JSON.stringify(scoreCount), nameScore);
+                var tmpScore = parseScrNme(nameScore)
+                highscores.push(tmpScore);
+            }
+
+        }
+
+        function getLSItems() {
+            for (var scoreCount = 0; scoreCount <= 10; ++scoreCount) {
+                var nameScore = localStorage.getItem(JSON.stringify(scoreCount));
+                var tmpScore = parseScrNme(nameScore)
+                highscores.push(tmpScore);
+            }
+        }
+
+        function displayScores() {
+
+            var menuPinky = new enemy({
+                x: 800,
+                y: 570
+            }, {
+                x: -20,
+                y: 0
+            }, "enemy", 80);
+
+            var count = 10;
+            var counterCount = 0;
+            canvas.height = canvas.height;
+            ctx.fillStyle = "rgb(0,0,0,)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.fillStyle = 'yellow';
+            ctx.textAlign = 'center';
+            ctx.font = "40px Arial";
+            ctx.fillText("Highscores", 475, 65);
+            ctx.fillText("Rank          Name              Score", 500, 165);
+            ctx.fillText("Click to replay...", 500, 575);
+            ctx.closePath();
+            strtGameCntrl = true;
+
+            var cX;
+            cX = menuPinky.speed.x;
+            var intrvl = setInterval(function () {
+                if (strtGameCntrl == false) {
+                    clearInterval(intrvl);
+                } else {
+                    if (count > 0) {
+                        ctx.beginPath();
+                        ctx.fillStyle = 'pink';
+                        ctx.textAlign = 'center';
+                        ctx.font = "20px Arial";
+                        ctx.fillText((counterCount + 1), 250, 220 + (counterCount * 30));
+                        ctx.closePath();
+                        ctx.beginPath();
+                        ctx.fillStyle = 'pink';
+                        ctx.fillText(highscores[count].name, 475, 220 + (counterCount * 30));
+                        ctx.closePath();
+                        ctx.beginPath();
+                        ctx.fillStyle = 'pink';
+                        ctx.fillText(highscores[count].score, 725, 220 + (counterCount * 30));
+                        ctx.closePath();
+                        count--;
+                        counterCount++;
+                    }
+                    cX = menuEnMv(cX, menuPinky);
+                    enemyDraw(menuPinky);
+                }
+            }, 150);
+        }
+
+        //using a bubblesort to sort the highscores as it is easy to implement
+        //and also because it will only be used on a small data set, speed and efficiency 
+        //shouldnt be effected too much
+        function bubbleSort(arr) {
+            var swapped;
+            do {
+                swapped = false;
+                for (var i = 0; i < arr.length - 1; ++i) {
+                    if (arr[i].score > arr[i + 1].score) {
+                        var temp = arr[i];
+                        arr[i] = arr[i + 1];
+                        arr[i + 1] = temp;
+                        swapped = true;
+                    }
+                }
+            } while (swapped);
+        }
+
+        function parseScrNme(name) {
+            return (new highscore(name.substring(0, 3), name.substring(3, 7)));
+        }
+
+        function menuEnMv(cX, menuPinky) {
+            ctx.fillStyle = 'black';
+            ctx.fillRect(menuPinky.position.x - 20, menuPinky.position.y - 20, 40, 40);
+
+            if ((menuPinky.position.x == 660 && (menuPinky.position.y - 20 == 550 || menuPinky.position.y - 20 == 570 || menuPinky.position.y - 20 == 590))) {
+                if (cX < 0) {
+                    if (menuPinky.position.y - 20 != 590) {
+                        menuPinky.speed.y = 20;
+                        menuPinky.speed.x = 0;
+                    } else {
+                        menuPinky.speed.y = 0;
+                        menuPinky.speed.x = -20;
+                    }
+                } else {
+                    if (menuPinky.position.y - 20 != 550) {
+                        menuPinky.speed.y = -20;
+                        menuPinky.speed.x = 0;
+                    } else {
+                        menuPinky.speed.y = 0;
+                        menuPinky.speed.x = 20;
+                    }
+                }
+            } else if (menuPinky.position.x - 20 == 320 && (menuPinky.position.y - 20 == 590 || menuPinky.position.y - 20 == 570 || menuPinky.position.y - 20 == 550)) {
+                if (cX < 0) {
+                    if (menuPinky.position.y - 20 != 550) {
+                        menuPinky.speed.y = -20;
+                        menuPinky.speed.x = 0;
+                    } else {
+                        menuPinky.speed.y = 0;
+                        menuPinky.speed.x = -20;
+                    }
+                } else {
+                    if (menuPinky.position.y - 20 != 590) {
+                        menuPinky.speed.y = 20;
+                        menuPinky.speed.x = 0;
+                    } else {
+                        menuPinky.speed.y = 0;
+                        menuPinky.speed.x = 20;
+                    }
+                }
+            } else if (menuPinky.position.x <= 110 || menuPinky.position.x > canvas.width - 110) {
+                cX = -cX;
+                menuPinky.speed.x = -menuPinky.speed.x;
+            } else {
+                if (cX < 0) {
+                    menuPinky.speed.y = 0;
+                    menuPinky.speed.x = -20;
+                } else {
+                    menuPinky.speed.y = 0;
+                    menuPinky.speed.x = 20;
+                }
+            }
+
+            menuPinky.position.y += menuPinky.speed.y;
+            menuPinky.position.x += menuPinky.speed.x;
+            return cX;
         }
     </script>
 

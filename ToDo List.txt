@@ -6,12 +6,4 @@ sprites
 sprite the fruit
 maybe also sprite the score text
 }
-fix AI
-{
-change scattermode and scaremode variable switches to use ghosts move count instead of score
-}
-Add Invincible mode {
-after losing a life, it is unfair to lose another one within a few moves
-	to fix this, implement an invincible mode where pacman cant lose a life
-	this should last at most 2/3 seconds
-}
+add killing enemies
