@@ -45,7 +45,7 @@
           [3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 1, 1, 1, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3],
           [3, 3, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 8, 3, 3, 3, 3, 3, 3, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 8, 3, 3]
       ];
-        
+
         //this map is for a buggy bonus level
         //it is a remake of the original pacman game
         var mapArray1 = [
@@ -114,9 +114,17 @@
         //when 1 his mouth is closed
         var opnClsBool = 0;
 
+        //strtGameCntrl is a global variable that is used to control the flow of the game between either menus and the game itself
+        var strtGameCntrl = true;
+
         //objectStrtPos is an array that stores needed information for when the user loses a life
         //such as the AI's starting position, and the user's starting position
         var objectStrtPos = [];
+        
+        
+        //deadloop is used in the dead pacman animation, as there are 12 sprites in that animation, deadloop iterates every
+        //new frame, and when it hits 12, it is used to close the function and return to the game
+        var deadLoop = 0;
 
         //this is an object definition that takes in 2 values and stores them in an object
         //the values passed will be the x/y co-ordinates of another object
@@ -155,38 +163,38 @@
             //pacman moves when he's alive
             //updating his position by way of his speed, which is calculated elsewhere
             this.updatePacman = function () {
-                if (this.dead == false) {
-                    this.position.x += this.speed.x;
-                    this.position.y += this.speed.y;
-                }
-            }
-            //reset is called when a new game is started and also when the user loses a life
-            //it resets the properties needed from the start of the game
-            this.reset = function () {
-                //if reset is called and pacman is not dead, a life will be lost
-                if (!this.dead) {
-                    this.lives--;
-                    //this sets dead to true should all lives be lost
-                    if (this.lives <= 0) {
-                        this.dead = true;
+                    if (this.dead == false) {
+                        this.position.x += this.speed.x;
+                        this.position.y += this.speed.y;
                     }
-                    //afterDeathReset is called here, which resets rest of the game
-                    afterDeathReset(objectStrtPos[0], objectStrtPos[1], objectStrtPos[2], objectStrtPos[3]);
-                } else {
-                    //if reset is called and pacman is already dead, various needed variables will be reset
-                    this.position = new coOrds(position.x, position.y);
-                    this.speed = new coOrds(speed.x, speed.y);
-                    this.type = type;
-                    this.currPos = 0;
-
-                    this.lives = 3;
-                    this.stunned = false;
-                    this.dead = false;
                 }
-            }
-            //this simply draws an image of a life for every life that is left
+                //reset is called when a new game is started and also when the user loses a life
+                //it resets the properties needed from the start of the game
+            this.reset = function () {
+                    //if reset is called and pacman is not dead, a life will be lost
+                    if (!this.dead) {
+                        this.lives--;
+                        //this sets dead to true should all lives be lost
+                        if (this.lives <= 0) {
+                            this.dead = true;
+                        }
+                        //afterDeathReset is called here, which resets rest of the game
+                        afterDeathReset(objectStrtPos[0], objectStrtPos[1], objectStrtPos[2], objectStrtPos[3]);
+                    } else {
+                        //if reset is called and pacman is already dead, various needed variables will be reset
+                        this.position = new coOrds(position.x, position.y);
+                        this.speed = new coOrds(speed.x, speed.y);
+                        this.type = type;
+                        this.currPos = 0;
+
+                        this.lives = 3;
+                        this.stunned = false;
+                        this.dead = false;
+                    }
+                }
+                //this simply draws an image of a life for every life that is left
             this.drawLives = function () {
-                
+
                 ctx.beginPath();
                 ctx.fillStyle = 'white';
                 ctx.font = "30px Arial";
@@ -221,7 +229,7 @@
             this.scareSpd = 20;
             //incrementing 20 to the x position grabs the next ghost face of that type
             this.imgXPos = 20;
-        
+
             //these variables are used to control the sprite position
             this.imgYPos = imgY;
             this.storedYPos = imgY;
@@ -238,7 +246,7 @@
             //this counts every turn taken by the enemy
             //will be helpful in allowing the ghosts better movement
             //will stop need to recalculate path every turn
-            
+
             this.enemyTurnCount = 0;
             this.scareConst = 40;
             this.scareAdapt = 0;
@@ -292,55 +300,108 @@
                 }
             }
 
-            
+            //turns scatter mode on or off depending on certain variables' values
+            /*
+                scatter mode is used to make the enemy move away from the user
+                it allows for a bit of breathing room at the start
+                and that breathing rooom shrinks the longer the user plays
+                for
+                
+                Further down in the code I check the scattermode value
+                when checked if true, the enemy moves away from the user by selecting the 
+                longest line distance from the user, rather than the shortest
+            */
             this.scatterModeSwitcher = function () {
+                //to turn scatter mode on, the enemy has to have moved 20 places, and the scatter controller cant be greater than 4
+                //the enemy also needs to be chasing the enemy
                 if (this.enemyTurnCount % 20 == 0 && this.scatterCounter > 4 && this.inGame) {
                     this.scatterMode = true;
+                    //this calculates the point at which the scattermode is turned off
                     this.scatterTurnOffNum = score + this.scatterCounter;
+                    //once the enemy has moved that ammount of moves, scatter mode is turned off
                 } else if (this.enemyTurnCount == this.scatterTurnOffNum) {
                     this.scatterMode = false;
                 }
+                //the scatter controller is decremented every 2nd scatterMode
+                //this allows for shorter scattermodes as the game progresses
+                //effectively making the game harder the longer the user plays
                 if (this.enemyTurnCount % 40 == 0) {
                     this.scatterCounter--;
                 }
             }
 
+            //scared switch controls the sprite used when in scared mode
+            /*
+                Scared mode occurs when pacman eats some superfood
+                the ghosts instantly become terrified of pacman and try to run away from him
+                as effectively as they possibly can
+                
+                If a ghost collides with pacman when in scared mode, the ghost's mode turns to deadMode
+            
+            */
             this.scaredSwitch = function () {
-                if (this.scaredMode && this.deadMode == false) {
-                    if (this.enemyTurnCount + 1 == this.scareValue) {
+                    //since scaredMode and deadMode are linked
+                    //i check their values, and provided scaredMode returns true and 
+                    //deadMode returns false, the ghost's sprite is switched between blue and white
+                    if (this.scaredMode && this.deadMode == false) {
+                        //simple initilaiser to see if this is the first time that 
+                        //the enemy has been in the current scaredmode
+                        if (this.enemyTurnCount + 1 == this.scareValue) {
+                            //if true then the sprite is initilaised to 40 on the x value
+                            //this denotes the column change needed to occur to change that sprite
+                            this.imgXPos = 40;
+
+                        }
+                        //the imgYPos needs to be 160 always when in scared mode as that is the row with the scared faces sprites
+                        this.imgYPos = 160;
+                        //scareSpd will change every turn, when it changes
+                        //scareSpd becomes the value of the blue or white white sprite
+                        this.scareSpd = -this.scareSpd;
+
+                        //scareAdapt keeps a count of the time the enemy stays in scaredMode
+                        //it "Adapts" if the user hits another superfood while the enemy is still in scaredMode
+                        //then if the enemy has more turns than the adapted Scare number, it will exit scaredMode and go on the attack
+                        if (this.enemyTurnCount > this.scareAdapt) {
+                            this.updateScaredMode(false);
+                            this.updateGhost();
+                        }
+                        //if its not in scareMode, then it might be dead
+                        //if its dead, the ghost needs to use the dead sprite
+                        //the sprite x and y positions are thus altered
+                    } else if (this.deadMode) {
+                        this.scaredMode = false;
                         this.imgXPos = 40;
-
+                        this.imgYPos = 200;
+                        //if at this point, the enemy is neither dead nor scared, the used variables need to reset
+                        //imgYPos is reset to the normal ghost sprite
+                        //enemyTurnCount is reset as i do not need to keep track of the ghost's movements if its in normal mode
+                        //and scareSpd is reset to 20 as this is the value of the scared sprite initially
+                    } else {
+                        this.imgYPos = this.storedYPos;
+                        this.enemyTurnCount = 0;
+                        this.scareSpd = 20;
                     }
-                    this.imgYPos = 160;
-                    this.scareSpd = -this.scareSpd;
-
-                    if (this.enemyTurnCount > this.scareAdapt) {
-                        this.updateScaredMode(false);
-                        this.updateGhost();
-                    }
-                } else if (this.deadMode) {
-                    this.scaredMode = false;
-                    this.imgXPos = 40;
-                    this.imgYPos = 200;
-                } else {
-                    this.imgYPos = this.storedYPos;
-                    this.enemyTurnCount = 0;
-                    this.scareSpd = 20;
                 }
-            }
+                //update ghost checks that the ghost has been activated, then checks for any possible modes that might be on
+                //moveBool controls wether the ghosts can move or not
+                //if it is true then the ghost will naturally move in the direction it's speed dictates
             this.updateGhost = function (moveBool) {
-                if (this.isActive) {
-                    this.scaredSwitch();
-                    this.scatterModeSwitcher();
-                    if (moveBool == true) {
-                        this.position.x += this.speed.x;
-                        this.position.y += this.speed.y;
-                    }
-                    if (this.scaredMode) {
-                        this.imgXPos += this.scareSpd;
+                    if (this.isActive) {
+                        this.scaredSwitch();
+                        this.scatterModeSwitcher();
+                        if (moveBool == true) {
+                            this.position.x += this.speed.x;
+                            this.position.y += this.speed.y;
+                        }
+                        //scareSpd as stated above, controls the scaredmode sprites
+                        //every turn in scared mode, the ghost will switch between blue and black because of this line
+                        if (this.scaredMode) {
+                            this.imgXPos += this.scareSpd;
+                        }
                     }
                 }
-            }
+                //updateScaredMode is called when a new superfood is eaten
+                //scaredMode is set to modeBool, and scareAdapt gets the value of scareConst added to it
             this.updateScaredMode = function (modeBool) {
                 if (this.inGame) {
                     this.scaredMode = modeBool;
@@ -375,11 +436,14 @@
 
         function homeScreen() {
 
+            //homescreen is the opening screen the user sees when they open the game
+            //it consists of a logo, some animated text and moving ghosts
             canvas.height = 700;
             canvas.width = 1000;
             ctx = canvas.getContext("2d");
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+            //menu ghosts are setup and initilaised, they will move across the bottom of the screen
             var menuPinky = new enemy({
                 x: 800,
                 y: 450
@@ -397,12 +461,15 @@
             }, "enemy", 100);
 
 
+            //imageObj is the logo image shown
             var imageObj = new Image();
             imageObj.src = "PacLogo.png";
 
+            //when the image is loaded into memory, it is shown to the screen
             imageObj.onload = function () {
-                ctx.drawImage(imageObj, 190, 50);
-            }
+                    ctx.drawImage(imageObj, 190, 50);
+                }
+                //the words click too start are displayed in the center of the screen
             ctx.beginPath();
             ctx.fillStyle = 'pink';
             ctx.textAlign = 'center';
@@ -412,23 +479,36 @@
             var pX = menuPinky.speed.x;
             var aX = menuAngry.speed.x;
             var num = 1;
+
             dotAnim(menuPinky, menuAngry, pX, aX, num);
 
         }
 
-        var strtGameCntrl = true;
-
+        //dotAnim handles the animation needed for the homeScreen
+        //namely that of the animated text and it also calls the ghost movement function
+        
+        /*
+            the two "menu" parameters are ghosts, the pX and aX are their current speeds
+            num controls which dot on the menu to change the colour of
+        */
         function dotAnim(menuPinky, menuAngry, pX, aX, num) {
+            //due to stack issues caused by moving between menus and the game
+            //strtGameCntrl rejects access to this function should the user have clicked the screen
+            //without this, the game will continue to print the ghosts and dots briefly while they are in stack at the same time as the game
             if (strtGameCntrl == true) {
+                //the ghosts aremoved
                 pX = menuEnMv(pX, menuPinky);
+                //the ghosts are drawn
                 enemyDraw(menuPinky);
                 aX = menuEnMv(aX, menuAngry);
-                enemyDraw(menuPinky);
                 enemyDraw(menuAngry);
+                //the previous animated dot is emptied
+                //and a black square is filled in in its place
                 ctx.clearRect(578 + (17 * num), 375, 5, 5);
                 ctx.fillStyle = 'black';
                 ctx.fillRect(568, 370, 100, 20);
 
+                //three dots are drawn after the text written in homeScreen() 
                 ctx.beginPath();
                 ctx.fillStyle = 'pink';
                 ctx.textAlign = 'center';
@@ -436,6 +516,8 @@
                 ctx.fillText(". . .", 598, 380);
                 ctx.closePath();
 
+                //the current dot is painted white, in contrast to the pink dots, it creates a fluid animation 
+                //like a loading screen
                 ctx.beginPath();
                 ctx.fillStyle = 'white';
                 ctx.textAlign = 'center';
@@ -443,6 +525,7 @@
                 ctx.fillText(".", 581 + (17 * num), 380);
                 ctx.closePath();
                 num++;
+                //recursively calling the dotAnim function every 150 milliseconds
                 setTimeout(function () {
                     dotAnim(menuPinky, menuAngry, pX, aX, num)
                 }, 150);
@@ -454,9 +537,11 @@
 
         homeScreen();
 
+        //click event, where if the game is on a menu screen, it listens for a click and activates the game
         canvas.addEventListener('click', function (event) {
             if (strtGameCntrl == true) {
                 strtGameCntrl = false;
+                //if pac is alive then the game is starting from an initial state, so init needs to be called
                 if (!pac.dead) {
                     canvas.width = canvas.width;
                     init(mapArray, {
@@ -472,7 +557,7 @@
                         x: 510,
                         y: 210
                     }, 2);
-
+                    //as opposed to if it is starting from the highscores screen where pacman is dead
                 } else {
                     restartGame(objectStrtPos[0], objectStrtPos[1], objectStrtPos[2], objectStrtPos[3], mapArray, 2);
                 }
@@ -486,22 +571,26 @@
             //init canvas
             currentMap = currentMapVal;
             pac.stunned = false;
+            //initialising the objectStrtPos array with the reset positions needed to put ghosts and pacman back to their intended positions upon game state change
             objectStrtPos.push(new coOrds(pinkyPos.x, pinkyPos.y));
             objectStrtPos.push(new coOrds(angryPos.x, angryPos.y));
             objectStrtPos.push(new coOrds(pacPos.x, pacPos.y));
             objectStrtPos.push(new coOrds(strtPos.x, strtPos.y));
 
+            //the grid is setup here
             boundYSortArr = [];
             portalChannel = corridorDist;
+            //the map is read. and it is converted to a single dim array of integers
             popAccBoundArr();
+            //draw is called which controls most of the game, it calls most functions, and draws everything to the screen
             draw();
         }
-        var deadLoop = 0;
-
+        
         function drawDeadPacman() {
 
             //this draws the canvas rectangle
             //and fills it with a dark blue colour
+            //it then draws the current deadPac image
             canvas.height = canvas.height;
             ctx.beginPath()
             ctx.lineWidth = 2;
@@ -510,17 +599,23 @@
             ctx.fill();
             ctx.closePath()
             drawItems();
-            //change pinky to pac
-            ctx.drawImage(pinky.img, 0 + (20 * deadLoop), 240, 20, 20, pac.position.x - 20, pac.position.y - 20, 40, 40);
+            ctx.drawImage(pac.img, 0 + (20 * deadLoop), 240, 20, 20, pac.position.x - 20, pac.position.y - 20, 40, 40);
             deadLoop++;
         }
 
         function afterDeathReset(pinkyPos, angryPos, pacPos, strtPos) {
+            //this function loops through the dead pacman sprites
+            //when its done, it resets some properties and sends the game back into playing mode
             drawDeadPacman();
+            //pac.stunned is used to control the stack when using specialized 
             pac.stunned = true;
+            //setInterval works like setTimeout but with a loop built into its functionality
+            //with setInterval the code iterates indefinatly until the clearInterval is called
             var intrvl = setInterval(function () {
                 drawDeadPacman();
 
+                //check on the state of the animation, and the state of pacman
+                //if the animation and pac is still alive, required variables are reset
                 if (deadLoop > 12 && pac.dead == false && pac.stunned == true) {
                     pac.stunned = false;
 
@@ -540,6 +635,7 @@
                     draw();
                     deadLoop = 0;
                     clearInterval(intrvl);
+                    //if the user is dead after the animation is complete, then the highscore code needs to be called
                 } else if (pac.dead && deadLoop > 12) {
                     canvas.width = 1000;
                     setupLS();
@@ -605,35 +701,35 @@
                 pcDirctnSwtch();
                 drawScore();
 
-                
+
                 //code for highly buggy bonus level
                 //lots of unexpected bugs occur when using this map
                 //for now I will stick to the map i created 
                 //possibly in the future I may implement this
-               /* if (score == 3000) {
-                    canvas.width = 600;
-                    score++;
-                    boundYSortArr = [];
-                    popAccBoundArr();
-                    objectStrtPos = [];
-                    pac.stunned = true;
-                    currGridScrVal = 0;
-                    setTimeout(function () {
-                        restartGame({
-                            x: 230,
-                            y: 310
-                        }, {
-                            x: 250,
-                            y: 350
-                        }, {
-                            x: 250,
-                            y: 250
-                        }, {
-                            x: 230,
-                            y: 250
-                        }, mapArray1, 5)
-                    }, 500);
-                }*/
+                /* if (score == 3000) {
+                     canvas.width = 600;
+                     score++;
+                     boundYSortArr = [];
+                     popAccBoundArr();
+                     objectStrtPos = [];
+                     pac.stunned = true;
+                     currGridScrVal = 0;
+                     setTimeout(function () {
+                         restartGame({
+                             x: 230,
+                             y: 310
+                         }, {
+                             x: 250,
+                             y: 350
+                         }, {
+                             x: 250,
+                             y: 250
+                         }, {
+                             x: 230,
+                             y: 250
+                         }, mapArray1, 5)
+                     }, 500);
+                 }*/
             }
         }
 
