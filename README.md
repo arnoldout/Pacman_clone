@@ -4,12 +4,16 @@
   The game is controlled primarily by the user's keyboard.
   You can use the directional buttons, or as most keyboard gamers prefer,
   you can also control the game with the "W" "A" "S" and "D" buttons. 
-  ###Up / W 
+  
+  ###press
     By pressing up or W, the user will move pacman up if there is an available move there.
+    
   ###"Left"/"A"
     By pressing left or A, the user will move pacman left if there is an available move there.
+    
   ###"Right"/"D"
     By pressing right or D, the user will move pacman right, if there is an available move there.
+    
   ###"Down"/"S"
     By pressing down or S, the user will move pacman down, if there is an available move there.
     
