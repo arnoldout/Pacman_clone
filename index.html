@@ -1395,8 +1395,11 @@
             }
         }
 
+        //draws the enemy in it's current position
         function enemyDraw(en) {
             ctx.beginPath();
+            //the sprites may need to change if its in normal mode
+            //updateEyes checks the ghosts current trajectory, and adjusts the sprites accordingly
             if (!en.scaredMode) {
                 en.updateEyes();
             }
@@ -1522,13 +1525,18 @@
                 }
             }
         }
-
+        
+        //currGridScrVal is incremented when the array is setup
+        //and it is only called when the setup finds a food or superfood item on the map
+        //then it is decremented by one everytime the user eats food
+        //when currGridScrVal has been decrememnted to 0, the map should be out of food
+        //the grid will then be reset and the score maintained for another "level"
         function updateMaxScore() {
             currGridScrVal++;
         }
 
         //this function creates a new array element with the passed in object parameters
-        function sortBoundaries(type, x, y, arr) {
+        function sortBoundaries(type, x, y, arr) { 
             arr.push({
                 type, x, y
             });
@@ -1536,6 +1544,16 @@
 
         //this function reads the object array of grid squares
         //it then draws an object in the correct grid based on it's type
+        
+        /*
+            
+            it works in a similar manner to a paint by numbers
+            each number has a specific part of the grid that it draws
+            this could be a corner barrier or a piece of food.
+            it takes the boundYSortArr's x and y co-ordinates and paints said 
+            grid piece to the screen
+        
+        */
         function drawItems() {
             pac.drawLives();
             for (var i = 0; i < boundYSortArr.length; ++i) {
@@ -1553,6 +1571,12 @@
                     break;
 
                     //circles
+                        
+                        /*
+                            unused code from earlier version
+                            will keep it in case needed on future maps
+                            it was used as a design for space in the middle of barriers
+                        */
                 case 1:
                     /* ctx.beginPath();
                      ctx.strokeStyle = "rgb(24,202,230)";
@@ -1659,6 +1683,7 @@
                     //portals
                 case 10:
                     break;
+                        //short vertical line
                 case 11:
                     ctx.beginPath();
                     ctx.strokeStyle = "rgb(32,32,224)";
@@ -1667,6 +1692,7 @@
                     ctx.stroke();
                     ctx.closePath();
                     break;
+                    //short vertical line
                 case 12:
                     ctx.beginPath();
                     ctx.strokeStyle = "rgb(32,32,224)";
@@ -1675,6 +1701,7 @@
                     ctx.stroke();
                     ctx.closePath();
                     break;
+                        //superfood
                 case 13:
                     ctx.beginPath();
                     ctx.fillStyle = "rgb(255,169,164)";
@@ -1685,6 +1712,7 @@
                     ctx.closePath();
                     break;
 
+                        //short horizontal line
                 case 14:
                     ctx.beginPath();
                     ctx.strokeStyle = "rgb(32,32,224)";
@@ -1693,6 +1721,7 @@
                     ctx.stroke();
                     ctx.closePath();
                     break;
+                        //short horizontal line
                 case 15:
                     ctx.beginPath();
                     ctx.strokeStyle = "rgb(32,32,224)";
@@ -1701,7 +1730,7 @@
                     ctx.stroke();
                     ctx.closePath();
                     break;
-
+                        //enemy cage exit
                 case 16:
                     ctx.beginPath();
                     ctx.strokeStyle = "rgb(255,60,60)";
@@ -1718,11 +1747,14 @@
         }
 
         //Local storage code
+    
+        //highscore object that keeps a name and a score stored together 
         function highscore(name, score) {
             this.name = name;
             this.score = score;
         }
 
+        //takes in a number and adds on base zeros to make it a 4 digit number
         function convertTo4Digits(int) {
             if (int < 100 && int > 9) {
                 int = "00" + int;
@@ -1734,6 +1766,8 @@
             return int;
         }
 
+        //takes in a string and returns the string incase it is not 3 letters long, 
+        //it adds on base letters to the score's name
         function convertTo3Letters(str) {
             if (str.length == 2) {
                 str = str + "A";
@@ -1745,6 +1779,8 @@
             return str;
         }
 
+        //newScore takes in the user's name from the prompt window
+        //it creates a highscore object 
         function newScore() {
             var userName = window.prompt("Enter your 3 initials: ", "");
             userName = userName.substr(0, 3);
@@ -1755,47 +1791,78 @@
             return new highscore(userName, convrtdScr);
         }
 
+        //setupLS controls the entire highscores page
         function setupLS() {
 
+            //it checks if the browser supports localStorage
+            //if it does then we can work with highscores
             if (typeof (Storage) !== "undefined") {
+                //highscores array is set to an empty array
                 highscores = [];
+                //it checks the first score, which will save it's value under the key of 0
+                //if the value is null, then all the scores are reset and initiliased 
                 if (localStorage.getItem(0) == null) {
+                    //initiliising the highscores
                     initLS();
                 } else {
+                    //if the key 0 has a value, then scores will be grabbed from local storage
                     getLSItems();
                 }
+                //key 0 is the lowest score saved in the list, if the current score is higher than this score
+                //the old lowest score can be removed 
                 if (score > highscores[0].score) {
                     localStorage.removeItem(0);
+                    //with a place made in the highscores
+                    //a new highscore objet will need to be created
                     var nHS = newScore();
+                    //the new object is saved in local storage and also in the highscores array
                     localStorage.setItem("0", nHS.name + "" + nHS.score);
                     highscores[0] = nHS;
                 }
+                //bubblesort is called on the highscores array
+                //it sorts the highscores in order of their highscore-y-ness
                 bubbleSort(highscores);
+                //the sorted array replaces the local storage values
                 saveScores();
+                //finally the scores screen is displayed
                 displayScores();
 
+                //if the browser dosnt support highscores, then an alert will pop up telling the user they need to update their browser
             } else {
                 // Sorry! No Web Storage support..
                 alert("Update Browser!");
             }
         }
 
+        //savescores runs through the array of highscores and saves them all in localstorage
+        //the array should be presorted upon entering this function
         function saveScores() {
             for (var i = 0; i <= 10; ++i) {
                 localStorage.setItem(i.toString(), highscores[i].name + "" + highscores[i].score);
             }
         }
 
+        //if the localstorage is empty
+        //10 initial highscores are created
+        //these will have small simple values
         function initLS() {
             for (var scoreCount = 0; scoreCount <= 10; ++scoreCount) {
+                //a very basic initial value is set with the name abc and the current value of scoreCount
+                //set to 4 integers
                 var nameScore = "ABC000" + scoreCount;
+                //the long string of letters tied with scores are added to local storage at 
+                //the location of whatever scoreCount currently is
                 localStorage.setItem(JSON.stringify(scoreCount), nameScore);
+                //the long string is parsed to a highscore object and then pushed to the highscores array
                 var tmpScore = parseScrNme(nameScore)
                 highscores.push(tmpScore);
             }
 
         }
-
+        
+        //this function simply loops through the localstorage
+        //it grabs the long string value of the key
+        //parses it to a highscore object and stores it in the highscores array
         function getLSItems() {
             for (var scoreCount = 0; scoreCount <= 10; ++scoreCount) {
                 var nameScore = localStorage.getItem(JSON.stringify(scoreCount));
@@ -1804,8 +1871,10 @@
             }
         }
 
+        //display scores displays the entire highscore screen
         function displayScores() {
 
+            //a temporary use enemy object is created 
             var menuPinky = new enemy({
                 x: 800,
                 y: 570
@@ -1814,8 +1883,14 @@
                 y: 0
             }, "enemy", 80);
 
+            //count loops down while counterCount loops up in the setInterval loop below
+            //together they allow for the scores to be accessed in ascending order, while being written in descending order
             var count = 10;
             var counterCount = 0;
+            
+            //ctx draws the headers, rank, name and score, and below where the list of scores will be located
+            //it writes click to replay
+            //the mouse listener will listen to any canvas clicks and reset the game accordingly
             canvas.height = canvas.height;
             ctx.fillStyle = "rgb(0,0,0,)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -1827,14 +1902,24 @@
             ctx.fillText("Rank          Name              Score", 500, 165);
             ctx.fillText("Click to replay...", 500, 575);
             ctx.closePath();
+            //strtGameCntrl is set to true, this enables the mouse listener which will restart the game on click
             strtGameCntrl = true;
 
+            //this part deals with all the animation required on screen
+            //cx holds the enemy's current horizontal speed
             var cX;
             cX = menuPinky.speed.x;
+            //setInterval loops around the following block of code until strtGameCntrl is set to false
+            //this is achieved by a click on the screen
+            //so when the user clicks the canvas, the loop exits, stopping the animation
             var intrvl = setInterval(function () {
                 if (strtGameCntrl == false) {
                     clearInterval(intrvl);
                 } else {
+                    //depending on the count value
+                    //ctx will write the next score to be written to the canvas
+                    //due to the interval loop, the highscores are written one by one, which I found to be 
+                    //a nice way to display them
                     if (count > 0) {
                         ctx.beginPath();
                         ctx.fillStyle = 'pink';
@@ -1853,7 +1938,9 @@
                         count--;
                         counterCount++;
                     }
+                    //menuEnMv moves the ghost across the screen for the animation effect
                     cX = menuEnMv(cX, menuPinky);
+                    //enemyDraw is called to draw the enemy to the screen
                     enemyDraw(menuPinky);
                 }
             }, 150);
@@ -1877,14 +1964,18 @@
             } while (swapped);
         }
 
+        //this function takes in the long form names that are written to the local storage as there is only room for one value per key
+        //and converts them into highscore objects
         function parseScrNme(name) {
             return (new highscore(name.substring(0, 3), name.substring(3, 7)));
         }
 
+        //menuEnMv controls the movement of menu enemies
         function menuEnMv(cX, menuPinky) {
             ctx.fillStyle = 'black';
             ctx.fillRect(menuPinky.position.x - 20, menuPinky.position.y - 20, 40, 40);
 
+            //the location of click to continue is coded into the if statements, and allow the ghost to "avoid" the words
             if ((menuPinky.position.x == 660 && (menuPinky.position.y - 20 == 550 || menuPinky.position.y - 20 == 570 || menuPinky.position.y - 20 == 590))) {
                 if (cX < 0) {
                     if (menuPinky.position.y - 20 != 590) {
@@ -1903,6 +1994,7 @@
                         menuPinky.speed.x = 20;
                     }
                 }
+                //more recalculating of the ghosts location relative to the words click to continue
             } else if (menuPinky.position.x - 20 == 320 && (menuPinky.position.y - 20 == 590 || menuPinky.position.y - 20 == 570 || menuPinky.position.y - 20 == 550)) {
                 if (cX < 0) {
                     if (menuPinky.position.y - 20 != 550) {
@@ -1921,9 +2013,11 @@
                         menuPinky.speed.x = 20;
                     }
                 }
+                //if the ghost hits the edge of either side of the canvas, it moves in the opposite direction
             } else if (menuPinky.position.x <= 110 || menuPinky.position.x > canvas.width - 110) {
                 cX = -cX;
                 menuPinky.speed.x = -menuPinky.speed.x;
+                //otherwise its speed is set here
             } else {
                 if (cX < 0) {
                     menuPinky.speed.y = 0;
@@ -1933,7 +2027,7 @@
                     menuPinky.speed.x = 20;
                 }
             }
-
+            //the ghost's position is updated here
             menuPinky.position.y += menuPinky.speed.y;
             menuPinky.position.x += menuPinky.speed.x;
             return cX;
