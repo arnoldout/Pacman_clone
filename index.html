@@ -827,9 +827,11 @@
         //it takes in two variables that are multiplied by pi
         //essentially these variables control the direction pacman will face
         function pacDraw(pi1, pi2) {
-            //this is a simple sound file that plays on a loop as pacman is drawn
-            //it is taken straight from the original pacman game
-            //I find it adds authenticity to my unauthorized clone of pacman
+            
+            //Code for unused soundfile to play the traditional "Waka Waka" sound the original pacman made.
+            //I chose against using it for now as getting it to synchronize with the movement of pacman was a nightmare
+            //for now it is simply easier to play the silent game
+            
             //var snd = new Audio("waka waka.mp3"); // buffers automatically when created
             //snd.play();
 
@@ -1025,6 +1027,7 @@
                 if (char1.currPos == char2.currPos) {
                     if (char2.scaredMode == true && char1.type == "pac") {
                         canvas.width = canvas.width;
+                        updateScore(10);
                         char2.deadMode = true;
                         char2.inGame = false;
                         return false;
