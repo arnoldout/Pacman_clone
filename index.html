@@ -403,7 +403,7 @@
                 //updateScaredMode is called when a new superfood is eaten
                 //scaredMode is set to modeBool, and scareAdapt gets the value of scareConst added to it
             this.updateScaredMode = function (modeBool) {
-                if (this.inGame) {
+                if (this.inGame&&this.deadMode==false) {
                     this.scaredMode = modeBool;
                     this.scareAdapt += this.scareConst;
                 }
@@ -1166,13 +1166,7 @@
 
             //provided the ghost is in game (actively hunting pacman) it can move
             if (en.inGame) {
-                //checking for a collision between the two ghosts, if there is no collision then the ghost can move
-                if (!chkCharacterCollisions(pinky, en)) {
-                    enNormalMode(en);
-                } else {
-                    //if there is a collision between the ghosts, then the current ghost is told to recalculate its current trajectory 
-                    en.recalcDirec = true;
-                }
+                enNormalMode(en);
 
                 //if red has been told in the last run through that it needs to recalculate it's move, then it will do so here
                 if (en.recalcDirec) {
@@ -1213,25 +1207,41 @@
         function pinkGhostUpdate(en) {
             var numList = [];
             var mathDoer;
+            //collision detection is checked between pacman and the current enemy
             if (chkCharacterCollisions(pac, en)) {
-
                 pac.reset();
             }
+            //this section deals with the ghost hunting down pacman
+            //inGame handles this and is turned on when the ghost leaves the cage
             if (en.inGame) {
-
+                //the ghost can be inGame and also dead
+                //this ensures the correct movement is used
+                //i.e that it is running away from the target rather than hunting it
                 if (en.deadMode) {
                     movToSpecLoc(en, numList, mathDoer, objectStrtPos[0]);
+                    //this part will be for hunting pacman solely
                 } else {
+                    //enNormalMode checks wall collisions and then moves the ghost
+                    //if valid move
                     enNormalMode(en);
+                    //collision detection between the two ghosts
                     if (chkCharacterCollisions(angry, en)) {
+                        //if the ghosts collide, a special provision is awarded, telling it to 
                         en.recalcDirec = true;
                     }
+                    //if recalcDirec is true, the ghost needs to recalculate it's movement
                     if (en.recalcDirec == true) {
+                        //pink ghost always tries to move in front of pacman
+                        //to do this, numAhead is equal to 4 grid squares ahead of the ghost
+                        //this will be added to the target position
+                        //based on which direction the ghost is looking
                         var numAhead = 80;
                         //this part will send the co-ordinates of the enemy and of the variable set position in front of pacman
                         //unless pacman is to close to the end of the map, in that case, pacman's current position is passed instead
                         if (pac.speed.x > 0) {
+                            //this if statement checks if the position the ghost will be targeting is actually on the grid or not
                             if (pac.position.x + numAhead < 590) {
+                                //numList gathers the number list returned by enemyDistances
                                 numList = enemyDistances(en.position.x, en.position.y, pac.position.x + numAhead, pac.position.y, en);
                             } else {
                                 numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
@@ -1255,10 +1265,15 @@
                                 numList = enemyDistances(en.position.x, en.position.y, pac.position.x, pac.position.y, en);
                             }
                         }
+                        //recalculating dosn't need to be done every turn
+                        //its both more efficient and also shows better behaviour to only recalculate under certain circumstances
                         en.recalcDirec = false;
 
+                        //if the ghost is in scared mode or scattering, then it needs to move away from the target
+                        //I do this by getting the max number from the list of line distances
                         if (en.scaredMode || en.scatterMode == true) {
                             mathDoer = Math.max.apply(null, numList);
+                            //otherwise i just choose the shortest distance
                         } else {
                             mathDoer = Math.min.apply(null, numList);
                         }
@@ -1268,29 +1283,51 @@
                         calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
                     }
                 }
+                //this code works for activating the ghost
+                //when the user gets above 50 points
+                //the pink ghost becomes active, it moves toward co-ordinates just outside the cage
+                //then when it hits that point, it begins to use the above code that targets pacman
             } else if (score >= 50) {
                 movToSpecLoc(en, numList, mathDoer, objectStrtPos[3]);
             }
 
         }
 
+        
+        //this function takes in a co-ordinate on the grid 
+        //it then uses similar code to that used when targeting pacman
+        //it uses that code to move toward a target grid position
         function movToSpecLoc(en, numList, mathDoer, position) {
+            //if this code is called, then the ghost must be active
             en.isActive = true;
+            //the ghost is moved in the current direction
             enNormalMode(en);
+            //the distances list is returned, and the shortest distance to the target is chosen
             numList = enemyDistances(en.position.x, en.position.y, position.x, position.y, en);
             mathDoer = Math.min.apply(null, numList);
-            calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en)
+            //using the smallest number, calcEnMove checks the min number against the list, and moves in
+            //whichever direction the minimum value represents
+            calcEnMove(numList[0], numList[1], numList[2], numList[3], mathDoer, en);
+            //if the ghost moves to the target, it needs to change to a new target
             if (en.position.x == position.x && en.position.y == position.y) {
+                //if the ghost is alive, then it was just starting out, therefore, inGame is set to true
+                //this will make the ghost now target pacman
                 if (!en.deadMode) {
                     en.inGame = true;
-                } else {
-                    console.log(en.position + "" + position);
+                    //otherwise it is dead and has just returned to the cage
+                    //it now needs to run through this function again until it is inGame
+                } else{
                     en.deadMode = false;
                     en.inGame = false;
                 }
             }
         }
 
+        //this function checks the surrounding area of the ghost
+        //if a the ghost has moved to the vicinity of a new opening
+        //it returns true
+        //it does this by checking the surrounding grid for moveable blocks
+        //i.e if the block is a food block (0) an eaten food block (3) or a superfood block (13)
         function chkPossNewMoveAi(en) {
             if (en.speed.x > 0 || en.speed.x < 0) {
                 if (boundYSortArr[en.currPos + currentMap[1].length].type == 3 || boundYSortArr[en.currPos + currentMap[1].length].type == 0 || boundYSortArr[en.currPos + currentMap[1].length].type == 13 || boundYSortArr[en.currPos - currentMap[1].length].type == 3 || boundYSortArr[en.currPos - currentMap[1].length].type == 0 || boundYSortArr[en.currPos - currentMap[1].length].type == 13) {
@@ -1305,12 +1342,16 @@
             return false;
         }
 
+        //this function moves the ghost towards the current trajectory
+        //it checks for possible wall collisions 
+        //if the intended move is valid, it moves to that grid square
+        //otherwise it will recalculate the trajectory
         function enNormalMode(en) {
             var possMove;
             var pos, pos1;
 
             if (en.speed.x != 0) {
-                //chk the space to the left or right   
+                //two objects are made, one with the current position, and one with the position, the ghost wants to move to
                 possMove = en.position.x + en.speed.x;
                 pos = {
                     y: en.position.y,
@@ -1322,7 +1363,7 @@
                     x: possMove
                 };
             } else if (en.speed.y != 0) {
-                //chk the space up or down   
+                //same as above
                 possMove = en.position.y + en.speed.y;
                 pos = {
                     y: en.position.y,
@@ -1335,6 +1376,7 @@
                 };
             }
 
+            
             en.enemyTurnCount++;
             var mapPos = getMapPos(pos);
             //setPossDifference alters mapPos so that it represents the
