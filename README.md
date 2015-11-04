@@ -5,16 +5,16 @@
   You can use the directional buttons, or as most keyboard gamers prefer,
   you can also control the game with the "W" "A" "S" and "D" buttons. 
   
-  ### press ######
+###"Up"/"W"
     By pressing up or W, the user will move pacman up if there is an available move there.
     
-  ###"Left"/"A"
+###"Left"/"A"
     By pressing left or A, the user will move pacman left if there is an available move there.
     
-  ###"Right"/"D"
+###"Right"/"D"
     By pressing right or D, the user will move pacman right, if there is an available move there.
     
-  ###"Down"/"S"
+###"Down"/"S"
     By pressing down or S, the user will move pacman down, if there is an available move there.
     
   Should the user ask pacman to move to a blocked location, that keypress is saved, and pacman will keep trying to 
